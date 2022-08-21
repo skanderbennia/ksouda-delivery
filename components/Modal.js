@@ -1,7 +1,11 @@
 import $ from "jquery";
+import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import api from "../api";
 export default function Modal(props) {
+  const router = useRouter();
+  const { register, handleSubmit, errors } = useForm();
   const [showRegister, setShowRegister] = useState(false);
   const modalRef = useRef();
   useEffect(() => {
@@ -25,6 +29,18 @@ export default function Modal(props) {
       password,
     });
   };
+  const handleLogin = async (email, password) => {
+    const res = await api.post("/auth/login", {
+      email,
+      password,
+    });
+    if (res.status === 200) {
+      console.log(res.data);
+      localStorage.setItem("token", res.data.token);
+      props.setShowModal(false);
+      router.push("/dashboard");
+    }
+  };
   return (
     <div>
       {!showRegister ? (
@@ -47,10 +63,10 @@ export default function Modal(props) {
             </div>
             <div className="modal-body">
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
+                onSubmit={handleSubmit(async (data) => {
+                  handleLogin(data.email, data.password);
                   props.setShowModal(false);
-                }}
+                })}
               >
                 <div className="form-group">
                   <input
@@ -59,6 +75,7 @@ export default function Modal(props) {
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
                     placeholder="Email"
+                    {...register("email", { required: true })}
                   />
 
                   <input
@@ -66,6 +83,7 @@ export default function Modal(props) {
                     className="form-control"
                     id="exampleInputPassword1"
                     placeholder="Password"
+                    {...register("password", { required: true })}
                   />
                   <span>
                     <a
@@ -118,7 +136,7 @@ export default function Modal(props) {
                   const email = e.target.elements.email.value;
                   const password = e.target.elements.password.value;
                   await handleCreateAccount(name, email, password);
-                  props.setShowModal(false);
+                  // props.setShowModal(false);
                   setShowRegister(false);
                 }}
               >

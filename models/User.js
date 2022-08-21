@@ -13,6 +13,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    default: "expediteur",
+    enum: ["expediteur", "livreur", "admin"],
+  },
 });
 
 // if Model exist then return it

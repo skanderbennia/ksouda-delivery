@@ -7,6 +7,10 @@ export default async function handler(req, res) {
     await dbConnect();
     const { email, password, name } = req.body;
     const user = await User({ email, password, name });
+    // hash password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+
     await user.save();
     res.send(user);
   } else {
