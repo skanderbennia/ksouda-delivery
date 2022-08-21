@@ -1,6 +1,8 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Badge, Button, Dropdown, Menu, Space, Table } from "antd";
-import React from "react";
+import Link from "next/link";
+import React, { useState } from "react";
+import api from "../../../api";
 import Navbar from "../../../components/Navbar/Navbar";
 const menu = (
   <Menu
@@ -16,44 +18,9 @@ const menu = (
     ]}
   />
 );
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Platform",
-    dataIndex: "platform",
-    key: "platform",
-  },
-  {
-    title: "Version",
-    dataIndex: "version",
-    key: "version",
-  },
-  {
-    title: "Upgraded",
-    dataIndex: "upgradeNum",
-    key: "upgradeNum",
-  },
-  {
-    title: "Creator",
-    dataIndex: "creator",
-    key: "creator",
-  },
-  {
-    title: "Date",
-    dataIndex: "createdAt",
-    key: "createdAt",
-  },
-  {
-    title: "Action",
-    key: "operation",
-    render: () => <a>Publish</a>,
-  },
-];
-const Bordreau = () => {
+
+const Bordreau = ({ bordereau }) => {
+  const [listBordereau, setListBordereau] = useState(bordereau);
   const expandedRowRender = () => {
     const columns = [
       {
@@ -104,23 +71,72 @@ const Bordreau = () => {
       });
     }
 
-    return <Table columns={columns} dataSource={data} pagination={false} />;
+    return (
+      <Table columns={columns} dataSource={bordereau} pagination={false} />
+    );
   };
+  const columns = [
+    {
+      title: "Nom de client",
+      dataIndex: "nomClient",
+      key: "nomClient",
+    },
+    {
+      title: "Adresse",
+      dataIndex: "adresse",
+      key: "adresse",
+    },
+    {
+      title: "Telephone Client",
+      dataIndex: "telClient",
+      key: "telClient",
+    },
+    {
+      title: "Quantité",
+      dataIndex: "quantite",
+      key: "quantite",
+    },
+    {
+      title: "Prix",
+      dataIndex: "prix_unit",
+      key: "prix_unit",
+    },
+    {
+      title: "Action",
+      key: "operation",
+      render: (item) => {
+        console.log("item", item);
 
+        return (
+          <button
+            style={{ background: "red", color: "white", border: "none" }}
+            onClick={async () => {
+              await api.delete("/bordereau/" + item._id);
+              setListBordereau(
+                listBordereau.filter((elem) => elem._id != item._id)
+              );
+            }}
+          >
+            Annuler
+          </button>
+        );
+      },
+    },
+  ];
   const data = [];
 
   for (let i = 0; i < 3; ++i) {
     data.push({
       key: i.toString(),
-      name: "Screem",
-      platform: "iOS",
-      version: "10.3.4.5654",
-      upgradeNum: 500,
-      creator: "Jack",
+      nomClient: "Mohamed Ali",
+      adresse: "London No. 1 Lake Park",
+      telClient: "22499727",
+      quantite: 1,
+      prix: "50$",
       createdAt: "2014-12-24 23:12:00",
     });
   }
-
+  console.log(bordereau);
   return (
     <Navbar>
       <Table
@@ -129,11 +145,20 @@ const Bordreau = () => {
           expandedRowRender,
           defaultExpandedRowKeys: ["0"],
         }}
-        dataSource={data}
+        dataSource={listBordereau}
       />
-      <Button>Add</Button>
+      <Link href="/dashboard/bordreau/add">
+        <Button>Add</Button>
+      </Link>
     </Navbar>
   );
 };
-
+export const getStaticProps = async () => {
+  const res = await api.get("/bordereau");
+  return {
+    props: {
+      bordereau: res.data,
+    },
+  };
+};
 export default Bordreau;

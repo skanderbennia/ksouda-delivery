@@ -8,8 +8,8 @@ export default function Navbar(props) {
         <div class="row">
           <div class="col-12">
             <nav class="main-nav">
-              <a href="#" class="logo">
-                <Image src={Logo} alt="Softy Pinko" />
+              <a href="#" style={{ position: "absolute", top: -110, left: 20 }}>
+                <Image src={Logo} width={300} height={300} />
               </a>
 
               <ul class="nav">

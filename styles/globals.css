@@ -24,3 +24,28 @@
   min-width: 100px !important;
   min-height: 40px !important;
 }
+
+.input-container {
+  margin-top: 10px;
+}
+.input-add-bordreau {
+  width: 100%;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.input-add-bordreau:focus {
+  outline: 1px solid lightblue;
+}
+
+.button-submit-bordreau {
+  background: #1890ff;
+  margin-top: 20px;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
