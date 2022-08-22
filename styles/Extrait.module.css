@@ -1,0 +1,99 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 10vh;
+}
+.codebar {
+  border: 1px solid black;
+  border-top: none;
+  border-left: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.nomExpediteur {
+  border: 1px solid black;
+  border-top: none;
+  border-right: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.zoneLegend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 15vh;
+  width: 100%;
+}
+.legend {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-size: 40px;
+}
+.zoneInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30vh;
+  width: 100%;
+}
+.info {
+  border: 1px solid black;
+  display: flex;
+  padding: 10px;
+  font-size: 16px;
+  width: 40%;
+}
+.table {
+  width: 55%;
+  margin-left: 350px;
+}
+.table tbody td:first-child {
+  width: 35vw;
+}
+.table tbody td {
+  text-align: center;
+}
+.table tbody td:first-child {
+  text-align: left;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30vh;
+  width: 100%;
+}
+
+.footer .infoPrix {
+  border: 1px solid black;
+  margin-left: 50px;
+  font-size: 16px;
+  width: 20%;
+}
+
+.footer .infoPrix div {
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  height: 30px;
+}
+.footer .infoPrix div:last-child {
+  border: none;
+}
+.remarque {
+  border: 1px solid black;
+  margin-left: 50px;
+  font-size: 16px;
+  width: 20%;
+  font-weight: bold;
+  margin-right: 20px;
+}

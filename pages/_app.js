@@ -1,6 +1,7 @@
 import "antd/dist/antd.css";
 import $ from "jquery";
 import { useEffect } from "react";
+import { RecoilRoot } from "recoil";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/font-awesome.css";
 import "../assets/css/templatemo-softy-pinko.css";
@@ -428,7 +429,11 @@ function MyApp({ Component, pageProps }) {
       }
     })(window.jQuery);
   }, []);
-  return <Component {...pageProps} />;
+  return (
+    <RecoilRoot>
+      <Component {...pageProps} />
+    </RecoilRoot>
+  );
 }
 
 export default MyApp;

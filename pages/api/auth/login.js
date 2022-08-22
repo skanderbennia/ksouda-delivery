@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       }
       // sign token
       const token = signToken(user);
-      res.status(200).json({ token, role: user.role });
+      res.status(200).json({ token, role: user.role,id:user._id});
     } else {
       res.status(405).json({ msg: "Method not allowed" });
     }

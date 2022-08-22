@@ -1,10 +1,12 @@
-import { Button, Input } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
 import api from "../../../../api";
+import { userAtom } from "../../../../atoms/userAtom";
 import Navbar from "../../../../components/Navbar/Navbar";
 export default function Add() {
+  const user = useRecoilValue(userAtom);
   const {
     register,
     handleSubmit,
@@ -17,7 +19,7 @@ export default function Add() {
     <Navbar>
       <form
         onSubmit={handleSubmit(async (data) => {
-          await api.post("/bordereau", data);
+          await api.post("/bordereau", { ...data, user: user.id });
           reset();
           router.push("/dashboard/bordreau");
         })}

@@ -2,8 +2,12 @@ import $ from "jquery";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+// recoil
+import { useSetRecoilState } from "recoil";
 import api from "../api";
+import { userAtom } from "../atoms/userAtom";
 export default function Modal(props) {
+  const setUser = useSetRecoilState(userAtom);
   const router = useRouter();
   const { register, handleSubmit, errors } = useForm();
   const [showRegister, setShowRegister] = useState(false);
@@ -36,6 +40,7 @@ export default function Modal(props) {
     });
     if (res.status === 200) {
       console.log(res.data);
+      setUser({ id: res.data.id });
       localStorage.setItem("token", res.data.token);
       props.setShowModal(false);
       router.push("/dashboard");

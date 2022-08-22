@@ -32,6 +32,10 @@ const BordereauSchema = new mongoose.Schema({
     type: String,
     enum: ["En cours", "Annulé", "Livré"],
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 // if Model exist then return it

@@ -1,8 +1,9 @@
-import { DownOutlined } from "@ant-design/icons";
 import { Badge, Button, Dropdown, Menu, Space, Table } from "antd";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import api from "../../../api";
+import { userAtom } from "../../../atoms/userAtom";
 import Navbar from "../../../components/Navbar/Navbar";
 const menu = (
   <Menu
@@ -20,6 +21,14 @@ const menu = (
 );
 
 const Bordreau = ({ bordereau }) => {
+  const user = useRecoilValue(userAtom);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await api.get("/bordereau/expediteur/" + user.id);
+      setListBordereau(res.data);
+    }
+    fetchData();
+  }, [user]);
   const [listBordereau, setListBordereau] = useState(bordereau);
   const expandedRowRender = () => {
     const columns = [
@@ -108,35 +117,34 @@ const Bordreau = ({ bordereau }) => {
         console.log("item", item);
 
         return (
-          <button
-            style={{ background: "red", color: "white", border: "none" }}
-            onClick={async () => {
-              await api.delete("/bordereau/" + item._id);
-              setListBordereau(
-                listBordereau.filter((elem) => elem._id != item._id)
-              );
-            }}
-          >
-            Annuler
-          </button>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <button
+              style={{ background: "red", color: "white", border: "none" }}
+              onClick={async () => {
+                await api.delete("/bordereau/" + item._id);
+                setListBordereau(
+                  listBordereau.filter((elem) => elem._id != item._id)
+                );
+              }}
+            >
+              Annuler
+            </button>
+            <button
+              style={{
+                background: "black",
+                color: "white",
+                border: "none",
+                marginLeft: 20,
+              }}
+            >
+              Imprimer
+            </button>
+          </div>
         );
       },
     },
   ];
-  const data = [];
 
-  for (let i = 0; i < 3; ++i) {
-    data.push({
-      key: i.toString(),
-      nomClient: "Mohamed Ali",
-      adresse: "London No. 1 Lake Park",
-      telClient: "22499727",
-      quantite: 1,
-      prix: "50$",
-      createdAt: "2014-12-24 23:12:00",
-    });
-  }
-  console.log(bordereau);
   return (
     <Navbar>
       <Table
@@ -153,12 +161,5 @@ const Bordreau = ({ bordereau }) => {
     </Navbar>
   );
 };
-export const getStaticProps = async () => {
-  const res = await api.get("/bordereau");
-  return {
-    props: {
-      bordereau: res.data,
-    },
-  };
-};
+
 export default Bordreau;
