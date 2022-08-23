@@ -1,6 +1,28 @@
-import React from "react";
-import style from "../styles/Extrait.module.css";
+import bwipjs from "bwip-js";
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { extraitAtom } from "../../atoms/extraitAtom";
+import style from "../../styles/Extrait.module.css";
 export default function Extrait() {
+  const [extrait, setExtrait] = useRecoilState(extraitAtom);
+  const [image, setImage] = useState(null);
+  useEffect(() => {
+    try {
+      // The return value is the canvas element
+      let canvas = bwipjs.toCanvas("mycanvas", {
+        bcid: "code128", // Barcode type
+        text: extrait.codebar, // Text to encode
+        scale: 3, // 3x scaling factor
+        height: 6, // Bar height, in millimeters
+        width: 3,
+        textxalign: "center", // Always good to set this
+      });
+      console.log(canvas.toDataURL("image/png"));
+      setImage(canvas.toDataURL("image/png"));
+    } catch (e) {
+      // `e` may be a string or Error object
+    }
+  }, [extrait]);
   return (
     <div
       style={{
@@ -11,8 +33,10 @@ export default function Extrait() {
       }}
     >
       <div className={style.header}>
-        <div className={style.codebar}>code a barre here !</div>
-        <div className={style.nomExpediteur}>Mohamed Ali</div>
+        <div className={style.codebar}>
+          <canvas id="mycanvas" />
+        </div>
+        <div className={style.nomExpediteur}>{extrait.nomClient}</div>
       </div>
       <div className={style.zoneLegend}>
         <div className={style.legend}>Bon de livraison n° 20</div>

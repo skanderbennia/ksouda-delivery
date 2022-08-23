@@ -1,8 +1,10 @@
 import { Badge, Button, Dropdown, Menu, Space, Table } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import api from "../../../api";
+import { extraitAtom } from "../../../atoms/extraitAtom";
 import { userAtom } from "../../../atoms/userAtom";
 import Navbar from "../../../components/Navbar/Navbar";
 const menu = (
@@ -21,7 +23,9 @@ const menu = (
 );
 
 const Bordreau = ({ bordereau }) => {
+  const router = useRouter();
   const user = useRecoilValue(userAtom);
+  const [extrait, setExtrait] = useRecoilState(extraitAtom);
   useEffect(() => {
     async function fetchData() {
       const res = await api.get("/bordereau/expediteur/" + user.id);
@@ -135,6 +139,14 @@ const Bordreau = ({ bordereau }) => {
                 color: "white",
                 border: "none",
                 marginLeft: 20,
+              }}
+              onClick={() => {
+                setExtrait({
+                  ...extrait,
+                  nomClient: item.nomClient,
+                  codebar: item.codebar,
+                });
+                router.push("/extrait");
               }}
             >
               Imprimer

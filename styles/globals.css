@@ -16,13 +16,13 @@
   margin: 16px 0 16px 24px;
 }
 .myImage {
-  width: 100px !important;
-  height: 40px !important;
+  width: 300px !important;
+  height: 150px !important;
 
-  max-width: 100px !important;
-  max-height: 40px !important;
-  min-width: 100px !important;
-  min-height: 40px !important;
+  max-width: 300px !important;
+  max-height: 150px !important;
+  min-width: 300px !important;
+  min-height: 150px !important;
 }
 
 .input-container {

@@ -1,12 +1,13 @@
 import "antd/dist/antd.css";
 import $ from "jquery";
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { RecoilRoot } from "recoil";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/font-awesome.css";
 import "../assets/css/templatemo-softy-pinko.css";
 import "../assets/js/popper.js";
-
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -431,6 +432,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
   return (
     <RecoilRoot>
+      <ToastContainer />
       <Component {...pageProps} />
     </RecoilRoot>
   );

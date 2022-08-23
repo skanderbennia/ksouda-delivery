@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
       connectMongo();
       const { email, password } = req.body;
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email, approved: true });
       if (!user) {
         return res.status(400).json({ msg: "Wrong email or password" });
       }
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       }
       // sign token
       const token = signToken(user);
-      res.status(200).json({ token, role: user.role,id:user._id});
+      res.status(200).json({ token, role: user.role, id: user._id });
     } else {
       res.status(405).json({ msg: "Method not allowed" });
     }

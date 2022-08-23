@@ -13,10 +13,18 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tel: {
+    type: String,
+    required: true,
+  },
   role: {
     type: String,
     default: "expediteur",
     enum: ["expediteur", "livreur", "admin"],
+  },
+  approved: {
+    type: Boolean,
+    default: false,
   },
 });
 

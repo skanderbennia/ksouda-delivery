@@ -1,10 +1,10 @@
 import bwipjs from "bwip-js";
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 
-class App extends Component {
+function App() {
   // create state
-  state = {};
-  componentDidMount() {
+  const [image, setImage] = useState(null);
+  useEffect(() => {
     try {
       // The return value is the canvas element
       let canvas = bwipjs.toCanvas("mycanvas", {
@@ -15,20 +15,17 @@ class App extends Component {
         width: 3,
         textxalign: "center", // Always good to set this
       });
-      console.log(canvas);
+      setImage(canvas.toDataURL("image/png"));
     } catch (e) {
       // `e` may be a string or Error object
     }
-  }
-  render() {
-    console.log(this.state.image);
-    return (
-      <div className="App">
-        <div className="App-header"></div>
-        <img src={this.state.image} style={{ marginTop: 50, marginLeft: 40 }} />
-        <canvas id="mycanvas" />
-      </div>
-    );
-  }
+  }, []);
+
+  return (
+    <div className="App">
+      <div className="App-header"></div>
+      <img src={image} style={{ marginTop: 50, marginLeft: 40 }} />
+    </div>
+  );
 }
 export default App;
