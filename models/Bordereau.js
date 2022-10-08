@@ -31,6 +31,7 @@ const BordereauSchema = new mongoose.Schema({
   etat: {
     type: String,
     enum: ["En cours", "Annulé", "Livré"],
+    default: "En cours",
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

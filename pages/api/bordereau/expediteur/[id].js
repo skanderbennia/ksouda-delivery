@@ -9,6 +9,7 @@ export default async function handler(req, res) {
       auth(req, res);
       console.log(req.user);
       const bordereau = await Bordereau.find({ user: req.query.id });
+      console.log(bordereau);
       res.status(200).json(bordereau);
     } catch (error) {
       console.log(error);

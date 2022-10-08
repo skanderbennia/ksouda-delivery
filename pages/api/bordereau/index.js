@@ -6,6 +6,7 @@ export default async function handler(req, res) {
     connectMongo();
     if (req.method === "GET") {
       const list = await Bordereau.find({});
+
       res.status(200).json(list);
     } else if (req.method === "POST") {
       req.body.codebar = Math.floor(Math.random() * 1000000000);

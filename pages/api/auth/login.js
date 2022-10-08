@@ -20,7 +20,9 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
       connectMongo();
       const { email, password } = req.body;
+      console.log(email, password);
       const user = await User.findOne({ email, approved: true });
+      console.log(user);
       if (!user) {
         return res.status(400).json({ msg: "Wrong email or password" });
       }

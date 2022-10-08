@@ -1,4 +1,5 @@
-import { Badge, Button, Dropdown, Menu, Space, Table } from "antd";
+import { Tag, Button, Dropdown, Menu, Space, Table } from "antd";
+import BreadcrumbSeparator from "antd/lib/breadcrumb/BreadcrumbSeparator";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -115,11 +116,27 @@ const Bordreau = ({ bordereau }) => {
       key: "prix_unit",
     },
     {
+      title: "Etat",
+      // dataIndex: "etat",
+      key: "etat",
+      render: (item) => {
+        // console.log(item);
+        switch (item.etat) {
+          case "En cours":
+            return <Tag color="orange">{item.etat}</Tag>;
+
+          case "Annulé":
+            return <Tag color="red">{item.etat}</Tag>;
+
+          case "Livré":
+            return <Tag color="green">{item.etat}</Tag>;
+        }
+      },
+    },
+    {
       title: "Action",
       key: "operation",
       render: (item) => {
-        console.log("item", item);
-
         return (
           <div style={{ display: "flex", flexDirection: "row" }}>
             <button
