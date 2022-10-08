@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../../models/User";
 import connectMongo from "../../../utils/connectMongoDb";
+
 // sign token method
 const signToken = (user) => {
   return jwt.sign(

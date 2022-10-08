@@ -39,11 +39,16 @@ export default function Modal(props) {
       password,
     });
     if (res.status === 200) {
-      console.log(res.data);
       setUser({ id: res.data.id });
       localStorage.setItem("token", res.data.token);
       props.setShowModal(false);
-      router.push("/dashboard");
+      if(res.data.role==="expediteur") {
+        router.push("/dashboard");
+      } else if (res.data.role==="admin"){
+        router.push("/admin");
+      }
+
+      
     }
   };
   return (
