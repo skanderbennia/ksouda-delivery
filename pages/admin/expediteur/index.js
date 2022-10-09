@@ -10,6 +10,7 @@ const Expediteur = ({ expediteurs }) => {
   const [expandedRows,setExpandedRows] = useState([]);
 
 
+
   const expandedRowRender = () => {
     const columns = [
       {
@@ -132,14 +133,21 @@ const Expediteur = ({ expediteurs }) => {
             {!row.approved && 
             <Button
               type="primary"
-              onClick={async () => {
+              onClick={async (e) => {
+                e.preventDefault();
                 await approveUser(row._id);
+
               }}
             >
               Approver
             </Button>}
             {row.approved && 
-            <Button danger style={{ marginLeft: 20 }}>
+            <Button danger
+            onClick={async(e) =>{
+              e.preventDefault();
+              await blockUser(row._id);
+            }}
+            >
               Bloquer
             </Button>}
           </div>
@@ -157,12 +165,40 @@ const Expediteur = ({ expediteurs }) => {
   };
 
   const approveUser = async (id) => {
-    setListExpediteur(listExpediteur.filter((elem) => elem._id != id));
     toast.promise(api.get("/users/approve/" + id), {
       success: "Expediteur approuver",
       error: "Expediteur déja approuver",
       loading: "Lancement de transaction ...",
     });
+
+    setTimeout(async()=>{
+      const res = await fetch("http://localhost:3000/api/users");
+      console.log(res);
+      const list = await res.json();
+      setListExpediteur(list.map((elem) => {
+        return { ...elem, key: elem._id };
+      }));
+    }, 500);
+    
+  };
+
+  const blockUser = async (id) => {
+    await toast.promise(api.get("/users/reject/" + id), {
+      success: "Expediteur bloquee",
+      error: "Expediteur déja non approvee",
+      loading: "Lancement de transaction ...",
+    });
+
+   
+    setTimeout(async()=>{
+      const res = await fetch("http://localhost:3000/api/users");
+      console.log(res);
+      const list = await res.json();
+      setListExpediteur(list.map((elem) => {
+        return { ...elem, key: elem._id };
+      }));
+    }, 500);
+
   };
 
   const handleRowExpand = (record) => {
@@ -179,9 +215,7 @@ const Expediteur = ({ expediteurs }) => {
     <Navbar>
       <Table
         columns={columns}
-        dataSource={listExpediteur.map((elem) => {
-          return { ...elem, key: elem._id };
-        })}
+        dataSource={listExpediteur}
         size="large"
         bordered
         loading={expediteurs === undefined}
@@ -204,12 +238,13 @@ const Expediteur = ({ expediteurs }) => {
 
 export const getServerSideProps = async () => {
   const res = await fetch("http://localhost:3000/api/users");
-  console.log(res);
   const list = await res.json();
 
   return {
     props: {
-      expediteurs: list,
+      expediteurs: list.map((elem) => {
+        return { ...elem, key: elem._id };
+      }),
 
     },
   };
