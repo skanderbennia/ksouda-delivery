@@ -15,7 +15,11 @@ const UserSchema = new mongoose.Schema({
   },
   tel: {
     type: String,
+<<<<<<< HEAD
     // required: true,
+=======
+    required: false,
+>>>>>>> origin/kp-666
   },
   role: {
     type: String,
