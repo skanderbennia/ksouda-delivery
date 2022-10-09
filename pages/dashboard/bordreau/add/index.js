@@ -1,11 +1,14 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import api from "../../../../api";
 import { userAtom } from "../../../../atoms/userAtom";
 import Navbar from "../../../../components/Navbar/Navbar";
+import { ClipLoader } from "react-spinners";
+
 export default function Add() {
+  const [loading, setLoading] = useState(false);
   const user = useRecoilValue(userAtom);
   const {
     register,
@@ -20,9 +23,11 @@ export default function Add() {
     <Navbar>
       <form
         onSubmit={handleSubmit(async (data) => {
+          setLoading(true);
           console.log(data);
           await api.post("/bordereau", { ...data, user: user.id });
           reset();
+          setLoading(false);
           router.push("/dashboard/bordreau");
         })}
       >
@@ -101,11 +106,17 @@ export default function Add() {
           )}
         </div>
 
-        <input
-          type="submit"
-          className="button-submit-bordreau"
-          value={"Ajouter Bordereau"}
-        />
+        {loading ? (
+          <div className="button-submit-bordreau">
+            <ClipLoader loading={loading} size={30} color={"white"} />
+          </div>
+        ) : (
+          <input
+            type="submit"
+            className="button-submit-bordreau"
+            value={"Ajouter Bordereau"}
+          />
+        )}
       </form>
     </Navbar>
   );
