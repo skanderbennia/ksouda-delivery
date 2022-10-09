@@ -8,6 +8,7 @@ import api from "../../../api";
 import { extraitAtom } from "../../../atoms/extraitAtom";
 import { userAtom } from "../../../atoms/userAtom";
 import Navbar from "../../../components/Navbar/Navbar";
+
 const menu = (
   <Menu
     items={[
@@ -162,6 +163,10 @@ const Bordreau = ({ bordereau }) => {
                   ...extrait,
                   nomClient: item.nomClient,
                   codebar: item.codebar,
+                  adresse: item.adresse,
+                  telClient: item.telClient,
+                  prix_unit: item.prix_unit,
+                  quantite: item.quantite,
                 });
                 router.push("/extrait");
               }}
@@ -176,17 +181,18 @@ const Bordreau = ({ bordereau }) => {
 
   return (
     <Navbar>
+      <Link href="/dashboard/bordreau/add">
+        <Button style={{ marginBottom: 50 }}>Ajouter un bordereau</Button>
+      </Link>
       <Table
         columns={columns}
-        expandable={{
-          expandedRowRender,
-          defaultExpandedRowKeys: ["0"],
-        }}
+        pagination={{ pageSize: 6 }}
+        // expandable={{
+        //   expandedRowRender,
+        //   defaultExpandedRowKeys: ["0"],
+        // }}
         dataSource={listBordereau}
       />
-      <Link href="/dashboard/bordreau/add">
-        <Button>Add</Button>
-      </Link>
     </Navbar>
   );
 };

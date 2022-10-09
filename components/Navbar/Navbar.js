@@ -38,6 +38,14 @@ const Navbar = (props) => {
                 router.push("/dashboard/bordreau");
               },
             },
+            {
+              key: "2",
+              label: "Livreur",
+              style: { fontWeight: "bold" },
+              onClick: () => {
+                router.push("/dashboard/bordreau");
+              },
+            },
           ]}
         />
         <Button
