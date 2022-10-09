@@ -15,10 +15,12 @@ export default function Add() {
     formState: { errors },
   } = useForm();
   const router = useRouter();
+  console.log(errors);
   return (
     <Navbar>
       <form
         onSubmit={handleSubmit(async (data) => {
+          console.log(data);
           await api.post("/bordereau", { ...data, user: user.id });
           reset();
           router.push("/dashboard/bordreau");
@@ -32,6 +34,11 @@ export default function Add() {
             name="nomClient"
             {...register("nomClient", { required: true })}
           />
+          {errors.nomClient && errors.nomClient.type === "required" ? (
+            <span className="error">Veuillez remplir le champ nom client</span>
+          ) : (
+            ""
+          )}
         </div>
 
         <div style={{ display: "block" }} className="input-container">
@@ -41,6 +48,11 @@ export default function Add() {
             name="adresse"
             {...register("adresse", { required: true })}
           />
+          {errors.adresse && errors.adresse.type === "required" ? (
+            <span className="error">Veuillez remplir le champ adresse </span>
+          ) : (
+            ""
+          )}
         </div>
 
         <div style={{ display: "block" }} className="input-container">
@@ -48,8 +60,17 @@ export default function Add() {
           <input
             className="input-add-bordreau"
             name="telClient"
-            {...register("telClient", { required: true })}
+            type="tel"
+            defaultValue={"+216"}
+            {...register("telClient", { required: true, minLength: 12 })}
           />
+          {errors.telClient && errors.telClient.type === "minLength" ? (
+            <span className="error">
+              Veuillez remplir le champ telephone client{" "}
+            </span>
+          ) : (
+            ""
+          )}
         </div>
 
         <div style={{ display: "block" }} className="input-container">
@@ -59,6 +80,11 @@ export default function Add() {
             className="input-add-bordreau"
             {...register("quantite", { required: true })}
           />
+          {errors.quantite && errors.quantite.type === "required" ? (
+            <span className="error">Veuillez remplir le champ quantite</span>
+          ) : (
+            ""
+          )}
         </div>
 
         <div style={{ display: "block" }} className="input-container">
@@ -68,6 +94,11 @@ export default function Add() {
             className="input-add-bordreau"
             {...register("prix_unit", { required: true })}
           />
+          {errors.prix_unit && errors.prix_unit.type === "required" ? (
+            <span className="error">Veuillez remplir le champ prix</span>
+          ) : (
+            ""
+          )}
         </div>
 
         <input
