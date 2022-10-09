@@ -6,10 +6,8 @@ import Navbar from "../../../components/Navbar/Navbar";
 
 const Expediteur = ({ expediteurs }) => {
   const [listExpediteur, setListExpediteur] = useState(expediteurs);
-  const [bordereau,setBordereau] = useState([]);
-  const [expandedRows,setExpandedRows] = useState([]);
-
-
+  const [bordereau, setBordereau] = useState([]);
+  const [expandedRows, setExpandedRows] = useState([]);
 
   const expandedRowRender = () => {
     const columns = [
@@ -43,7 +41,7 @@ const Expediteur = ({ expediteurs }) => {
         key: "operation",
         render: (item) => {
           console.log("item", item);
-  
+
           return (
             <div style={{ display: "flex", flexDirection: "row" }}>
               <button
@@ -91,12 +89,15 @@ const Expediteur = ({ expediteurs }) => {
       });
     }
 
-
     return (
-      <Table columns={columns} dataSource={bordereau} pagination={false} />
+      <Table
+        columns={columns}
+        dataSource={bordereau}
+        pagination={{ pageSize: 3 }}
+      />
     );
   };
-  
+
   const columns = [
     {
       title: "Nom Expediteur",
@@ -113,12 +114,12 @@ const Expediteur = ({ expediteurs }) => {
       title: "Status",
       key: "state",
       render: (row) => {
-        return (row.approved?
-          <Tag color="green">Approved</Tag>
-          :
-          <Tag color="yellow">Waiting Approval</Tag>
-
-        );}
+        return row.approved ? (
+          <Tag color="green">Approuvé</Tag>
+        ) : (
+          <Tag color="yellow">En Attente</Tag>
+        );
+      },
     },
     {
       title: "Action",
@@ -130,34 +131,38 @@ const Expediteur = ({ expediteurs }) => {
               flexDirection: "row",
             }}
           >
-            {!row.approved && 
-            <Button
-              type="primary"
-              onClick={async (e) => {
-                e.preventDefault();
-                await approveUser(row._id);
-
-              }}
-            >
-              Approver
-            </Button>}
-            {row.approved && 
-            <Button danger
-            onClick={async(e) =>{
-              e.preventDefault();
-              await blockUser(row._id);
-            }}
-            >
-              Bloquer
-            </Button>}
+            {!row.approved && (
+              <Button
+                type="primary"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await approveUser(row._id);
+                }}
+              >
+                Approver
+              </Button>
+            )}
+            {row.approved && (
+              <Button
+                danger
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await blockUser(row._id);
+                }}
+              >
+                Bloquer
+              </Button>
+            )}
           </div>
         );
       },
     },
   ];
-  
+
   const fetchBordereau = async (id) => {
-    const res = await fetch(`http://localhost:3000/api/bordereau/expediteur/${id}`);
+    const res = await fetch(
+      `http://localhost:3000/api/bordereau/expediteur/${id}`
+    );
     console.log(res);
     const list = await res.json();
 
@@ -171,15 +176,16 @@ const Expediteur = ({ expediteurs }) => {
       loading: "Lancement de transaction ...",
     });
 
-    setTimeout(async()=>{
+    setTimeout(async () => {
       const res = await fetch("http://localhost:3000/api/users");
       console.log(res);
       const list = await res.json();
-      setListExpediteur(list.map((elem) => {
-        return { ...elem, key: elem._id };
-      }));
+      setListExpediteur(
+        list.map((elem) => {
+          return { ...elem, key: elem._id };
+        })
+      );
     }, 500);
-    
   };
 
   const blockUser = async (id) => {
@@ -189,27 +195,27 @@ const Expediteur = ({ expediteurs }) => {
       loading: "Lancement de transaction ...",
     });
 
-   
-    setTimeout(async()=>{
+    setTimeout(async () => {
       const res = await fetch("http://localhost:3000/api/users");
       console.log(res);
       const list = await res.json();
-      setListExpediteur(list.map((elem) => {
-        return { ...elem, key: elem._id };
-      }));
+      setListExpediteur(
+        list.map((elem) => {
+          return { ...elem, key: elem._id };
+        })
+      );
     }, 500);
-
   };
 
   const handleRowExpand = (record) => {
     // if a row is expanded, collapses it, otherwise expands it
-    if(expandedRows.includes(record.key)) {
-            const row = expandedRows.filter(key => key !== record.key);
-            setExpandedRows(row);
-          }
-        else { setExpandedRows([record.key]) }
-    
-  }
+    if (expandedRows.includes(record.key)) {
+      const row = expandedRows.filter((key) => key !== record.key);
+      setExpandedRows(row);
+    } else {
+      setExpandedRows([record.key]);
+    }
+  };
 
   return (
     <Navbar>
@@ -218,19 +224,18 @@ const Expediteur = ({ expediteurs }) => {
         dataSource={listExpediteur}
         size="large"
         bordered
+        pagination={{ pageSize: 4 }}
         loading={expediteurs === undefined}
         expandable={{
           expandedRowRender,
           defaultExpandedRowKeys: ["0"],
         }}
-        onExpand={(expande,record)=>{
-           fetchBordereau(record._id);
-           handleRowExpand(record);
+        onExpand={(expande, record) => {
+          fetchBordereau(record._id);
+          handleRowExpand(record);
         }}
-
         // tell the 'Table' component which rows are expanded
         expandedRowKeys={expandedRows}
-
       />
     </Navbar>
   );
@@ -245,9 +250,7 @@ export const getServerSideProps = async () => {
       expediteurs: list.map((elem) => {
         return { ...elem, key: elem._id };
       }),
-
     },
   };
-
 };
 export default Expediteur;
