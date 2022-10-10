@@ -39,16 +39,14 @@ export default function Modal(props) {
       password,
     });
     if (res.status === 200) {
-      setUser({ id: res.data.id });
+      setUser({ id: res.data.id, role: res.data.role });
       localStorage.setItem("token", res.data.token);
       props.setShowModal(false);
-      if(res.data.role==="expediteur") {
+      if (res.data.role === "expediteur") {
         router.push("/dashboard");
-      } else if (res.data.role==="admin"){
-        router.push("/admin");
+      } else if (res.data.role === "admin") {
+        router.push("/admin/expediteur");
       }
-
-      
     }
   };
   return (
