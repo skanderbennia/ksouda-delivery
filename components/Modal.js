@@ -36,6 +36,7 @@ export default function Modal(props) {
     });
   };
   const handleLogin = async (email, password) => {
+
     try {
       const res = await api.post("/auth/login", {
         email,
@@ -49,7 +50,9 @@ export default function Modal(props) {
           router.push("/dashboard");
         } else if (res.data.role === "admin") {
           router.push("/admin/");
-        }
+        }else if (res.data.role==="livreur"){
+        router.push("/livreur");
+      }
       }
     } catch (err) {
       console.log(err);
