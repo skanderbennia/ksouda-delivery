@@ -22,16 +22,25 @@ export default async function handler(req, res) {
       connectMongo();
       const { email, password } = req.body;
       console.log(email, password);
-      const user = await User.findOne({ email, approved: true });
+      const user = await User.findOne({ email });
       console.log(user);
       if (!user) {
-        return res.status(400).json({ msg: "Wrong email or password" });
+        return res
+          .status(400)
+          .json({ msg: "email ou mot de passe sont incorrects" });
       }
       // verify password
       console.log(password, user.password);
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).json({ msg: "Wrong email or password" });
+        return res
+          .status(400)
+          .json({ msg: "email ou mot de passe sont incorrects" });
+      }
+      if (!user.approved) {
+        return res
+          .status(400)
+          .json({ msg: "utilisateur n'est pas encore activé" });
       }
       // sign token
       const token = signToken(user);
