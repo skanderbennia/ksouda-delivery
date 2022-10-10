@@ -1548,7 +1548,16 @@ contact
 }
 .modal-content {
   width: 800px;
-  height: 420px;
+  height: 500px;
+  background-color: #fff;
+  border-radius: 20px;
+  position: absolute;
+  animation: topToBottom 0.3s;
+  animation-fill-mode: both;
+}
+.modal-content-min {
+  width: 800px;
+  height: 350px;
   background-color: #fff;
   border-radius: 20px;
   position: absolute;

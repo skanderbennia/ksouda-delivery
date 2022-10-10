@@ -6,5 +6,6 @@ export const userAtom = atom({
   key: "userAtom",
   default: {
     id: null,
+    role: "expediteur",
   },
 });
