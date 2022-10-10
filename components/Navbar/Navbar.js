@@ -25,15 +25,17 @@ const Navbar = (props) => {
       label: "Dashboard",
       style: { fontWeight: "bold" },
       onClick: () => {
-        router.push("/dashboard/bordreau");
+        router.push("/admin");
       },
     },
     {
       key: "2",
       label: "Bordereau",
-      style: { fontWeight: "bold" },
+      style: {
+        fontWeight: "bold",
+      },
       onClick: () => {
-        router.push("/dashboard/bordreau");
+        router.push("/admin/expediteur");
       },
     },
     {
@@ -41,7 +43,7 @@ const Navbar = (props) => {
       label: "Livreur",
       style: { fontWeight: "bold" },
       onClick: () => {
-        router.push("/dashboard/bordreau");
+        router.push("/dashboard/");
       },
     },
   ];
