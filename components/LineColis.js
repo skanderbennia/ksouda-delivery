@@ -30,7 +30,7 @@ export default function LineColis() {
       <button onClick={randomizeData}>Randomize Data</button>
       <br />
       <br />
-      <ResizableBox>
+      <ResizableBox width={1400}>
         <Chart
           options={{
             data,

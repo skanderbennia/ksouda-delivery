@@ -122,7 +122,7 @@ export default function LivreurBar() {
     <>
       <br />
       <br />
-      <ResizableBox>
+      <ResizableBox width={1400}>
         <Chart
           options={{
             data,
