@@ -46,7 +46,10 @@ export default function Modal(props) {
         router.push("/dashboard");
       } else if (res.data.role==="admin"){
         router.push("/admin");
+      } else if (res.data.role==="livreur"){
+        router.push("/livreur");
       }
+
 
       
     }
