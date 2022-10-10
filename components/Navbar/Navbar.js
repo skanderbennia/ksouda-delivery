@@ -43,7 +43,7 @@ const Navbar = (props) => {
               label: "Livreur",
               style: { fontWeight: "bold" },
               onClick: () => {
-                router.push("/dashboard/bordreau");
+                router.push("/admin/livreur");
               },
             },
           ]}
