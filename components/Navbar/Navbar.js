@@ -43,7 +43,7 @@ const Navbar = (props) => {
       label: "Livreur",
       style: { fontWeight: "bold" },
       onClick: () => {
-        router.push("/dashboard/");
+        router.push("/admin/livreur");
       },
     },
   ];
@@ -70,7 +70,9 @@ const Navbar = (props) => {
           style={{ background: "white", width: "100%" }}
           mode="horizontal"
           defaultSelectedKeys={["0"]}
+
           items={user.role === "admin" ? adminRoute : expediteurRoute}
+
         />
         <Button
           type="default"
