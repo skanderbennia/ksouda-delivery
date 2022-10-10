@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import api from "../api";
 import { userAtom } from "../atoms/userAtom";
+import { toast, ToastContainer } from "react-toastify";
 export default function Modal(props) {
   const setUser = useSetRecoilState(userAtom);
   const router = useRouter();
@@ -26,34 +27,40 @@ export default function Modal(props) {
       document.body.style.overflow = "auto";
     }
   }, [props.showModal]);
-  const handleCreateAccount = async (name, email, password) => {
+  const handleCreateAccount = async (name, email, password, telClient) => {
     await api.post("/auth/register", {
       name,
       email,
       password,
+      telClient,
     });
   };
   const handleLogin = async (email, password) => {
-    const res = await api.post("/auth/login", {
-      email,
-      password,
-    });
-    if (res.status === 200) {
-      setUser({ id: res.data.id, role: res.data.role });
-      localStorage.setItem("token", res.data.token);
-      props.setShowModal(false);
-      if (res.data.role === "expediteur") {
-        router.push("/dashboard");
-      } else if (res.data.role === "admin") {
-        router.push("/admin/expediteur");
+    try {
+      const res = await api.post("/auth/login", {
+        email,
+        password,
+      });
+      if (res.status === 200) {
+        setUser({ id: res.data.id, role: res.data.role });
+        localStorage.setItem("token", res.data.token);
+        props.setShowModal(false);
+        if (res.data.role === "expediteur") {
+          router.push("/dashboard");
+        } else if (res.data.role === "admin") {
+          router.push("/admin/");
+        }
       }
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.msg);
     }
   };
   return (
     <div>
       {!showRegister ? (
         <div className={`modal ${props.showModal && "show"}`}>
-          <div className="modal-content" ref={modalRef}>
+          <div className="modal-content-min" ref={modalRef}>
             <div
               className="modal-header"
               style={{ paddingLeft: "40px", paddingRight: "40px" }}
@@ -143,7 +150,8 @@ export default function Modal(props) {
                   const name = e.target.elements.name.value;
                   const email = e.target.elements.email.value;
                   const password = e.target.elements.password.value;
-                  await handleCreateAccount(name, email, password);
+                  const telClient = e.target.elements.telClient.value;
+                  await handleCreateAccount(name, email, password, telClient);
                   // props.setShowModal(false);
                   setShowRegister(false);
                 }}
@@ -155,6 +163,14 @@ export default function Modal(props) {
                     className="form-control"
                     aria-describedby="emailHelp"
                     placeholder="Name"
+                  />
+                  <input
+                    type="tel"
+                    name="telClient"
+                    defaultValue={"+216"}
+                    className="form-control"
+                    aria-describedby="emailHelp"
+                    placeholder="Telephone"
                   />
                   <input
                     name="email"
