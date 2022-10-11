@@ -1,13 +1,19 @@
 import { Button, Table, Tag } from "antd";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { extraitAtom } from "../../../atoms/extraitAtom";
 import api from "../../../api";
 import Navbar from "../../../components/Navbar/Navbar";
 
 const Expediteur = ({ expediteurs }) => {
+  const router = useRouter();
   const [listExpediteur, setListExpediteur] = useState(expediteurs);
   const [bordereau, setBordereau] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
+  const [extrait, setExtrait] = useRecoilState(extraitAtom);
+
 
   const expandedRowRender = () => {
     const columns = [
@@ -65,8 +71,8 @@ const Expediteur = ({ expediteurs }) => {
                 onClick={() => {
                   setExtrait({
                     ...extrait,
-                    nomClient: item.nomClient,
-                    codebar: item.codebar,
+                    ...item
+
                   });
                   router.push("/extrait");
                 }}
