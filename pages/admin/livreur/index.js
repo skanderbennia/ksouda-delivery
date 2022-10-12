@@ -1,5 +1,6 @@
 import { Button, Table, Tag } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import $ from "jquery";
 import { toast } from "react-toastify";
 import api from "../../../api";
 import Navbar from "../../../components/Navbar/Navbar";
@@ -7,8 +8,98 @@ import Link from "next/link";
 
 const Livreur = ({ livreurs }) => {
   const [listLivreur, setListLivreur] = useState(livreurs);
+  const [missions, setMissions] = useState(['test','tt',45,22]);
+  const [bordereau, setBordereau] = useState([]);
+
+  const [expandedRows, setExpandedRows] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
 
+  const modalRef = useRef();
+  useEffect(() => {
+    console.log("Modal useEffect");
+    if (document && showModal) {
+      // block scroll
+      var body = $("html, body");
+      body.stop().animate({ scrollTop: 0 }, 500, "swing", function () {
+        document.body.style.overflow = "hidden";
+      });
+
+      //   scroll to top
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showModal]);
+
+
+  const expandedRowRender = () => {
+    const columns = [
+      {
+        title: "Mission #",
+        dataIndex: "nomClient",
+        key: "nomClient",
+      },
+      {
+        title: "Liste des bordereaux ",
+        render: (row) => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+                <Button
+                  type="primary"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    
+                  }}
+                >
+                  Afficher 
+                </Button>
+            </div>
+          );
+        },
+      },
+      
+      {
+        title: "Nombre des bordereaux ",
+        dataIndex: "adresse",
+        key: "adresse",
+      },
+      {
+        title: "Prix totale de Mission",
+        dataIndex: "telClient",
+        key: "telClient",
+      },
+
+    ];
+    const data = [];
+
+    for (let i = 0; i < 3; ++i) {
+      data.push({
+        key: i.toString(),
+        date: "2014-12-24 23:12:00",
+        name: "This is production name",
+        upgradeNum: "Upgraded: 56",
+      });
+    }
+
+    return (
+      <>
+        <div className="mission-title"><h5>Missions</h5> <span onClick={()=>{
+          fetchBordereau();
+          setShowModal(true);
+          }}>&#43;</span> </div>
+        <Table
+          columns={columns}
+          dataSource={missions}
+          pagination={{ pageSize: 3 }}
+        />
+      </>
+    );
+  };
 
 
   const columns = [
@@ -72,6 +163,15 @@ const Livreur = ({ livreurs }) => {
     },
   ];
 
+  const fetchBordereau = async (id) => {
+    const res = await fetch(
+      `http://localhost:3000/api/bordereau/`
+    );
+    console.log(res);
+    const list = await res.json();
+
+    setBordereau(list);
+  }; 
 
   const approveUser = async (id) => {
     toast.promise(api.get("/users/approve/" + id), {
@@ -109,6 +209,26 @@ const Livreur = ({ livreurs }) => {
         })
       );
     }, 500);
+  };  
+  
+  const handleRowExpand = (record) => {
+    // if a row is expanded, collapses it, otherwise expands it
+    if (expandedRows.includes(record.key)) {
+      const row = expandedRows.filter((key) => key !== record.key);
+      setExpandedRows(row);
+    } else {
+      setExpandedRows([record.key]);
+    }
+  };
+
+  const fetchMissions = async (id) => {
+    /*const res = await fetch(
+      `http://localhost:3000/api/livreur/missions/${id}`
+    );
+    console.log(res);
+    const list = await res.json();
+
+    setMissions(list);*/
   };
 
 
@@ -122,10 +242,74 @@ const Livreur = ({ livreurs }) => {
         dataSource={listLivreur}
         size="large"
         bordered
-        pagination={{ pageSize: 4 }}
+        pagination={{ pageSize: 5 }}
         loading={livreurs === undefined}
+        expandable={{
+          expandedRowRender,
+          defaultExpandedRowKeys: ["0"],
+          rowExpandable: (record) => record.approved ,
+        }}
+        onExpand={(expande, record) => {
+          fetchMissions(record._id);
+          handleRowExpand(record);
+        }}
+        expandedRowKeys={expandedRows}
 
       />
+      {showModal && 
+            <div>
+            <div className={`modal ${showModal && "show"}`}>
+              <div className="modal-content-min modal-c" ref={modalRef}>
+                <div
+                  className="modal-header"
+                  style={{ paddingLeft: "40px", paddingRight: "40px" }}
+                >
+                  <h5 className="modal-title">Login</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => {
+                      setShowModal(false);
+                    }}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form
+                  
+                  >
+                    <div className="form-group">
+                      <select
+                        className="form-control select-bordereau"
+                        id="exampleInputEmail1"
+                        aria-describedby="Selectionner les Bordereau"
+                        multiple
+                      >
+                          {bordereau.map((elem) => {
+                            return ( <>
+                                      <option value={elem}>[{elem.adresse}] {elem.nomClient}</option>
+                                    </> );
+                          })
+                           }
+                      </select>
+                    </div>
+                    <div                   
+                    style={{ display: "flex", justifyContent: "flex-end" }}>
+                      <button
+                        type="submit"
+                        className="save-login"
+                      >
+                        Add Mission
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      }
     </Navbar>
   );
 };
