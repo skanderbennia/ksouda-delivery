@@ -8,17 +8,18 @@ import Link from "next/link";
 
 const Livreur = ({ livreurs }) => {
   const [listLivreur, setListLivreur] = useState(livreurs);
-  const [missions, setMissions] = useState(['test','tt',45,22]);
+  const [missions, setMissions] = useState([{bordereauList:[{quantite:5,prix_unit:50},{quantite:2,prix_unit:4},{quantite:1,prix_unit:200}]},{bordereauList:[{quantite:20,prix_unit:7},{quantite:4,prix_unit:65},{quantite:4,prix_unit:1},{quantite:1,prix_unit:10},{quantite:2,prix_unit:300}]}]);
   const [bordereau, setBordereau] = useState([]);
 
   const [expandedRows, setExpandedRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showListModal, setShowListModal] = useState(false);
 
 
   const modalRef = useRef();
   useEffect(() => {
     console.log("Modal useEffect");
-    if (document && showModal) {
+    if ((document && showModal) || (document && showListModal)) {
       // block scroll
       var body = $("html, body");
       body.stop().animate({ scrollTop: 0 }, 500, "swing", function () {
@@ -29,16 +30,20 @@ const Livreur = ({ livreurs }) => {
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [showModal]);
-
+  }, [showModal,showListModal]);
 
   const expandedRowRender = () => {
     const columns = [
       {
-        title: "Mission #",
-        dataIndex: "nomClient",
-        key: "nomClient",
-      },
+        title: 'Mission #',
+        dataIndex: 'id',
+        key: 'id',
+        sorter: (a, b) => a.id - b.id,
+        render: (id, record, index) => { ++index; return index; },
+        showSorterTooltip: false,
+        
+        
+    },
       {
         title: "Liste des bordereaux ",
         render: (row) => {
@@ -53,7 +58,7 @@ const Livreur = ({ livreurs }) => {
                   type="primary"
                   onClick={async (e) => {
                     e.preventDefault();
-                    
+                    setShowListModal(true);
                   }}
                 >
                   Afficher 
@@ -65,18 +70,29 @@ const Livreur = ({ livreurs }) => {
       
       {
         title: "Nombre des bordereaux ",
-        dataIndex: "adresse",
-        key: "adresse",
+        key: 'nbr-bordereaux',
+        render: (row) => {
+          return (
+            <span>
+            {row.bordereauList.length}
+            </span>
+          );
+        },
       },
       {
         title: "Prix totale de Mission",
-        dataIndex: "telClient",
-        key: "telClient",
+        key: 'prix-mission',
+        render: (row) => {
+          return (
+            <span>
+            {row.bordereauList.reduce((total, item) => (item.quantite*item.prix_unit) + total, 0)}
+            </span>
+          );
+        },
       },
 
     ];
     const data = [];
-
     for (let i = 0; i < 3; ++i) {
       data.push({
         key: i.toString(),
@@ -95,7 +111,7 @@ const Livreur = ({ livreurs }) => {
         <Table
           columns={columns}
           dataSource={missions}
-          pagination={{ pageSize: 3 }}
+          pagination={{ pageSize: 5 }}
         />
       </>
     );
@@ -264,7 +280,7 @@ const Livreur = ({ livreurs }) => {
                   className="modal-header"
                   style={{ paddingLeft: "40px", paddingRight: "40px" }}
                 >
-                  <h5 className="modal-title">Login</h5>
+                  <h5 className="modal-title">Liste des bordereaux</h5>
                   <button
                     type="button"
                     className="close"
@@ -302,6 +318,51 @@ const Livreur = ({ livreurs }) => {
                       >
                         Add Mission
                       </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      }
+      {showListModal && 
+            <div>
+            <div className={`modal ${showListModal && "show"}`}>
+              <div className="modal-content-min modal-c" ref={modalRef}>
+                <div
+                  className="modal-header"
+                  style={{ paddingLeft: "40px", paddingRight: "40px" }}
+                >
+                  <h5 className="modal-title">Liste des bordereaux</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => {
+                      setShowListModal(false);
+                    }}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form
+                  
+                  >
+                    <div className="form-group">
+                      <select
+                        className="form-control select-bordereau"
+                        id="exampleInputEmail1"
+                        aria-describedby="Selectionner les Bordereau"
+                        multiple
+                      >
+                          {bordereau.map((elem) => {
+                            return ( <>
+                                      <option value={elem}>[{elem.adresse}] {elem.nomClient}</option>
+                                    </> );
+                          })
+                           }
+                      </select>
                     </div>
                   </form>
                 </div>
