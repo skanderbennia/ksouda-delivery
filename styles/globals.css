@@ -83,8 +83,11 @@ body {
 }
 .modal-c{
   height: 500px;
+  overflow: scroll;
+
 }
 .modal-c .select-bordereau{
   height: 35vh !important ;
 
 }
+

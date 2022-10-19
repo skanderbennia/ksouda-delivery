@@ -3,20 +3,29 @@ import React, { useState, useEffect, useRef } from "react";
 import $ from "jquery";
 import { toast } from "react-toastify";
 import api from "../../../api";
+import { useForm } from "react-hook-form";
 import Navbar from "../../../components/Navbar/Navbar";
 import Link from "next/link";
 
 const Livreur = ({ livreurs }) => {
   const [listLivreur, setListLivreur] = useState(livreurs);
-  const [missions, setMissions] = useState([{bordereauList:[{quantite:5,prix_unit:50},{quantite:2,prix_unit:4},{quantite:1,prix_unit:200}]},{bordereauList:[{quantite:20,prix_unit:7},{quantite:4,prix_unit:65},{quantite:4,prix_unit:1},{quantite:1,prix_unit:10},{quantite:2,prix_unit:300}]}]);
+  const [missions, setMissions] = useState([]);
+  const [mission, setMission] = useState([]);
   const [bordereau, setBordereau] = useState([]);
+  /*const [selectedBordereau, setSelectedBordereau] = useState([]);*/
+
+
+  const [livreurID, setLivreurID]=useState([]);
 
   const [expandedRows, setExpandedRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
 
+  const { register, handleSubmit, errors } = useForm();
+
 
   const modalRef = useRef();
+
   useEffect(() => {
     console.log("Modal useEffect");
     if ((document && showModal) || (document && showListModal)) {
@@ -58,6 +67,7 @@ const Livreur = ({ livreurs }) => {
                   type="primary"
                   onClick={async (e) => {
                     e.preventDefault();
+                    setMission(missions.filter((m) => { return (m._id === row._id)})[0]);
                     setShowListModal(true);
                   }}
                 >
@@ -92,6 +102,7 @@ const Livreur = ({ livreurs }) => {
       },
 
     ];
+
     const data = [];
     for (let i = 0; i < 3; ++i) {
       data.push({
@@ -179,6 +190,24 @@ const Livreur = ({ livreurs }) => {
     },
   ];
 
+  const handleAddMission = async (livreurId, bordereauList) => {
+    try {
+      const res = await api.post("/mission/", {
+        livreurId,
+        bordereauList,
+      });
+
+      if (res.status === 200) {
+        fetchMissions(livreurId);
+        setShowModal(false);
+      }
+
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.msg);
+    }
+  };
+
   const fetchBordereau = async (id) => {
     const res = await fetch(
       `http://localhost:3000/api/bordereau/`
@@ -188,6 +217,16 @@ const Livreur = ({ livreurs }) => {
 
     setBordereau(list);
   }; 
+
+  /*const fetchMission = async (id) => {
+    const res = await fetch(
+      `http://localhost:3000/api/mission/${id}`
+    );
+    console.log(res);
+    const list = await res.json();
+
+    setMission(list);
+  }; */
 
   const approveUser = async (id) => {
     toast.promise(api.get("/users/approve/" + id), {
@@ -238,14 +277,43 @@ const Livreur = ({ livreurs }) => {
   };
 
   const fetchMissions = async (id) => {
-    /*const res = await fetch(
-      `http://localhost:3000/api/livreur/missions/${id}`
+    const res = await fetch(
+      `http://localhost:3000/api/mission/livreur/${id}`
     );
     console.log(res);
     const list = await res.json();
 
-    setMissions(list);*/
+    setMissions(list);
   };
+
+
+  const viewcolumns = [
+    {
+      title: "Nom de client",
+      dataIndex: "nomClient",
+      key: "nomClient",
+    },
+    {
+      title: "Adresse",
+      dataIndex: "adresse",
+      key: "adresse",
+    },
+    {
+      title: "Telephone Client",
+      dataIndex: "telClient",
+      key: "telClient",
+    },
+    {
+      title: "Quantité",
+      dataIndex: "quantite",
+      key: "quantite",
+    },
+    {
+      title: "Prix",
+      dataIndex: "prix_unit",
+      key: "prix_unit",
+    },
+  ];
 
 
   return (
@@ -268,6 +336,7 @@ const Livreur = ({ livreurs }) => {
         onExpand={(expande, record) => {
           fetchMissions(record._id);
           handleRowExpand(record);
+          setLivreurID(record._id);
         }}
         expandedRowKeys={expandedRows}
 
@@ -285,7 +354,7 @@ const Livreur = ({ livreurs }) => {
                     type="button"
                     className="close"
                     onClick={() => {
-                      setShowModal(false);
+                      setShowModal();
                     }}
                   >
                     <span aria-hidden="true">&times;</span>
@@ -293,18 +362,26 @@ const Livreur = ({ livreurs }) => {
                 </div>
                 <div className="modal-body">
                   <form
-                  
+                  onSubmit={handleSubmit(async (data) => {
+                    let list = [];
+                    for (let i = 0; i < data.bordereauList.length; i++) {
+                      list.push(JSON.parse(data.bordereauList[i]));
+                    } 
+                    handleAddMission(livreurID, list);
+                })}
                   >
                     <div className="form-group">
                       <select
                         className="form-control select-bordereau"
                         id="exampleInputEmail1"
                         aria-describedby="Selectionner les Bordereau"
+                        /*onChange={data => {console.log(data.target.selectedOptions);setSelectedBordereau(data)}}*/
+                        {...register("bordereauList", { required: true })}
                         multiple
                       >
                           {bordereau.map((elem) => {
                             return ( <>
-                                      <option value={elem}>[{elem.adresse}] {elem.nomClient}</option>
+                                      <option value={JSON.stringify(elem)}>[{elem.adresse}] {elem.nomClient}</option>
                                     </> );
                           })
                            }
@@ -350,19 +427,12 @@ const Livreur = ({ livreurs }) => {
                   
                   >
                     <div className="form-group">
-                      <select
-                        className="form-control select-bordereau"
-                        id="exampleInputEmail1"
-                        aria-describedby="Selectionner les Bordereau"
-                        multiple
-                      >
-                          {bordereau.map((elem) => {
-                            return ( <>
-                                      <option value={elem}>[{elem.adresse}] {elem.nomClient}</option>
-                                    </> );
-                          })
-                           }
-                      </select>
+                      <Table
+                        columns={viewcolumns}
+                        dataSource={mission.bordereauList}
+                        pagination={false}
+                        
+                      />
                     </div>
                   </form>
                 </div>

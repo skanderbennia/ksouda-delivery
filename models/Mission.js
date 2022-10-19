@@ -9,6 +9,11 @@ const MissionSchema = mongoose.Schema({
     type: Array,
     default: [],
   },
+  etat: {
+    type: String,
+    enum: ["En cours", "Terminee"],
+    default: "En cours",
+  }
   
 });
 export default mongoose.models.Mission ||

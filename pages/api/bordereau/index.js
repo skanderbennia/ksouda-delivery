@@ -1,6 +1,5 @@
 import Bordereau from "../../../models/Bordereau";
 import connectMongo from "../../../utils/connectMongoDb";
-import Bordreau from "../../dashboard/bordreau";
 export default async function handler(req, res) {
   try {
     connectMongo();
