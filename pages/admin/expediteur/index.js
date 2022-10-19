@@ -48,8 +48,8 @@ const Expediteur = ({ expediteurs }) => {
                 style={{ background: "red", color: "white", border: "none" }}
                 onClick={async () => {
                   await api.delete("/bordereau/" + item._id);
-                  setListBordereau(
-                    listBordereau.filter((elem) => elem._id != item._id)
+                  setBordereau(
+                    bordereau.filter((elem) => elem._id != item._id)
                   );
                 }}
               >
