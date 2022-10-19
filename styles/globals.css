@@ -58,3 +58,36 @@ body {
 .error {
   color: red;
 }
+
+.mission-title{
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid lightgray;
+  padding: 5px;
+  align-items: center;
+}
+.mission-title span{
+  padding: 0 10px;
+  font-size: 20px;
+  margin: 0 10px ;
+  color: white;
+  background-color: #1890ff;
+  border: 1px solid #1890ff;
+  border-radius: 40%;
+  cursor: pointer;
+}
+.mission-title span:hover{
+  background-color: unset;
+  color:   #1890ff;
+  user-select: none;
+}
+.modal-c{
+  height: 500px;
+  overflow: scroll;
+
+}
+.modal-c .select-bordereau{
+  height: 35vh !important ;
+
+}
+

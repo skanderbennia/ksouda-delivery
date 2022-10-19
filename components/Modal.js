@@ -27,6 +27,7 @@ export default function Modal(props) {
       document.body.style.overflow = "auto";
     }
   }, [props.showModal]);
+
   const handleCreateAccount = async (name, email, password, telClient) => {
     await api.post("/auth/register", {
       name,
@@ -35,8 +36,8 @@ export default function Modal(props) {
       telClient,
     });
   };
-  const handleLogin = async (email, password) => {
 
+  const handleLogin = async (email, password) => {
     try {
       const res = await api.post("/auth/login", {
         email,
@@ -59,6 +60,7 @@ export default function Modal(props) {
       toast.error(err.response.data.msg);
     }
   };
+  
   return (
     <div>
       {!showRegister ? (

@@ -1,14 +1,132 @@
 import { Button, Table, Tag } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import $ from "jquery";
 import { toast } from "react-toastify";
 import api from "../../../api";
+import { useForm } from "react-hook-form";
 import Navbar from "../../../components/Navbar/Navbar";
 import Link from "next/link";
 
 const Livreur = ({ livreurs }) => {
   const [listLivreur, setListLivreur] = useState(livreurs);
+  const [missions, setMissions] = useState([]);
+  const [mission, setMission] = useState([]);
+  const [bordereau, setBordereau] = useState([]);
+  /*const [selectedBordereau, setSelectedBordereau] = useState([]);*/
 
 
+  const [livreurID, setLivreurID]=useState([]);
+
+  const [expandedRows, setExpandedRows] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [showListModal, setShowListModal] = useState(false);
+
+  const { register, handleSubmit, errors } = useForm();
+
+
+  const modalRef = useRef();
+
+  useEffect(() => {
+    console.log("Modal useEffect");
+    if ((document && showModal) || (document && showListModal)) {
+      // block scroll
+      var body = $("html, body");
+      body.stop().animate({ scrollTop: 0 }, 500, "swing", function () {
+        document.body.style.overflow = "hidden";
+      });
+
+      //   scroll to top
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showModal,showListModal]);
+
+  const expandedRowRender = () => {
+    const columns = [
+      {
+        title: 'Mission #',
+        dataIndex: 'id',
+        key: 'id',
+        sorter: (a, b) => a.id - b.id,
+        render: (id, record, index) => { ++index; return index; },
+        showSorterTooltip: false,
+        
+        
+    },
+      {
+        title: "Liste des bordereaux ",
+        render: (row) => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+                <Button
+                  type="primary"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    setMission(missions.filter((m) => { return (m._id === row._id)})[0]);
+                    setShowListModal(true);
+                  }}
+                >
+                  Afficher 
+                </Button>
+            </div>
+          );
+        },
+      },
+      
+      {
+        title: "Nombre des bordereaux ",
+        key: 'nbr-bordereaux',
+        render: (row) => {
+          return (
+            <span>
+            {row.bordereauList.length}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Prix totale de Mission",
+        key: 'prix-mission',
+        render: (row) => {
+          return (
+            <span>
+            {row.bordereauList.reduce((total, item) => (item.quantite*item.prix_unit) + total, 0)}
+            </span>
+          );
+        },
+      },
+
+    ];
+
+    const data = [];
+    for (let i = 0; i < 3; ++i) {
+      data.push({
+        key: i.toString(),
+        date: "2014-12-24 23:12:00",
+        name: "This is production name",
+        upgradeNum: "Upgraded: 56",
+      });
+    }
+
+    return (
+      <>
+        <div className="mission-title"><h5>Missions</h5> <span onClick={()=>{
+          fetchBordereau();
+          setShowModal(true);
+          }}>&#43;</span> </div>
+        <Table
+          columns={columns}
+          dataSource={missions}
+          pagination={{ pageSize: 5 }}
+        />
+      </>
+    );
+  };
 
 
   const columns = [
@@ -72,6 +190,43 @@ const Livreur = ({ livreurs }) => {
     },
   ];
 
+  const handleAddMission = async (livreurId, bordereauList) => {
+    try {
+      const res = await api.post("/mission/", {
+        livreurId,
+        bordereauList,
+      });
+
+      if (res.status === 200) {
+        fetchMissions(livreurId);
+        setShowModal(false);
+      }
+
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.msg);
+    }
+  };
+
+  const fetchBordereau = async (id) => {
+    const res = await fetch(
+      `http://localhost:3000/api/bordereau/`
+    );
+    console.log(res);
+    const list = await res.json();
+
+    setBordereau(list);
+  }; 
+
+  /*const fetchMission = async (id) => {
+    const res = await fetch(
+      `http://localhost:3000/api/mission/${id}`
+    );
+    console.log(res);
+    const list = await res.json();
+
+    setMission(list);
+  }; */
 
   const approveUser = async (id) => {
     toast.promise(api.get("/users/approve/" + id), {
@@ -109,7 +264,56 @@ const Livreur = ({ livreurs }) => {
         })
       );
     }, 500);
+  };  
+  
+  const handleRowExpand = (record) => {
+    // if a row is expanded, collapses it, otherwise expands it
+    if (expandedRows.includes(record.key)) {
+      const row = expandedRows.filter((key) => key !== record.key);
+      setExpandedRows(row);
+    } else {
+      setExpandedRows([record.key]);
+    }
   };
+
+  const fetchMissions = async (id) => {
+    const res = await fetch(
+      `http://localhost:3000/api/mission/livreur/${id}`
+    );
+    console.log(res);
+    const list = await res.json();
+
+    setMissions(list);
+  };
+
+
+  const viewcolumns = [
+    {
+      title: "Nom de client",
+      dataIndex: "nomClient",
+      key: "nomClient",
+    },
+    {
+      title: "Adresse",
+      dataIndex: "adresse",
+      key: "adresse",
+    },
+    {
+      title: "Telephone Client",
+      dataIndex: "telClient",
+      key: "telClient",
+    },
+    {
+      title: "Quantité",
+      dataIndex: "quantite",
+      key: "quantite",
+    },
+    {
+      title: "Prix",
+      dataIndex: "prix_unit",
+      key: "prix_unit",
+    },
+  ];
 
 
   return (
@@ -122,10 +326,121 @@ const Livreur = ({ livreurs }) => {
         dataSource={listLivreur}
         size="large"
         bordered
-        pagination={{ pageSize: 4 }}
+        pagination={{ pageSize: 5 }}
         loading={livreurs === undefined}
+        expandable={{
+          expandedRowRender,
+          defaultExpandedRowKeys: ["0"],
+          rowExpandable: (record) => record.approved ,
+        }}
+        onExpand={(expande, record) => {
+          fetchMissions(record._id);
+          handleRowExpand(record);
+          setLivreurID(record._id);
+        }}
+        expandedRowKeys={expandedRows}
 
       />
+      {showModal && 
+            <div>
+            <div className={`modal ${showModal && "show"}`}>
+              <div className="modal-content-min modal-c" ref={modalRef}>
+                <div
+                  className="modal-header"
+                  style={{ paddingLeft: "40px", paddingRight: "40px" }}
+                >
+                  <h5 className="modal-title">Liste des bordereaux</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => {
+                      setShowModal();
+                    }}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form
+                  onSubmit={handleSubmit(async (data) => {
+                    let list = [];
+                    for (let i = 0; i < data.bordereauList.length; i++) {
+                      list.push(JSON.parse(data.bordereauList[i]));
+                    } 
+                    handleAddMission(livreurID, list);
+                })}
+                  >
+                    <div className="form-group">
+                      <select
+                        className="form-control select-bordereau"
+                        id="exampleInputEmail1"
+                        aria-describedby="Selectionner les Bordereau"
+                        /*onChange={data => {console.log(data.target.selectedOptions);setSelectedBordereau(data)}}*/
+                        {...register("bordereauList", { required: true })}
+                        multiple
+                      >
+                          {bordereau.map((elem) => {
+                            return ( <>
+                                      <option value={JSON.stringify(elem)}>[{elem.adresse}] {elem.nomClient}</option>
+                                    </> );
+                          })
+                           }
+                      </select>
+                    </div>
+                    <div                   
+                    style={{ display: "flex", justifyContent: "flex-end" }}>
+                      <button
+                        type="submit"
+                        className="save-login"
+                      >
+                        Add Mission
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      }
+      {showListModal && 
+            <div>
+            <div className={`modal ${showListModal && "show"}`}>
+              <div className="modal-content-min modal-c" ref={modalRef}>
+                <div
+                  className="modal-header"
+                  style={{ paddingLeft: "40px", paddingRight: "40px" }}
+                >
+                  <h5 className="modal-title">Liste des bordereaux</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => {
+                      setShowListModal(false);
+                    }}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form
+                  
+                  >
+                    <div className="form-group">
+                      <Table
+                        columns={viewcolumns}
+                        dataSource={mission.bordereauList}
+                        pagination={false}
+                        
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      }
     </Navbar>
   );
 };
