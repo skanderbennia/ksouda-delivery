@@ -167,6 +167,7 @@ const Bordreau = ({ bordereau }) => {
                   telClient: item.telClient,
                   prix_unit: item.prix_unit,
                   quantite: item.quantite,
+                  contenu: item.contenu,
                 });
                 router.push("/extrait");
               }}
