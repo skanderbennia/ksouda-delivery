@@ -71,7 +71,7 @@ export default function Extrait() {
           </thead>
           <tbody>
             <tr>
-              <td>unknown</td>
+              <td>{extrait.contenu}</td>
               <td>{extrait.quantite}</td>
               <td>{extrait.prix_unit}</td>
               <td>{extrait.prix_unit * extrait.quantite}</td>

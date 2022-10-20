@@ -8,6 +8,7 @@ export default async function handler(req, res) {
 
       res.status(200).json(list);
     } else if (req.method === "POST") {
+      console.log(req.body);
       req.body.codebar = Math.floor(Math.random() * 1000000000);
       const object = Bordereau({ ...req.body });
       await object.save();

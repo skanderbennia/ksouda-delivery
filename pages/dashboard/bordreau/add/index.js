@@ -1,14 +1,17 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import api from "../../../../api";
 import { userAtom } from "../../../../atoms/userAtom";
 import Navbar from "../../../../components/Navbar/Navbar";
 import { ClipLoader } from "react-spinners";
+import Select from "react-select/creatable";
 
 export default function Add() {
   const [loading, setLoading] = useState(false);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const user = useRecoilValue(userAtom);
   const {
     register,
@@ -18,14 +21,54 @@ export default function Add() {
     formState: { errors },
   } = useForm();
   const router = useRouter();
-  console.log(errors);
+
+  useEffect(() => {
+    async function fetchData() {
+      const dataTags = await api.get("/tags");
+      setTags(
+        dataTags.data.map((elem) => {
+          return {
+            label: elem.value,
+            value: elem.value,
+          };
+        })
+      );
+    }
+    fetchData();
+  }, []);
+  console.log(selectedTags);
+  const createTag = async (_, val) => {
+    console.log(val);
+    if (val.action == "create-option") {
+      await api.post("/tags", { tagValue: val.option.value });
+      setTags([...tags, { label: val.option.value, value: val.option.value }]);
+      setSelectedTags([...selectedTags, val.option.value]);
+      return;
+    }
+    if (val.action === "select-option") {
+      setSelectedTags([...selectedTags, val.option.value]);
+    }
+    if (val.action == "remove-value") {
+      setSelectedTags(
+        selectedTags.filter((elem) => elem !== val.removedValue.value)
+      );
+    }
+    if (val.action === "clear") {
+      setSelectedTags([]);
+    }
+  };
+  console.log(tags);
   return (
     <Navbar>
       <form
         onSubmit={handleSubmit(async (data) => {
           setLoading(true);
           console.log(data);
-          await api.post("/bordereau", { ...data, user: user.id });
+          await api.post("/bordereau", {
+            ...data,
+            user: user.id,
+            contenu: selectedTags.join(" "),
+          });
           reset();
           setLoading(false);
           router.push("/dashboard/bordreau");
@@ -104,6 +147,14 @@ export default function Add() {
           ) : (
             ""
           )}
+        </div>
+        <div style={{ display: "block" }} className="input-container">
+          <label> Description</label>
+          <Select
+            options={tags}
+            onChange={async (value, val) => await createTag(value, val)}
+            isMulti
+          />
         </div>
 
         {loading ? (
