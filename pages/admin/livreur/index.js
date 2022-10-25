@@ -228,10 +228,14 @@ const Livreur = ({ livreurs }) => {
   const fetchBordereau = async (id) => {
     const res1 = await fetch(`http://localhost:3000/api/bordereau/`);
     const bordereaux = await res1.json();
-
+    console.log(
+      bordereaux.filter((b) => {
+        return !b.livreurID;
+      })
+    );
     setBordereau(
       bordereaux.filter((b) => {
-        return !b.livreurID || !b.hasOwnProperty("livreurID");
+        return !b.livreurID;
       })
     );
   };
@@ -462,7 +466,7 @@ const Livreur = ({ livreurs }) => {
                               [ {elem.codebar} ]{" "}
                               {elem.user ? elem.user.name + " " : " "}{" "}
                               {" => " + elem.nomClient + " | "}{" "}
-                              {elem.codebar ? elem.codebar : ""}
+                              {elem.adresse ? elem.adresse : ""}
                             </option>
                           </>
                         );

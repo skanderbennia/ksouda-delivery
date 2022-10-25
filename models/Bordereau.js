@@ -37,10 +37,11 @@ const BordereauSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  livreurID:{
-    type: String,
-    required: false,
-  }
+  livreurID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+  },
 });
 
 // if Model exist then return it
