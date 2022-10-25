@@ -222,20 +222,7 @@ const Livreur = ({ livreurs  }) => {
     );
     const bordereaux = await res1.json();
 
-    const res2 = await fetch(
-      `http://localhost:3000/api/mission/`
-    );
-    const missions = await res2.json();
-    
-    const assignedBordereau = missions.map((x) => [...x.bordereauList]).flat();
-    const difference = bordereau.filter((b)=>!assignedBordereau.includes(b));
-
-    console.log(bordereaux);
-    console.log(missions);
-    console.log(assignedBordereau);
-    console.log(difference);
-
-    setBordereau(bordereaux);
+    setBordereau(bordereaux.filter((b)=>{return (!b.livreurID) || (!b.hasOwnProperty('livreurID'))}));
 
   }; 
 

@@ -1,5 +1,6 @@
 import Mission from "../../../models/Mission";
 import connectDB from "../../../utils/connectMongoDb";
+import Bordreau from "../../../models/Bordereau";
 
 export default async function handler(req, res) {
   try {
@@ -12,7 +13,9 @@ export default async function handler(req, res) {
   } else if (req.method === "POST") {
     const { livreurId, bordereauList } = req.body;
     const mission = await Mission({ livreurId,bordereauList });
-
+    for (const el of bordereauList){
+      const bordereau = await Bordreau.findOneAndUpdate({_id: el._id},{ $set: { livreurID: livreurId}});
+    }
     await mission.save();
     res.send(mission);
   } else {
