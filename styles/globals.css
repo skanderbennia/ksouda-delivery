@@ -73,14 +73,17 @@ body {
   color: white;
   background-color: #1890ff;
   border: 1px solid #1890ff;
-  border-radius: 40%;
+  border-radius: 30px;
   cursor: pointer;
 }
 .mission-title span:hover{
   background-color: unset;
   color:   #1890ff;
   user-select: none;
+  animation: spin 0.5s ease-in-out;
+
 }
+
 .modal-c{
   height: 500px;
   overflow: scroll;
@@ -91,3 +94,39 @@ body {
 
 }
 
+.modal-body input{
+  width: 100%;
+}
+
+.table-actions{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-actions.exp{
+  justify-content: flex-end;
+
+}
+
+.filter-input{
+  color: #777;
+  font-size: 14px;
+  border: 1px solid lightgrey;
+  width: 30%;
+  height: 50px;
+  outline: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 15px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin-bottom: 30px;
+ }
+
+@keyframes spin {
+   100% {
+    transform:rotate(180deg); 
+    } 
+  }

@@ -1,4 +1,4 @@
-import { Button, Table, Tag } from "antd";
+import { Button, Table, Input, Tag } from "antd";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -10,9 +10,12 @@ import Navbar from "../../../components/Navbar/Navbar";
 const Expediteur = ({ expediteurs }) => {
   const router = useRouter();
   const [listExpediteur, setListExpediteur] = useState(expediteurs);
+  const allExpediteurs = expediteurs;
   const [bordereau, setBordereau] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
   const [extrait, setExtrait] = useRecoilState(extraitAtom);
+  const [value, setValue] = useState('');
+
 
 
   const expandedRowRender = () => {
@@ -225,6 +228,25 @@ const Expediteur = ({ expediteurs }) => {
 
   return (
     <Navbar>
+      <div className="table-actions exp">
+        <Input
+              className="filter-input"
+              placeholder="Chercher Expediteur"
+              value={value}
+              onChange={e => {
+                  const currValue = e.target.value;
+                  setValue(currValue);
+                  const filteredData = allExpediteurs.filter(entry =>
+                    (entry.name||entry.email)?(entry.name.includes(currValue)||entry.email.includes(currValue)):false
+                  );
+                if (currValue.length>0){
+                  setListExpediteur(filteredData);
+                }else{
+                  setListExpediteur(allExpediteurs);
+                }
+              }}
+            />
+      </div>
       <Table
         columns={columns}
         dataSource={listExpediteur}
