@@ -188,41 +188,77 @@ const Expediteur = ({ expediteurs }) => {
   };
 
   const approveUser = async (id) => {
-    toast.promise(api.get("/users/approve/" + id), {
-      success: "Expediteur approuver",
-      error: "Expediteur déja approuver",
-      loading: "Lancement de transaction ...",
+    const idLoading = toast.loading("Loading the transaction ....", {
+      isLoading: true,
     });
 
+    await api.get("/users/approve/" + id);
+    setTimeout(() => {
+      toast.update(idLoading, {
+        render: "pending...",
+        type: "loading",
+        isLoading: true,
+      });
+    }, 1000);
+
     setTimeout(async () => {
+      toast.update(idLoading, {
+        render: "Expediteur a été approuvé",
+        type: "success",
+        isLoading: false,
+      });
       const res = await fetch("http://localhost:3000/api/users");
       console.log(res);
+      toast.update(idLoading, {
+        render: "Expediteur a été approuvé",
+        type: "success",
+        isLoading: false,
+      });
       const list = await res.json();
       setListExpediteur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
         })
       );
-    }, 500);
+      toast.dismiss(idLoading);
+    }, 1000);
   };
 
   const blockUser = async (id) => {
-    await toast.promise(api.get("/users/reject/" + id), {
-      success: "Expediteur bloquee",
-      error: "Expediteur déja non approvee",
-      loading: "Lancement de transaction ...",
+    const idLoading = toast.loading("Loading the transaction ....", {
+      isLoading: true,
     });
 
+    await api.get("/users/reject/" + id);
+    setTimeout(() => {
+      toast.update(idLoading, {
+        render: "pending...",
+        type: "loading",
+        isLoading: true,
+      });
+    }, 1000);
+
     setTimeout(async () => {
+      toast.update(idLoading, {
+        render: "Expediteur a été rejeté",
+        type: "success",
+        isLoading: false,
+      });
       const res = await fetch("http://localhost:3000/api/users");
       console.log(res);
+      toast.update(idLoading, {
+        render: "Expediteur a été rejeté",
+        type: "success",
+        isLoading: false,
+      });
       const list = await res.json();
       setListExpediteur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
         })
       );
-    }, 500);
+      toast.dismiss(idLoading);
+    }, 1000);
   };
 
   return (
