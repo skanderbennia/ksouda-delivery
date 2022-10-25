@@ -1,4 +1,4 @@
-import { Tag, Button, Dropdown, Menu, Space, Table } from "antd";
+import { Tag, Button, Dropdown, Menu, Space, Table,Input } from "antd";
 import BreadcrumbSeparator from "antd/lib/breadcrumb/BreadcrumbSeparator";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -24,10 +24,13 @@ const menu = (
   />
 );
 
-const Bordreau = ({ bordereau }) => {
-  const router = useRouter();
-  const user = useRecoilValue(userAtom);
-  const [extrait, setExtrait] = useRecoilState(extraitAtom);
+  const Bordreau = ({ bordereau }) => {
+   
+    const router = useRouter();
+    const user = useRecoilValue(userAtom);
+    const [extrait, setExtrait] = useRecoilState(extraitAtom);
+    const [listBordereau, setListBordereau] = useState(bordereau);
+
   useEffect(() => {
     async function fetchData() {
       const res = await api.get("/bordereau/expediteur/" + user.id);
@@ -35,7 +38,12 @@ const Bordreau = ({ bordereau }) => {
     }
     fetchData();
   }, [user]);
-  const [listBordereau, setListBordereau] = useState(bordereau);
+
+
+  const allBordereau = bordereau;
+  const [value, setValue] = useState('');
+
+
   const expandedRowRender = () => {
     const columns = [
       {
@@ -182,9 +190,31 @@ const Bordreau = ({ bordereau }) => {
 
   return (
     <Navbar>
-      <Link href="/dashboard/bordreau/add">
-        <Button style={{ marginBottom: 50 }}>Ajouter un bordereau</Button>
-      </Link>
+      <div className="table-actions">
+          <Link href="/dashboard/bordreau/add">
+            <Button style={{ marginBottom: 50 }}>Ajouter un bordereau</Button>
+          </Link>
+            <Input
+              className="filter-input"
+              placeholder="Chercher Bordreau"
+              value={value}
+              onChange={e => {
+                  const currValue = e.target.value;
+                  setValue(currValue);
+                  let filteredData = [];
+                  if (allBordereau){
+                     filteredData = allBordereau.filter(entry =>
+                      (entry.name||entry.email)?(entry.name.includes(currValue)||entry.email.includes(currValue)):false
+                    );
+                  }
+                if (currValue.length>0){
+                  setListBordereau(filteredData);
+                }else{
+                  setListBordereau(allBordereau);
+                }
+              }}
+            />
+      </div>
       <Table
         columns={columns}
         pagination={{ pageSize: 6 }}

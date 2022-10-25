@@ -37,6 +37,10 @@ const BordereauSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  livreurID:{
+    type: String,
+    required: false,
+  }
 });
 
 // if Model exist then return it

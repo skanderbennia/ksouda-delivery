@@ -1,4 +1,4 @@
-import { Button, Table, Tag } from "antd";
+import { Button, Table, Tag, Input } from "antd";
 import React, { useState, useEffect, useRef } from "react";
 import $ from "jquery";
 import { toast } from "react-toastify";
@@ -6,15 +6,20 @@ import api from "../../../api";
 import { useForm } from "react-hook-form";
 import Navbar from "../../../components/Navbar/Navbar";
 import Link from "next/link";
+import { handleClientScriptLoad } from "next/script";
 
 const Livreur = ({ livreurs }) => {
   const [listLivreur, setListLivreur] = useState(livreurs);
+  const allLivreurs = livreurs;
+
   const [missions, setMissions] = useState([]);
-  const [mission, setMission] = useState([]);
   const [bordereau, setBordereau] = useState([]);
+  const [mission, setMission] = useState([]);
+  const [missionBordereauList, SetMissionBordereauList] = useState([]);
   /*const [selectedBordereau, setSelectedBordereau] = useState([]);*/
 
   const [livreurID, setLivreurID] = useState([]);
+  const [value, setValue] = useState("");
 
   const [expandedRows, setExpandedRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -66,12 +71,18 @@ const Livreur = ({ livreurs }) => {
                 type="primary"
                 onClick={async (e) => {
                   e.preventDefault();
+                  SetMissionBordereauList(
+                    missions.filter((m) => {
+                      return m._id === row._id;
+                    })[0].bordereauList
+                  );
                   setMission(
                     missions.filter((m) => {
                       return m._id === row._id;
                     })[0]
                   );
                   setShowListModal(true);
+                  setValue("");
                 }}
               >
                 Afficher
@@ -215,11 +226,14 @@ const Livreur = ({ livreurs }) => {
   };
 
   const fetchBordereau = async (id) => {
-    const res = await fetch(`http://localhost:3000/api/bordereau/`);
-    console.log(res);
-    const list = await res.json();
+    const res1 = await fetch(`http://localhost:3000/api/bordereau/`);
+    const bordereaux = await res1.json();
 
-    setBordereau(list);
+    setBordereau(
+      bordereaux.filter((b) => {
+        return !b.livreurID || !b.hasOwnProperty("livreurID");
+      })
+    );
   };
 
   /*const fetchMission = async (id) => {
@@ -326,6 +340,11 @@ const Livreur = ({ livreurs }) => {
 
   const viewcolumns = [
     {
+      title: "CodeBar",
+      dataIndex: "codebar",
+      key: "codebar",
+    },
+    {
       title: "Nom de client",
       dataIndex: "nomClient",
       key: "nomClient",
@@ -353,10 +372,32 @@ const Livreur = ({ livreurs }) => {
   ];
 
   return (
-    <Navbar>
-      <Link href="/admin/livreur/add">
-        <Button style={{ marginBottom: 50 }}>Ajouter un Livreur</Button>
-      </Link>
+    <Navbar className="form-group">
+      <div className="table-actions">
+        <Link href="/admin/livreur/add">
+          <Button style={{ marginBottom: 50 }}>Ajouter un Livreur</Button>
+        </Link>
+        <Input
+          className="filter-input"
+          placeholder="Chercher Livreur"
+          value={value}
+          onChange={(e) => {
+            const currValue = e.target.value;
+            setValue(currValue);
+            const filteredData = allLivreurs.filter((entry) =>
+              entry.name || entry.email
+                ? entry.name.includes(currValue) ||
+                  entry.email.includes(currValue)
+                : false
+            );
+            if (currValue.length > 0) {
+              setListLivreur(filteredData);
+            } else {
+              setListLivreur(allLivreurs);
+            }
+          }}
+        />
+      </div>
       <Table
         columns={columns}
         dataSource={listLivreur}
@@ -418,7 +459,10 @@ const Livreur = ({ livreurs }) => {
                         return (
                           <>
                             <option value={JSON.stringify(elem)}>
-                              [{elem.adresse}] {elem.nomClient}
+                              [ {elem.codebar} ]{" "}
+                              {elem.user ? elem.user.name + " " : " "}{" "}
+                              {" => " + elem.nomClient + " | "}{" "}
+                              {elem.codebar ? elem.codebar : ""}
                             </option>
                           </>
                         );
@@ -429,6 +473,59 @@ const Livreur = ({ livreurs }) => {
                     <button type="submit" className="save-login">
                       Add Mission
                     </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showListModal && (
+        <div>
+          <div className={`modal ${showListModal && "show"}`}>
+            <div className="modal-content-min modal-c" ref={modalRef}>
+              <div
+                className="modal-header"
+                style={{ paddingLeft: "40px", paddingRight: "40px" }}
+              >
+                <h5 className="modal-title">Liste des bordereaux</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={() => {
+                    setShowListModal(false);
+                  }}
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form>
+                  <div className="form-group">
+                    <Input
+                      placeholder="Chercher Codebar"
+                      value={value}
+                      onChange={(e) => {
+                        const currValue = e.target.value;
+                        setValue(currValue);
+                        const filteredData = mission.bordereauList.filter(
+                          (entry) =>
+                            entry.codebar
+                              ? entry.codebar.includes(currValue)
+                              : false
+                        );
+                        if (currValue.length > 0) {
+                          SetMissionBordereauList(filteredData);
+                        } else {
+                          SetMissionBordereauList(mission.bordereauList);
+                        }
+                      }}
+                    />
+                    <Table
+                      columns={viewcolumns}
+                      dataSource={missionBordereauList}
+                      pagination={false}
+                    />
                   </div>
                 </form>
               </div>
@@ -476,7 +573,10 @@ const Livreur = ({ livreurs }) => {
 
 export const getServerSideProps = async () => {
   const res = await fetch("http://localhost:3000/api/users/livreur");
+  const res2 = await fetch("http://localhost:3000/api/users");
+
   const list = await res.json();
+  const list2 = await res2.json();
 
   return {
     props: {
