@@ -188,7 +188,7 @@ const Expediteur = ({ expediteurs }) => {
   };
 
   const approveUser = async (id) => {
-    const idLoading = toast.loading("Loading the transaction ....", {
+    const idLoading = toast.loading("Chargement de la transaction ....", {
       isLoading: true,
     });
 
@@ -225,7 +225,7 @@ const Expediteur = ({ expediteurs }) => {
   };
 
   const blockUser = async (id) => {
-    const idLoading = toast.loading("Loading the transaction ....", {
+    const idLoading = toast.loading("Chargement de la transaction ....", {
       isLoading: true,
     });
 
