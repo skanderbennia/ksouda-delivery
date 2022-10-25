@@ -13,8 +13,18 @@ const Expediteur = ({ expediteurs }) => {
   const [bordereau, setBordereau] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
   const [extrait, setExtrait] = useRecoilState(extraitAtom);
+  const [loading, setLoading] = useState(false);
+  console.log(loading);
+  const handleRowExpand = (record) => {
+    // if a row is expanded, collapses it, otherwise expands it
 
-
+    if (expandedRows.includes(record.key)) {
+      const row = expandedRows.filter((key) => key !== record.key);
+      setExpandedRows(row);
+    } else {
+      setExpandedRows([record.key]);
+    }
+  };
   const expandedRowRender = () => {
     const columns = [
       {
@@ -71,8 +81,7 @@ const Expediteur = ({ expediteurs }) => {
                 onClick={() => {
                   setExtrait({
                     ...extrait,
-                    ...item
-
+                    ...item,
                   });
                   router.push("/extrait");
                 }}
@@ -99,6 +108,7 @@ const Expediteur = ({ expediteurs }) => {
       <Table
         columns={columns}
         dataSource={bordereau}
+        loading={loading}
         pagination={{ pageSize: 3 }}
       />
     );
@@ -166,6 +176,7 @@ const Expediteur = ({ expediteurs }) => {
   ];
 
   const fetchBordereau = async (id) => {
+    setLoading(true);
     const res = await fetch(
       `http://localhost:3000/api/bordereau/expediteur/${id}`
     );
@@ -173,6 +184,7 @@ const Expediteur = ({ expediteurs }) => {
     const list = await res.json();
 
     setBordereau(list);
+    setLoading(false);
   };
 
   const approveUser = async (id) => {
@@ -213,16 +225,6 @@ const Expediteur = ({ expediteurs }) => {
     }, 500);
   };
 
-  const handleRowExpand = (record) => {
-    // if a row is expanded, collapses it, otherwise expands it
-    if (expandedRows.includes(record.key)) {
-      const row = expandedRows.filter((key) => key !== record.key);
-      setExpandedRows(row);
-    } else {
-      setExpandedRows([record.key]);
-    }
-  };
-
   return (
     <Navbar>
       <Table
@@ -231,10 +233,10 @@ const Expediteur = ({ expediteurs }) => {
         size="large"
         bordered
         pagination={{ pageSize: 4 }}
-        loading={expediteurs === undefined}
         expandable={{
           expandedRowRender,
           defaultExpandedRowKeys: ["0"],
+          loading: loading,
         }}
         onExpand={(expande, record) => {
           fetchBordereau(record._id);
