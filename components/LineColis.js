@@ -1,7 +1,13 @@
 import ResizableBox from "./ResizableBox";
 import useDemoConfig from "../useDemoConfig";
 import React from "react";
-import { AxisOptions, Chart } from "react-charts";
+
+const Chart = dynamic(() => import("react-charts").then((mod) => mod.Chart), {
+  ssr: false,
+});
+const AxisOptions = dynamic(() => import("react-charts").then((mod) => mod.AxisOptions), {
+  ssr: false,
+});
 
 export default function LineColis() {
   const { data, randomizeData } = useDemoConfig({
