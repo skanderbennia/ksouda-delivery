@@ -1,6 +1,7 @@
 import ResizableBox from "./ResizableBox";
 import useDemoConfig from "../useDemoConfig";
 import React from "react";
+import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import("react-charts").then((mod) => mod.Chart), {
   ssr: false,
