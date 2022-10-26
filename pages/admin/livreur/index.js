@@ -147,6 +147,7 @@ const Livreur = ({ livreurs }) => {
     );
   };
 
+  missionBordereauList;
   const columns = [
     {
       title: "Nom Livreur",
@@ -158,6 +159,7 @@ const Livreur = ({ livreurs }) => {
       title: "E-mail",
       dataIndex: "email",
       key: "email",
+      missionBordereauList,
     },
     {
       title: "Status",
@@ -228,14 +230,10 @@ const Livreur = ({ livreurs }) => {
   const fetchBordereau = async (id) => {
     const res1 = await fetch(`http://localhost:3000/api/bordereau/`);
     const bordereaux = await res1.json();
-    console.log(
-      bordereaux.filter((b) => {
-        return !b.livreurID;
-      })
-    );
+
     setBordereau(
       bordereaux.filter((b) => {
-        return !b.livreurID;
+        return !b.livreurID || !b.hasOwnProperty("livreurID");
       })
     );
   };
@@ -251,77 +249,41 @@ const Livreur = ({ livreurs }) => {
   }; */
 
   const approveUser = async (id) => {
-    const idLoading = toast.loading("Chargement de la transaction ....", {
-      isLoading: true,
+    toast.promise(api.get("/users/approve/" + id), {
+      success: "Livreur approuver",
+      error: "Livreur déja approuver",
+      loading: "Lancement de transaction ...",
     });
 
-    await api.get("/users/approve/" + id);
-    setTimeout(() => {
-      toast.update(idLoading, {
-        render: "pending...",
-        type: "loading",
-        isLoading: true,
-      });
-    }, 1000);
-
     setTimeout(async () => {
-      toast.update(idLoading, {
-        render: "Livreur a été approuvé",
-        type: "success",
-        isLoading: false,
-      });
       const res = await fetch("http://localhost:3000/api/users/livreur");
       console.log(res);
-      toast.update(idLoading, {
-        render: "Livreur a été approuvé",
-        type: "success",
-        isLoading: false,
-      });
       const list = await res.json();
       setListLivreur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
         })
       );
-      toast.dismiss(idLoading);
-    }, 1000);
+    }, 500);
   };
 
   const blockUser = async (id) => {
-    const idLoading = toast.loading("Chargement de la transaction ....", {
-      isLoading: true,
+    await toast.promise(api.get("/users/reject/" + id), {
+      success: "Livreur bloquee",
+      error: "Livreur déja non approvee",
+      loading: "Lancement de transaction ...",
     });
 
-    await api.get("/users/reject/" + id);
-    setTimeout(() => {
-      toast.update(idLoading, {
-        render: "pending...",
-        type: "loading",
-        isLoading: true,
-      });
-    }, 1000);
-
     setTimeout(async () => {
-      toast.update(idLoading, {
-        render: "Livreur a été rejeté",
-        type: "success",
-        isLoading: false,
-      });
       const res = await fetch("http://localhost:3000/api/users/livreur");
       console.log(res);
-      toast.update(idLoading, {
-        render: "Livreur a été rejeté",
-        type: "success",
-        isLoading: false,
-      });
       const list = await res.json();
       setListLivreur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
         })
       );
-      toast.dismiss(idLoading);
-    }, 1000);
+    }, 500);
   };
 
   const handleRowExpand = (record) => {
@@ -466,7 +428,7 @@ const Livreur = ({ livreurs }) => {
                               [ {elem.codebar} ]{" "}
                               {elem.user ? elem.user.name + " " : " "}{" "}
                               {" => " + elem.nomClient + " | "}{" "}
-                              {elem.adresse ? elem.adresse : ""}
+                              {elem.codebar ? elem.codebar : ""}
                             </option>
                           </>
                         );
@@ -528,40 +490,6 @@ const Livreur = ({ livreurs }) => {
                     <Table
                       columns={viewcolumns}
                       dataSource={missionBordereauList}
-                      pagination={false}
-                    />
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {showListModal && (
-        <div>
-          <div className={`modal ${showListModal && "show"}`}>
-            <div className="modal-content-min modal-c" ref={modalRef}>
-              <div
-                className="modal-header"
-                style={{ paddingLeft: "40px", paddingRight: "40px" }}
-              >
-                <h5 className="modal-title">Liste des bordereaux</h5>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={() => {
-                    setShowListModal(false);
-                  }}
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="form-group">
-                    <Table
-                      columns={viewcolumns}
-                      dataSource={mission.bordereauList}
                       pagination={false}
                     />
                   </div>
