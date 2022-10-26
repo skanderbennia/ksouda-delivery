@@ -1,7 +1,11 @@
 import ResizableBox from "./ResizableBox";
 import useDemoConfig from "../useDemoConfig";
 import React from "react";
-import { Chart } from "react-charts";
+import dynamic from 'next/dynamic';
+
+const Chart = dynamic(() => import("react-charts").then((mod) => mod.Chart), {
+  ssr: false,
+});
 
 export default function Bar() {
   //   const {  randomizeData } = useDemoConfig({
