@@ -113,7 +113,7 @@ export default function Modal(props) {
                         props.setShowModal(false);
                       }}
                     >
-                      Vous n'avez encore de compte?
+                      Vous n&apos;avez encore de compte?
                     </a>
                   </span>
                 </div>

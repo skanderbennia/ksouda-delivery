@@ -2,16 +2,16 @@ import React from "react";
 
 export default function Temoinage() {
   return (
-    <section class="section" id="testimonials">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="center-heading">
-              <h2 class="section-title">What do they say?</h2>
+    <section className="section" id="testimonials">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="center-heading">
+              <h2 className="section-title">What do they say?</h2>
             </div>
           </div>
-          <div class="offset-lg-3 col-lg-6">
-            <div class="center-text">
+          <div className="offset-lg-3 col-lg-6">
+            <div className="center-text">
               <p>
                 Donec tempus, sem non rutrum imperdiet, lectus orci fringilla
                 nulla, at accumsan elit eros a turpis. Ut sagittis lectus
@@ -21,10 +21,10 @@ export default function Temoinage() {
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="team-item">
-              <div class="team-content">
+        <div className="row">
+          <div className="col-lg-4 col-md-6 col-sm-12">
+            <div className="team-item">
+              <div className="team-content">
                 <i>
                   <img src="assets/images/testimonial-icon.png" alt="" />
                 </i>
@@ -32,20 +32,20 @@ export default function Temoinage() {
                   Proin a neque nisi. Nam ipsum nisi, venenatis ut nulla quis,
                   egestas scelerisque orci. Maecenas a finibus odio.
                 </p>
-                <div class="user-image">
+                <div className="user-image">
                   <img src="http://placehold.it/60x60" alt="" />
                 </div>
-                <div class="team-info">
-                  <h3 class="user-name">Catherine Soft</h3>
+                <div className="team-info">
+                  <h3 className="user-name">Catherine Soft</h3>
                   <span>Managing Director</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="team-item">
-              <div class="team-content">
+          <div className="col-lg-4 col-md-6 col-sm-12">
+            <div className="team-item">
+              <div className="team-content">
                 <i>
                   <img src="assets/images/testimonial-icon.png" alt="" />
                 </i>
@@ -54,20 +54,20 @@ export default function Temoinage() {
                   imperdiet nulla vitae, placerat nibh. Cras maximus venenatis
                   molestie.
                 </p>
-                <div class="user-image">
+                <div className="user-image">
                   <img src="http://placehold.it/60x60" alt="" />
                 </div>
-                <div class="team-info">
-                  <h3 class="user-name">Kelvin Wood</h3>
+                <div className="team-info">
+                  <h3 className="user-name">Kelvin Wood</h3>
                   <span>Digital Marketer</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="team-item">
-              <div class="team-content">
+          <div className="col-lg-4 col-md-6 col-sm-12">
+            <div className="team-item">
+              <div className="team-content">
                 <i>
                   <img src="assets/images/testimonial-icon.png" alt="" />
                 </i>
@@ -76,11 +76,11 @@ export default function Temoinage() {
                   lorem. Cras quis est non ante ultrices molestie. Ut vehicula
                   et diam at aliquam.
                 </p>
-                <div class="user-image">
+                <div className="user-image">
                   <img src="http://placehold.it/60x60" alt="" />
                 </div>
-                <div class="team-info">
-                  <h3 class="user-name">David Martin</h3>
+                <div className="team-info">
+                  <h3 className="user-name">David Martin</h3>
                   <span>Website Manager</span>
                 </div>
               </div>
