@@ -3,41 +3,41 @@ import React from "react";
 export default function Footer() {
   return (
     <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12">
-            <ul class="social">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12 col-md-12 col-sm-12">
+            <ul className="social">
               <li>
                 <a href="#">
-                  <i class="fa fa-facebook"></i>
+                  <i className="fa fa-facebook"></i>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <i class="fa fa-twitter"></i>
+                  <i className="fa fa-twitter"></i>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <i class="fa fa-linkedin"></i>
+                  <i className="fa fa-linkedin"></i>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <i class="fa fa-rss"></i>
+                  <i className="fa fa-rss"></i>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <i class="fa fa-dribbble"></i>
+                  <i className="fa fa-dribbble"></i>
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <p class="copyright">Copyright &copy; Sonic Delivery</p>
+        <div className="row">
+          <div className="col-lg-12">
+            <p className="copyright">Copyright &copy; Sonic Delivery</p>
           </div>
         </div>
       </div>

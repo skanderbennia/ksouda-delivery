@@ -3,18 +3,18 @@ import React from "react";
 import Logo from "../assets/images/logo.png";
 export default function Navbar(props) {
   return (
-    <header class="header-area header-sticky">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <nav class="main-nav">
+    <header className="header-area header-sticky">
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <nav className="main-nav">
               <a href="#" style={{ position: "absolute", top: -110, left: 20 }}>
                 <Image src={Logo} width={300} height={300} />
               </a>
 
-              <ul class="nav">
+              <ul className="nav">
                 <li>
-                  <a href="#welcome" class="active">
+                  <a href="#welcome" className="active">
                     Home
                   </a>
                 </li>
@@ -29,7 +29,7 @@ export default function Navbar(props) {
                 </li>
                 <li>
                   <a
-                    class="login-button"
+                    className="login-button"
                     onClick={() => {
                       props.setShowModal(true);
                     }}
@@ -38,7 +38,7 @@ export default function Navbar(props) {
                   </a>
                 </li>
               </ul>
-              <a class="menu-trigger">
+              <a className="menu-trigger">
                 <span>Menu</span>
               </a>
             </nav>
