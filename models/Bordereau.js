@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import { mongoose } from "mongoose";
 const BordereauSchema = new mongoose.Schema({
   codebar: {
     type: String,
