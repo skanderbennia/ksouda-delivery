@@ -179,11 +179,9 @@ const Expediteur = ({ expediteurs }) => {
 
   const fetchBordereau = async (id) => {
     setLoading(true);
-    const res = await fetch(
-      `http://localhost:3000/api/bordereau/expediteur/${id}`
-    );
+    const res = await api.get(`/bordereau/expediteur/${id}`);
     console.log(res);
-    const list = await res.json();
+    const list = await res.data;
 
     setBordereau(list);
     setLoading(false);
@@ -209,14 +207,14 @@ const Expediteur = ({ expediteurs }) => {
         type: "success",
         isLoading: false,
       });
-      const res = await fetch("http://localhost:3000/api/users");
+      const res = await api.get("/users");
       console.log(res);
       toast.update(idLoading, {
         render: "Expediteur a été approuvé",
         type: "success",
         isLoading: false,
       });
-      const list = await res.json();
+      const list = await res.data;
       setListExpediteur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
@@ -241,19 +239,22 @@ const Expediteur = ({ expediteurs }) => {
     }, 1000);
 
     setTimeout(async () => {
+      const res = await api.get("/users");
+
       toast.update(idLoading, {
         render: "Expediteur a été rejeté",
         type: "success",
         isLoading: false,
       });
-      const res = await fetch("http://localhost:3000/api/users");
+
       console.log(res);
       toast.update(idLoading, {
         render: "Expediteur a été rejeté",
         type: "success",
         isLoading: false,
       });
-      const list = await res.json();
+      const list = await res.data;
+
       setListExpediteur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
@@ -310,8 +311,8 @@ const Expediteur = ({ expediteurs }) => {
 };
 
 export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:3000/api/users");
-  const list = await res.json();
+  const res = await api.get("/users");
+  const list = await res.data;
 
   return {
     props: {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api/",
+  baseURL: "https://sonic-delivery.vercel.app/api/",
   timeout: 5000,
   header: {
     "Content-Type": "application/json",

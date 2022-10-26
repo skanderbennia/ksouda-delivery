@@ -228,8 +228,8 @@ const Livreur = ({ livreurs }) => {
   };
 
   const fetchBordereau = async (id) => {
-    const res1 = await fetch(`http://localhost:3000/api/bordereau/`);
-    const bordereaux = await res1.json();
+    const res1 = await api.get(`/bordereau/`);
+    const bordereaux = await res1.data;
 
     setBordereau(
       bordereaux.filter((b) => {
@@ -239,11 +239,11 @@ const Livreur = ({ livreurs }) => {
   };
 
   /*const fetchMission = async (id) => {
-    const res = await fetch(
-      `http://localhost:3000/api/mission/${id}`
+    const res = await api.get(
+      `/mission/${id}`
     );
     console.log(res);
-    const list = await res.json();
+    const list = await res.data;
 
     setMission(list);
   }; */
@@ -256,9 +256,9 @@ const Livreur = ({ livreurs }) => {
     });
 
     setTimeout(async () => {
-      const res = await fetch("http://localhost:3000/api/users/livreur");
+      const res = await api.get("/users/livreur");
       console.log(res);
-      const list = await res.json();
+      const list = await res.data;
       setListLivreur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
@@ -275,9 +275,9 @@ const Livreur = ({ livreurs }) => {
     });
 
     setTimeout(async () => {
-      const res = await fetch("http://localhost:3000/api/users/livreur");
+      const res = await api.get("/users/livreur");
       console.log(res);
-      const list = await res.json();
+      const list = await res.data;
       setListLivreur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
@@ -297,9 +297,10 @@ const Livreur = ({ livreurs }) => {
   };
 
   const fetchMissions = async (id) => {
-    const res = await fetch(`http://localhost:3000/api/mission/livreur/${id}`);
+    const res = await api.get(`/mission/livreur/${id}`);
+
     console.log(res);
-    const list = await res.json();
+    const list = await res.data;
 
     setMissions(list);
   };
@@ -504,11 +505,11 @@ const Livreur = ({ livreurs }) => {
 };
 
 export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:3000/api/users/livreur");
-  const res2 = await fetch("http://localhost:3000/api/users");
+  const res = await api.get("/users/livreur");
+  const res2 = await api.get("/users");
 
-  const list = await res.json();
-  const list2 = await res2.json();
+  const list = await res.data;
+  const list2 = await res2.data;
 
   return {
     props: {
