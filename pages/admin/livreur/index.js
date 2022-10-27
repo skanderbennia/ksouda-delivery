@@ -30,7 +30,6 @@ const Livreur = ({ livreurs }) => {
   const modalRef = useRef();
 
   useEffect(() => {
-    console.log("Modal useEffect");
     if ((document && showModal) || (document && showListModal)) {
       // block scroll
       var body = $("html, body");
@@ -222,7 +221,6 @@ const Livreur = ({ livreurs }) => {
         setShowModal(false);
       }
     } catch (err) {
-      console.log(err);
       toast.error(err.response.data.msg);
     }
   };
@@ -242,7 +240,6 @@ const Livreur = ({ livreurs }) => {
     const res = await api.get(
       `/mission/${id}`
     );
-    console.log(res);
     const list = await res.data;
 
     setMission(list);
@@ -257,7 +254,6 @@ const Livreur = ({ livreurs }) => {
 
     setTimeout(async () => {
       const res = await api.get("/users/livreur");
-      console.log(res);
       const list = await res.data;
       setListLivreur(
         list.map((elem) => {
@@ -276,7 +272,6 @@ const Livreur = ({ livreurs }) => {
 
     setTimeout(async () => {
       const res = await api.get("/users/livreur");
-      console.log(res);
       const list = await res.data;
       setListLivreur(
         list.map((elem) => {
@@ -299,7 +294,6 @@ const Livreur = ({ livreurs }) => {
   const fetchMissions = async (id) => {
     const res = await api.get(`/mission/livreur/${id}`);
 
-    console.log(res);
     const list = await res.data;
 
     setMissions(list);
@@ -418,7 +412,7 @@ const Livreur = ({ livreurs }) => {
                       className="form-control select-bordereau"
                       id="exampleInputEmail1"
                       aria-describedby="Selectionner les Bordereau"
-                      /*onChange={data => {console.log(data.target.selectedOptions);setSelectedBordereau(data)}}*/
+                      /*onChange={data => {setSelectedBordereau(data)}}*/
                       {...register("bordereauList", { required: true })}
                       multiple
                     >

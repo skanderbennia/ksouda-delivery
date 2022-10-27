@@ -11,7 +11,6 @@ export default function Extrait() {
   const [image, setImage] = useState(null);
   let extraitRef = useRef();
   let buttonRef = useRef();
-  console.log(extrait);
   useEffect(() => {
     try {
       // The return value is the canvas element
@@ -23,7 +22,6 @@ export default function Extrait() {
         width: 3,
         textxalign: "center", // Always good to set this
       });
-      console.log(canvas.toDataURL("image/png"));
       setImage(canvas.toDataURL("image/png"));
     } catch (e) {
       // `e` may be a string or Error object

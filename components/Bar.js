@@ -149,7 +149,6 @@ export default function Bar() {
       ],
     },
   ];
-  console.log(data);
   const primaryAxis = React.useMemo(
     () => ({
       getValue: (datum) => datum.primary,

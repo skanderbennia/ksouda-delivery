@@ -129,7 +129,6 @@ const menu = (
       // dataIndex: "etat",
       key: "etat",
       render: (item) => {
-        // console.log(item);
         switch (item.etat) {
           case "En cours":
             return <Tag color="orange">{item.etat}</Tag>;
