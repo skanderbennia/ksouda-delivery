@@ -1,4 +1,4 @@
-import { Tag, Button, Dropdown, Menu, Space, Table,Input,Badge } from "antd";
+import { Tag, Button, Dropdown, Menu, Space, Table, Input, Badge } from "antd";
 import BreadcrumbSeparator from "antd/lib/breadcrumb/BreadcrumbSeparator";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,47 +14,45 @@ const menu = (
     items={[
       {
         key: "1",
-        label: "Action 1",
+        label: "Action 1"
       },
       {
         key: "2",
-        label: "Action 2",
-      },
+        label: "Action 2"
+      }
     ]}
   />
 );
 
-  const Bordreau = ({ bordereau }) => {
-   
-    const router = useRouter();
-    const user = useRecoilValue(userAtom);
-    const [extrait, setExtrait] = useRecoilState(extraitAtom);
-    const [listBordereau, setListBordereau] = useState(bordereau);
+const Bordreau = ({ bordereau }) => {
+  const router = useRouter();
+  const user = useRecoilValue(userAtom);
+  const [extrait, setExtrait] = useRecoilState(extraitAtom);
+  const [listBordereau, setListBordereau] = useState([]);
+  const [allBordereau, setAllBordereau] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       const res = await api.get("/bordereau/expediteur/" + user.id);
       setListBordereau(res.data);
+      setAllBordereau(res.data);
     }
     fetchData();
   }, [user]);
 
-
-  const allBordereau = bordereau;
-  const [value, setValue] = useState('');
-
-
+  const [value, setValue] = useState("");
+  console.log(listBordereau);
   const expandedRowRender = () => {
     const columns = [
       {
         title: "Date",
         dataIndex: "date",
-        key: "date",
+        key: "date"
       },
       {
         title: "Name",
         dataIndex: "name",
-        key: "name",
+        key: "name"
       },
       {
         title: "Status",
@@ -64,12 +62,12 @@ const menu = (
             <Badge status="success" />
             Finished
           </span>
-        ),
+        )
       },
       {
         title: "Upgrade Status",
         dataIndex: "upgradeNum",
-        key: "upgradeNum",
+        key: "upgradeNum"
       },
       {
         title: "Action",
@@ -80,8 +78,8 @@ const menu = (
             <a>Pause</a>
             <a>Stop</a>
           </Space>
-        ),
-      },
+        )
+      }
     ];
     const data = [];
 
@@ -90,7 +88,7 @@ const menu = (
         key: i.toString(),
         date: "2014-12-24 23:12:00",
         name: "This is production name",
-        upgradeNum: "Upgraded: 56",
+        upgradeNum: "Upgraded: 56"
       });
     }
 
@@ -102,27 +100,27 @@ const menu = (
     {
       title: "Nom de client",
       dataIndex: "nomClient",
-      key: "nomClient",
+      key: "nomClient"
     },
     {
       title: "Adresse",
       dataIndex: "adresse",
-      key: "adresse",
+      key: "adresse"
     },
     {
       title: "Telephone Client",
       dataIndex: "telClient",
-      key: "telClient",
+      key: "telClient"
     },
     {
       title: "Quantité",
       dataIndex: "quantite",
-      key: "quantite",
+      key: "quantite"
     },
     {
       title: "Prix",
       dataIndex: "prix_unit",
-      key: "prix_unit",
+      key: "prix_unit"
     },
     {
       title: "Etat",
@@ -140,7 +138,7 @@ const menu = (
           case "Livré":
             return <Tag color="green">{item.etat}</Tag>;
         }
-      },
+      }
     },
     {
       title: "Action",
@@ -164,7 +162,7 @@ const menu = (
                 background: "black",
                 color: "white",
                 border: "none",
-                marginLeft: 20,
+                marginLeft: 20
               }}
               onClick={() => {
                 setExtrait({
@@ -175,7 +173,7 @@ const menu = (
                   telClient: item.telClient,
                   prix_unit: item.prix_unit,
                   quantite: item.quantite,
-                  contenu: item.contenu,
+                  contenu: item.contenu
                 });
                 router.push("/extrait");
               }}
@@ -184,36 +182,40 @@ const menu = (
             </button>
           </div>
         );
-      },
-    },
+      }
+    }
   ];
 
   return (
     <Navbar>
       <div className="table-actions">
-          <Link href="/dashboard/bordreau/add">
-            <Button style={{ marginBottom: 50 }}>Ajouter un bordereau</Button>
-          </Link>
-            <Input
-              className="filter-input"
-              placeholder="Chercher Bordreau"
-              value={value}
-              onChange={e => {
-                  const currValue = e.target.value;
-                  setValue(currValue);
-                  let filteredData = [];
-                  if (allBordereau){
-                     filteredData = allBordereau.filter(entry =>
-                      (entry.name||entry.email)?(entry.name.includes(currValue)||entry.email.includes(currValue)):false
-                    );
-                  }
-                if (currValue.length>0){
-                  setListBordereau(filteredData);
-                }else{
-                  setListBordereau(allBordereau);
-                }
-              }}
-            />
+        <Link href="/dashboard/bordreau/add">
+          <Button style={{ marginBottom: 50 }}>Ajouter un bordereau</Button>
+        </Link>
+        <Input
+          className="filter-input"
+          placeholder="Chercher Bordreau"
+          value={value}
+          onChange={(e) => {
+            const currValue = e.target.value;
+            setValue(currValue);
+            let filteredData = [];
+            if (allBordereau) {
+              filteredData = allBordereau.filter((entry) =>
+                entry.nomClient || entry.adresse
+                  ? entry.nomClient.includes(currValue) ||
+                    entry.adresse.includes(currValue)
+                  : false
+              );
+            }
+            console.log(filteredData);
+            if (currValue.length > 0) {
+              setListBordereau(filteredData);
+            } else {
+              setListBordereau(allBordereau);
+            }
+          }}
+        />
       </div>
       <Table
         columns={columns}

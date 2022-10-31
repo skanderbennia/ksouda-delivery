@@ -32,27 +32,27 @@ const Expediteur = ({ expediteurs }) => {
       {
         title: "Nom de client",
         dataIndex: "nomClient",
-        key: "nomClient",
+        key: "nomClient"
       },
       {
         title: "Adresse",
         dataIndex: "adresse",
-        key: "adresse",
+        key: "adresse"
       },
       {
         title: "Telephone Client",
         dataIndex: "telClient",
-        key: "telClient",
+        key: "telClient"
       },
       {
         title: "Quantité",
         dataIndex: "quantite",
-        key: "quantite",
+        key: "quantite"
       },
       {
         title: "Prix",
         dataIndex: "prix_unit",
-        key: "prix_unit",
+        key: "prix_unit"
       },
       {
         title: "Action",
@@ -78,12 +78,12 @@ const Expediteur = ({ expediteurs }) => {
                   background: "black",
                   color: "white",
                   border: "none",
-                  marginLeft: 20,
+                  marginLeft: 20
                 }}
                 onClick={() => {
                   setExtrait({
                     ...extrait,
-                    ...item,
+                    ...item
                   });
                   router.push("/extrait");
                 }}
@@ -92,8 +92,8 @@ const Expediteur = ({ expediteurs }) => {
               </button>
             </div>
           );
-        },
-      },
+        }
+      }
     ];
     const data = [];
 
@@ -102,7 +102,7 @@ const Expediteur = ({ expediteurs }) => {
         key: i.toString(),
         date: "2014-12-24 23:12:00",
         name: "This is production name",
-        upgradeNum: "Upgraded: 56",
+        upgradeNum: "Upgraded: 56"
       });
     }
 
@@ -121,12 +121,12 @@ const Expediteur = ({ expediteurs }) => {
       title: "Nom Expediteur",
       dataIndex: "name",
       key: "name",
-      render: (text) => <a>{text}</a>,
+      render: (text) => <a>{text}</a>
     },
     {
       title: "E-mail",
       dataIndex: "email",
-      key: "email",
+      key: "email"
     },
     {
       title: "Status",
@@ -137,7 +137,7 @@ const Expediteur = ({ expediteurs }) => {
         ) : (
           <Tag color="yellow">En Attente</Tag>
         );
-      },
+      }
     },
     {
       title: "Action",
@@ -146,7 +146,7 @@ const Expediteur = ({ expediteurs }) => {
           <div
             style={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "row"
             }}
           >
             {!row.approved && (
@@ -173,8 +173,8 @@ const Expediteur = ({ expediteurs }) => {
             )}
           </div>
         );
-      },
-    },
+      }
+    }
   ];
 
   const fetchBordereau = async (id) => {
@@ -189,15 +189,15 @@ const Expediteur = ({ expediteurs }) => {
 
   const approveUser = async (id) => {
     const idLoading = toast.loading("Chargement de la transaction ....", {
-      isLoading: true,
+      isLoading: true
     });
 
-    await api.get("/users/approve/" + id);
+    await api.post("/users/approve/", { id });
     setTimeout(() => {
       toast.update(idLoading, {
         render: "pending...",
         type: "loading",
-        isLoading: true,
+        isLoading: true
       });
     }, 1000);
 
@@ -205,14 +205,14 @@ const Expediteur = ({ expediteurs }) => {
       toast.update(idLoading, {
         render: "Expediteur a été approuvé",
         type: "success",
-        isLoading: false,
+        isLoading: false
       });
       const res = await api.get("/users");
       console.log(res);
       toast.update(idLoading, {
         render: "Expediteur a été approuvé",
         type: "success",
-        isLoading: false,
+        isLoading: false
       });
       const list = await res.data;
       setListExpediteur(
@@ -226,15 +226,15 @@ const Expediteur = ({ expediteurs }) => {
 
   const blockUser = async (id) => {
     const idLoading = toast.loading("Chargement de la transaction ....", {
-      isLoading: true,
+      isLoading: true
     });
 
-    await api.get("/users/reject/" + id);
+    await api.post("/users/reject/", { id });
     setTimeout(() => {
       toast.update(idLoading, {
         render: "pending...",
         type: "loading",
-        isLoading: true,
+        isLoading: true
       });
     }, 1000);
 
@@ -244,14 +244,14 @@ const Expediteur = ({ expediteurs }) => {
       toast.update(idLoading, {
         render: "Expediteur a été rejeté",
         type: "success",
-        isLoading: false,
+        isLoading: false
       });
 
       console.log(res);
       toast.update(idLoading, {
         render: "Expediteur a été rejeté",
         type: "success",
-        isLoading: false,
+        isLoading: false
       });
       const list = await res.data;
 
@@ -297,7 +297,7 @@ const Expediteur = ({ expediteurs }) => {
         expandable={{
           expandedRowRender,
           defaultExpandedRowKeys: ["0"],
-          loading: loading,
+          loading: loading
         }}
         onExpand={(expande, record) => {
           fetchBordereau(record._id);
@@ -318,8 +318,8 @@ export const getServerSideProps = async () => {
     props: {
       expediteurs: list.map((elem) => {
         return { ...elem, key: elem._id };
-      }),
-    },
+      })
+    }
   };
 };
 export default Expediteur;
