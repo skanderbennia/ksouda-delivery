@@ -34,7 +34,7 @@ const Bordreau = ({ bordereau }) => {
   useEffect(() => {
     async function fetchData() {
       let ID = user.id;
-      const res = await api.post("/bordereau/expediteur/",{id:ID});
+      const res = await api.post("/bordereau/expediteur/", { id: ID });
       setListBordereau(res.data);
       setAllBordereau(res.data);
     }
@@ -149,8 +149,8 @@ const Bordreau = ({ bordereau }) => {
             <button
               style={{ background: "red", color: "white", border: "none" }}
               onClick={async () => {
-                let ID = item_id;
-                await api.delete("/bordereau/", {id:ID});
+                let ID = item._id;
+                await api.delete("/bordereau/", { id: ID });
                 setListBordereau(
                   listBordereau.filter((elem) => elem._id != item._id)
                 );

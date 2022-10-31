@@ -32,7 +32,7 @@ export default function Modal(props) {
       name,
       email,
       password,
-      telClient,
+      telClient
     });
   };
 
@@ -40,25 +40,25 @@ export default function Modal(props) {
     try {
       const res = await api.post("/auth/login", {
         email,
-        password,
+        password
       });
       if (res.status === 200) {
         setUser({ id: res.data.id, role: res.data.role });
         localStorage.setItem("token", res.data.token);
         props.setShowModal(false);
         if (res.data.role === "expediteur") {
-          router.push("/dashboard");
+          router.push("/dashboard/bordereau");
         } else if (res.data.role === "admin") {
           router.push("/admin/");
-        }else if (res.data.role==="livreur"){
-        router.push("/livreur");
-      }
+        } else if (res.data.role === "livreur") {
+          router.push("/livreur");
+        }
       }
     } catch (err) {
       toast.error(err.message);
     }
   };
-  
+
   return (
     <div>
       {!showRegister ? (

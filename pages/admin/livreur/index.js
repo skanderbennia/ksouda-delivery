@@ -260,9 +260,6 @@ const Livreur = ({ livreurs }) => {
     }, 1000);
 
     setTimeout(async () => {
-
-      const res = await api.get("/users/livreur");
-
       toast.update(idLoading, {
         render: "Livreur a été approuvé",
         type: "success",
@@ -300,9 +297,6 @@ const Livreur = ({ livreurs }) => {
     }, 1000);
 
     setTimeout(async () => {
-
-      const res = await api.get("/users/livreur");
-
       const res = await api.get("/users");
 
       toast.update(idLoading, {
@@ -317,7 +311,6 @@ const Livreur = ({ livreurs }) => {
         type: "success",
         isLoading: false
       });
-
       const list = await res.data;
 
       setListLivreur(
@@ -339,7 +332,7 @@ const Livreur = ({ livreurs }) => {
   };
 
   const fetchMissions = async (id) => {
-    const res = await api.post(`/mission/livreur/`,{id});
+    const res = await api.post(`/mission/livreur/`, { id });
 
     const list = await res.data;
 
