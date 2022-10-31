@@ -18,7 +18,7 @@ export default function Add() {
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors }
   } = useForm();
   const router = useRouter();
 
@@ -29,7 +29,7 @@ export default function Add() {
         dataTags.data.map((elem) => {
           return {
             label: elem.value,
-            value: elem.value,
+            value: elem.value
           };
         })
       );
@@ -63,11 +63,11 @@ export default function Add() {
           await api.post("/bordereau", {
             ...data,
             user: user.id,
-            contenu: selectedTags.join(" "),
+            contenu: selectedTags.join(" ")
           });
           reset();
           setLoading(false);
-          router.push("/dashboard/bordreau");
+          router.push("/dashboard/bordereau");
         })}
       >
         <legend> Informations Bordereau</legend>
