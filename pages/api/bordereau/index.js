@@ -13,6 +13,9 @@ export default async function handler(req, res) {
       const object = Bordereau({ ...req.body });
       await object.save();
       res.status(201).json(object);
+    } else if (req.method === "DELETE") {
+      await Bordereau.findByIdAndDelete(req.body.id);
+      res.status(204).json({});
     }
   } catch (err) {
     console.log(err);

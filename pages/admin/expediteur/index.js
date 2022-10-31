@@ -63,7 +63,8 @@ const Expediteur = ({ expediteurs }) => {
               <button
                 style={{ background: "red", color: "white", border: "none" }}
                 onClick={async () => {
-                  await api.delete("/bordereau/" + item._id);
+                  let ID = item._id;
+                  await api.delete("/bordereau/", {id:ID});
                   setBordereau(
                     bordereau.filter((elem) => elem._id != item._id)
                   );
@@ -177,7 +178,7 @@ const Expediteur = ({ expediteurs }) => {
 
   const fetchBordereau = async (id) => {
     setLoading(true);
-    const res = await api.get(`/bordereau/expediteur/${id}`);
+    const res = await api.post(`/bordereau/expediteur/`,{id});
     const list = await res.data;
 
     setBordereau(list);

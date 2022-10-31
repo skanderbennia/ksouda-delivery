@@ -33,7 +33,8 @@ const menu = (
 
   useEffect(() => {
     async function fetchData() {
-      const res = await api.get("/bordereau/expediteur/" + user.id);
+      let ID = user.id;
+      const res = await api.post("/bordereau/expediteur/",{id:ID});
       setListBordereau(res.data);
     }
     fetchData();
@@ -150,7 +151,8 @@ const menu = (
             <button
               style={{ background: "red", color: "white", border: "none" }}
               onClick={async () => {
-                await api.delete("/bordereau/" + item._id);
+                let ID = item_id;
+                await api.delete("/bordereau/", {id:ID});
                 setListBordereau(
                   listBordereau.filter((elem) => elem._id != item._id)
                 );

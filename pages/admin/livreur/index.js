@@ -292,7 +292,7 @@ const Livreur = ({ livreurs }) => {
   };
 
   const fetchMissions = async (id) => {
-    const res = await api.get(`/mission/livreur/${id}`);
+    const res = await api.post(`/mission/livreur/`,{id});
 
     const list = await res.data;
 
