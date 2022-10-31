@@ -190,7 +190,7 @@ const Bordreau = ({ bordereau }) => {
   return (
     <Navbar>
       <div className="table-actions">
-        <Link href="/dashboard/bordreau/add">
+        <Link href="/dashboard/bordereau/add">
           <Button style={{ marginBottom: 50 }}>Ajouter un bordereau</Button>
         </Link>
         <Input
