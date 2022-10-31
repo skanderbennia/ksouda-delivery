@@ -36,9 +36,7 @@ export default function Add() {
     }
     fetchData();
   }, []);
-  console.log(selectedTags);
   const createTag = async (_, val) => {
-    console.log(val);
     if (val.action == "create-option") {
       await api.post("/tags", { tagValue: val.option.value });
       setTags([...tags, { label: val.option.value, value: val.option.value }]);
@@ -57,13 +55,11 @@ export default function Add() {
       setSelectedTags([]);
     }
   };
-  console.log(tags);
   return (
     <Navbar>
       <form
         onSubmit={handleSubmit(async (data) => {
           setLoading(true);
-          console.log(data);
           await api.post("/bordereau", {
             ...data,
             user: user.id,

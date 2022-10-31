@@ -16,7 +16,6 @@ const Expediteur = ({ expediteurs }) => {
   const [extrait, setExtrait] = useRecoilState(extraitAtom);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
-  console.log(loading);
   const handleRowExpand = (record) => {
     // if a row is expanded, collapses it, otherwise expands it
 
@@ -58,14 +57,14 @@ const Expediteur = ({ expediteurs }) => {
         title: "Action",
         key: "operation",
         render: (item) => {
-          console.log("item", item);
 
           return (
             <div style={{ display: "flex", flexDirection: "row" }}>
               <button
                 style={{ background: "red", color: "white", border: "none" }}
                 onClick={async () => {
-                  await api.delete("/bordereau/" + item._id);
+                  let ID = item._id;
+                  await api.delete("/bordereau/", {id:ID});
                   setBordereau(
                     bordereau.filter((elem) => elem._id != item._id)
                   );
@@ -179,8 +178,7 @@ const Expediteur = ({ expediteurs }) => {
 
   const fetchBordereau = async (id) => {
     setLoading(true);
-    const res = await api.get(`/bordereau/expediteur/${id}`);
-    console.log(res);
+    const res = await api.post(`/bordereau/expediteur/`,{id});
     const list = await res.data;
 
     setBordereau(list);
@@ -208,7 +206,6 @@ const Expediteur = ({ expediteurs }) => {
         isLoading: false
       });
       const res = await api.get("/users");
-      console.log(res);
       toast.update(idLoading, {
         render: "Expediteur a été approuvé",
         type: "success",
@@ -247,7 +244,6 @@ const Expediteur = ({ expediteurs }) => {
         isLoading: false
       });
 
-      console.log(res);
       toast.update(idLoading, {
         render: "Expediteur a été rejeté",
         type: "success",

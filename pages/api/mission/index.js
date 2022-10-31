@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
     res.status(200).json(list);
 
-  } else if (req.method === "POST") {
+  } else if (req.method === "PATCH") {
     const { livreurId, bordereauList } = req.body;
     const mission = await Mission({ livreurId,bordereauList });
     for (const el of bordereauList){
@@ -18,6 +18,9 @@ export default async function handler(req, res) {
     }
     await mission.save();
     res.send(mission);
+  } else if (req.method === "POST") {
+    const mission = await Mission.find({ _id: req.body.id});
+    res.status(200).json(mission);
   } else {
     res.status(405).json({ msg: "Method not allowed" });
   }

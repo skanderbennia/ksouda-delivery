@@ -30,7 +30,6 @@ const Livreur = ({ livreurs }) => {
   const modalRef = useRef();
 
   useEffect(() => {
-    console.log("Modal useEffect");
     if ((document && showModal) || (document && showListModal)) {
       // block scroll
       var body = $("html, body");
@@ -222,7 +221,6 @@ const Livreur = ({ livreurs }) => {
         setShowModal(false);
       }
     } catch (err) {
-      console.log(err);
       toast.error(err.response.data.msg);
     }
   };
@@ -242,7 +240,6 @@ const Livreur = ({ livreurs }) => {
     const res = await api.get(
       `/mission/${id}`
     );
-    console.log(res);
     const list = await res.data;
 
     setMission(list);
@@ -263,6 +260,9 @@ const Livreur = ({ livreurs }) => {
     }, 1000);
 
     setTimeout(async () => {
+
+      const res = await api.get("/users/livreur");
+
       toast.update(idLoading, {
         render: "Livreur a été approuvé",
         type: "success",
@@ -300,6 +300,9 @@ const Livreur = ({ livreurs }) => {
     }, 1000);
 
     setTimeout(async () => {
+
+      const res = await api.get("/users/livreur");
+
       const res = await api.get("/users");
 
       toast.update(idLoading, {
@@ -314,6 +317,7 @@ const Livreur = ({ livreurs }) => {
         type: "success",
         isLoading: false
       });
+
       const list = await res.data;
 
       setListLivreur(
@@ -335,9 +339,8 @@ const Livreur = ({ livreurs }) => {
   };
 
   const fetchMissions = async (id) => {
-    const res = await api.get(`/mission/livreur/${id}`);
+    const res = await api.post(`/mission/livreur/`,{id});
 
-    console.log(res);
     const list = await res.data;
 
     setMissions(list);
@@ -456,7 +459,7 @@ const Livreur = ({ livreurs }) => {
                       className="form-control select-bordereau"
                       id="exampleInputEmail1"
                       aria-describedby="Selectionner les Bordereau"
-                      /*onChange={data => {console.log(data.target.selectedOptions);setSelectedBordereau(data)}}*/
+                      /*onChange={data => {setSelectedBordereau(data)}}*/
                       {...register("bordereauList", { required: true })}
                       multiple
                     >

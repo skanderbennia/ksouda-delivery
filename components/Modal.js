@@ -14,7 +14,6 @@ export default function Modal(props) {
   const [showRegister, setShowRegister] = useState(false);
   const modalRef = useRef();
   useEffect(() => {
-    console.log("Modal useEffect");
     if (document && props.showModal) {
       // block scroll
       var body = $("html, body");
@@ -56,8 +55,7 @@ export default function Modal(props) {
       }
       }
     } catch (err) {
-      console.log(err);
-      toast.error(err.response.data.msg);
+      toast.error(err.message);
     }
   };
   

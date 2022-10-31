@@ -15,13 +15,11 @@ export default function Add() {
     formState: { errors },
   } = useForm();
   const router = useRouter();
-  console.log(errors);
   return (
     <Navbar>
       <form
         onSubmit={handleSubmit(async (data) => {
           setLoading(true);
-          console.log(data);
           await api.post("/users/livreur", { ...data });
           reset();
           setLoading(false);
