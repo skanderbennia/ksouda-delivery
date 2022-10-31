@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const env = process.env.NODE_ENV;
 var url = '';
@@ -14,8 +14,8 @@ const api = axios.create({
   baseURL: url,
   timeout: 5000,
   header: {
-    "Content-Type": "application/json",
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 export default api;

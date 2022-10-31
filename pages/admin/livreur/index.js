@@ -54,7 +54,7 @@ const Livreur = ({ livreurs }) => {
           ++index;
           return index;
         },
-        showSorterTooltip: false,
+        showSorterTooltip: false
       },
       {
         title: "Liste des bordereaux ",
@@ -63,7 +63,7 @@ const Livreur = ({ livreurs }) => {
             <div
               style={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "row"
               }}
             >
               <Button
@@ -88,7 +88,7 @@ const Livreur = ({ livreurs }) => {
               </Button>
             </div>
           );
-        },
+        }
       },
 
       {
@@ -96,7 +96,7 @@ const Livreur = ({ livreurs }) => {
         key: "nbr-bordereaux",
         render: (row) => {
           return <span>{row.bordereauList.length}</span>;
-        },
+        }
       },
       {
         title: "Prix totale de Mission",
@@ -110,8 +110,8 @@ const Livreur = ({ livreurs }) => {
               )}
             </span>
           );
-        },
-      },
+        }
+      }
     ];
 
     const data = [];
@@ -120,7 +120,7 @@ const Livreur = ({ livreurs }) => {
         key: i.toString(),
         date: "2014-12-24 23:12:00",
         name: "This is production name",
-        upgradeNum: "Upgraded: 56",
+        upgradeNum: "Upgraded: 56"
       });
     }
 
@@ -152,13 +152,13 @@ const Livreur = ({ livreurs }) => {
       title: "Nom Livreur",
       dataIndex: "name",
       key: "name",
-      render: (text) => <a>{text}</a>,
+      render: (text) => <a>{text}</a>
     },
     {
       title: "E-mail",
       dataIndex: "email",
       key: "email",
-      missionBordereauList,
+      missionBordereauList
     },
     {
       title: "Status",
@@ -169,7 +169,7 @@ const Livreur = ({ livreurs }) => {
         ) : (
           <Tag color="yellow">En Attente</Tag>
         );
-      },
+      }
     },
     {
       title: "Action",
@@ -178,7 +178,7 @@ const Livreur = ({ livreurs }) => {
           <div
             style={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "row"
             }}
           >
             {!row.approved && (
@@ -205,15 +205,15 @@ const Livreur = ({ livreurs }) => {
             )}
           </div>
         );
-      },
-    },
+      }
+    }
   ];
 
   const handleAddMission = async (livreurId, bordereauList) => {
     try {
       const res = await api.post("/mission/", {
         livreurId,
-        bordereauList,
+        bordereauList
       });
 
       if (res.status === 200) {
@@ -246,41 +246,88 @@ const Livreur = ({ livreurs }) => {
   }; */
 
   const approveUser = async (id) => {
-    toast.promise(api.get("/users/approve/" + id), {
-      success: "Livreur approuver",
-      error: "Livreur déja approuver",
-      loading: "Lancement de transaction ...",
+    const idLoading = toast.loading("Chargement de la transaction ....", {
+      isLoading: true
     });
 
+    await api.post("/users/approve/", { id });
+    setTimeout(() => {
+      toast.update(idLoading, {
+        render: "pending...",
+        type: "loading",
+        isLoading: true
+      });
+    }, 1000);
+
     setTimeout(async () => {
+
       const res = await api.get("/users/livreur");
+
+      toast.update(idLoading, {
+        render: "Livreur a été approuvé",
+        type: "success",
+        isLoading: false
+      });
+      const res = await api.get("/users");
+      console.log(res);
+      toast.update(idLoading, {
+        render: "livreur a été approuvé",
+        type: "success",
+        isLoading: false
+      });
       const list = await res.data;
       setListLivreur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
         })
       );
-    }, 500);
+      toast.dismiss(idLoading);
+    }, 1000);
   };
 
   const blockUser = async (id) => {
-    await toast.promise(api.get("/users/reject/" + id), {
-      success: "Livreur bloquee",
-      error: "Livreur déja non approvee",
-      loading: "Lancement de transaction ...",
+    const idLoading = toast.loading("Chargement de la transaction ....", {
+      isLoading: true
     });
 
+    await api.post("/users/reject/", { id });
+    setTimeout(() => {
+      toast.update(idLoading, {
+        render: "pending...",
+        type: "loading",
+        isLoading: true
+      });
+    }, 1000);
+
     setTimeout(async () => {
+
       const res = await api.get("/users/livreur");
+
+      const res = await api.get("/users");
+
+      toast.update(idLoading, {
+        render: "Livreur a été rejeté",
+        type: "success",
+        isLoading: false
+      });
+
+      console.log(res);
+      toast.update(idLoading, {
+        render: "Livreur a été rejeté",
+        type: "success",
+        isLoading: false
+      });
+
       const list = await res.data;
+
       setListLivreur(
         list.map((elem) => {
           return { ...elem, key: elem._id };
         })
       );
-    }, 500);
+      toast.dismiss(idLoading);
+    }, 1000);
   };
-
   const handleRowExpand = (record) => {
     // if a row is expanded, collapses it, otherwise expands it
     if (expandedRows.includes(record.key)) {
@@ -303,33 +350,33 @@ const Livreur = ({ livreurs }) => {
     {
       title: "CodeBar",
       dataIndex: "codebar",
-      key: "codebar",
+      key: "codebar"
     },
     {
       title: "Nom de client",
       dataIndex: "nomClient",
-      key: "nomClient",
+      key: "nomClient"
     },
     {
       title: "Adresse",
       dataIndex: "adresse",
-      key: "adresse",
+      key: "adresse"
     },
     {
       title: "Telephone Client",
       dataIndex: "telClient",
-      key: "telClient",
+      key: "telClient"
     },
     {
       title: "Quantité",
       dataIndex: "quantite",
-      key: "quantite",
+      key: "quantite"
     },
     {
       title: "Prix",
       dataIndex: "prix_unit",
-      key: "prix_unit",
-    },
+      key: "prix_unit"
+    }
   ];
 
   return (
@@ -369,7 +416,7 @@ const Livreur = ({ livreurs }) => {
         expandable={{
           expandedRowRender,
           defaultExpandedRowKeys: ["0"],
-          rowExpandable: (record) => record.approved,
+          rowExpandable: (record) => record.approved
         }}
         onExpand={(expande, record) => {
           fetchMissions(record._id);
@@ -509,8 +556,8 @@ export const getServerSideProps = async () => {
     props: {
       livreurs: list.map((elem) => {
         return { ...elem, key: elem._id };
-      }),
-    },
+      })
+    }
   };
 };
 export default Livreur;
