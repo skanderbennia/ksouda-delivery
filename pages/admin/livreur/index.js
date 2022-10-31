@@ -463,7 +463,7 @@ const Livreur = ({ livreurs }) => {
                               [ {elem.codebar} ]{" "}
                               {elem.user ? elem.user.name + " " : " "}{" "}
                               {" => " + elem.nomClient + " | "}{" "}
-                              {elem.codebar ? elem.codebar : ""}
+                              {elem.codebar ? elem.adresse : ""}
                             </option>
                           </>
                         );
