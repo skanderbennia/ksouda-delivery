@@ -3,18 +3,17 @@ import mongoose from "mongoose";
 const MissionSchema = mongoose.Schema({
   livreurId: {
     type: String,
-    required: true,
+    required: true
   },
   bordereauList: {
     type: Array,
-    default: [],
+    default: []
   },
   etat: {
     type: String,
     enum: ["En cours", "Terminee"],
-    default: "En cours",
+    default: "En cours"
   }
-  
 });
 export default mongoose.models.Mission ||
   mongoose.model("Mission", MissionSchema);

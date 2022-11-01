@@ -1,46 +1,46 @@
 import { mongoose } from "mongoose";
 const BordereauSchema = new mongoose.Schema({
   codebar: {
-    type: String,
+    type: String
   },
   bonLivraison: {
-    type: String,
+    type: String
   },
   nomClient: {
-    type: String,
+    type: String
   },
   adresse: {
-    type: String,
+    type: String
   },
   telClient: {
-    type: String,
+    type: String
   },
   prix_unit: {
-    type: Number,
+    type: Number
   },
   quantite: {
-    type: Number,
+    type: Number
   },
   contenu: {
-    type: String,
+    type: String
   },
   montantTTC: {
-    type: Number,
+    type: Number
   },
   etat: {
     type: String,
-    enum: ["En cours", "Annulé", "Livré"],
-    default: "En cours",
+    enum: ["En cours", "Annule", "Livre", "Echange"],
+    default: "En cours"
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "User"
   },
   livreurID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    default: null,
-  },
+    default: null
+  }
 });
 
 // if Model exist then return it
