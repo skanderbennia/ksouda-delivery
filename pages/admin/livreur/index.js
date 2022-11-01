@@ -146,7 +146,6 @@ const Livreur = ({ livreurs }) => {
     );
   };
 
-  missionBordereauList;
   const columns = [
     {
       title: "Nom Livreur",
@@ -253,7 +252,7 @@ const Livreur = ({ livreurs }) => {
     await api.post("/users/approve/", { id });
     setTimeout(() => {
       toast.update(idLoading, {
-        render: "pending...",
+        render: "Chargement de la transaction ...",
         type: "loading",
         isLoading: true
       });
@@ -265,7 +264,7 @@ const Livreur = ({ livreurs }) => {
         type: "success",
         isLoading: false
       });
-      const res = await api.get("/users");
+      const res = await api.get("/users/livreur");
       console.log(res);
       toast.update(idLoading, {
         render: "livreur a été approuvé",
@@ -297,7 +296,7 @@ const Livreur = ({ livreurs }) => {
     }, 1000);
 
     setTimeout(async () => {
-      const res = await api.get("/users");
+      const res = await api.get("/users/livreur");
 
       toast.update(idLoading, {
         render: "Livreur a été rejeté",
