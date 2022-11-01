@@ -57,14 +57,13 @@ const Expediteur = ({ expediteurs }) => {
         title: "Action",
         key: "operation",
         render: (item) => {
-
           return (
             <div style={{ display: "flex", flexDirection: "row" }}>
               <button
                 style={{ background: "red", color: "white", border: "none" }}
                 onClick={async () => {
                   let ID = item._id;
-                  await api.delete("/bordereau/", {id:ID});
+                  await api.patch("/bordereau/", { id: ID });
                   setBordereau(
                     bordereau.filter((elem) => elem._id != item._id)
                   );
@@ -178,7 +177,7 @@ const Expediteur = ({ expediteurs }) => {
 
   const fetchBordereau = async (id) => {
     setLoading(true);
-    const res = await api.post(`/bordereau/expediteur/`,{id});
+    const res = await api.post(`/bordereau/expediteur/`, { id });
     const list = await res.data;
 
     setBordereau(list);

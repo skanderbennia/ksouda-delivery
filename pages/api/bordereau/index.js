@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       const object = Bordereau({ ...req.body });
       await object.save();
       res.status(201).json(object);
-    } else if (req.method === "DELETE") {
+    } else if (req.method === "PATCH") {
       await Bordereau.findByIdAndDelete(req.body.id);
       res.status(204).json({});
     }

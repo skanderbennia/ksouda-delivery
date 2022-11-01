@@ -150,7 +150,7 @@ const Bordreau = ({ bordereau }) => {
               style={{ background: "red", color: "white", border: "none" }}
               onClick={async () => {
                 let ID = item._id;
-                await api.delete("/bordereau/", { id: ID });
+                await api.patch("/bordereau/", { id: ID });
                 setListBordereau(
                   listBordereau.filter((elem) => elem._id != item._id)
                 );
