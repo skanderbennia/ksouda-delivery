@@ -55,7 +55,7 @@ export default function Modal(props) {
         }
       }
     } catch (err) {
-      toast.error(err.message);
+      toast.error("Username or password is wrong ");
     }
   };
 
