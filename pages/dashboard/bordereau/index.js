@@ -132,10 +132,10 @@ const Bordreau = ({ bordereau }) => {
           case "En cours":
             return <Tag color="orange">{item.etat}</Tag>;
 
-          case "Annulé":
+          case "Annule":
             return <Tag color="red">{item.etat}</Tag>;
 
-          case "Livré":
+          case "Livre":
             return <Tag color="green">{item.etat}</Tag>;
         }
       }

@@ -85,14 +85,11 @@ body {
 }
 
 .modal-c{
-  height: 500px;
+  height: 71vh;
   overflow: scroll;
 
 }
-.modal-c .select-bordereau{
-  height: 35vh !important ;
 
-}
 
 .modal-body input{
   width: 100%;
