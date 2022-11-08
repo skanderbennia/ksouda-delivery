@@ -130,13 +130,15 @@ const Bordreau = ({ bordereau }) => {
       render: (item) => {
         switch (item.etat) {
           case "En cours":
-            return <Tag color="orange">{item.etat}</Tag>;
+            return <Tag color="blue">{item.etat}</Tag>;
 
-          case "Annulé":
+          case "Annule":
             return <Tag color="red">{item.etat}</Tag>;
 
-          case "Livré":
+          case "Livre":
             return <Tag color="green">{item.etat}</Tag>;
+          case "Echange":
+            return <Tag color="orange">{item.etat}</Tag>;
         }
       }
     },

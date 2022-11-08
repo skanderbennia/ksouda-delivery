@@ -111,6 +111,11 @@ const Livreur = ({ livreurs }) => {
             </span>
           );
         }
+      },
+      {
+        title: "Etat",
+        dataIndex: "etat",
+        key: "etat"
       }
     ];
 
