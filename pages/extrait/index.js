@@ -62,7 +62,9 @@ export default function Extrait() {
           </div>
         </div>
         <div className={style.zoneLegend}>
-          <div className={style.legend}>Bon de livraison</div>
+          <div className={style.legend}>
+            Bon de livraison N°{extrait.bordereauNumber}
+          </div>
         </div>
         <div className={style.zoneInfo}>
           <div className={style.info}>
@@ -86,8 +88,8 @@ export default function Extrait() {
             <tr>
               <td>{extrait.contenu}</td>
               <td>{extrait.quantite}</td>
-              <td>{extrait.prix_unit}</td>
-              <td>{extrait.prix_unit * extrait.quantite}</td>
+              <td>{extrait.prix_unit} DT</td>
+              <td>{extrait.prix_unit * extrait.quantite} DT</td>
             </tr>
           </tbody>
         </table>
@@ -95,10 +97,15 @@ export default function Extrait() {
           <div className={style.infoPrix}>
             <ul>
               <div>Prix HT : {extrait.prix_unit * extrait.quantite} DT</div>
-              <div>TVA : 19%</div>
               <div>
-                Prix TTC : {(extrait.prix_unit * extrait.quantite * 119) / 100}{" "}
-                DT
+                TVA :{" "}
+                {((extrait.prix_unit * extrait.quantite) / 19).toPrecision(3)}{" "}
+                DT (19%)
+              </div>
+              <div> Prix de livraison : 7 DT </div>
+              <div>
+                Prix TTC :{" "}
+                {(extrait.prix_unit * extrait.quantite * 119) / 100 - 7} DT
               </div>
             </ul>
           </div>

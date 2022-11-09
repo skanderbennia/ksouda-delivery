@@ -195,7 +195,8 @@ const Bordreau = ({ bordereau }) => {
                   prix_unit: item.prix_unit,
                   quantite: item.quantite,
                   contenu: item.contenu,
-                  expediteur: user.user
+                  expediteur: user.user,
+                  bordereauNumber: item.indexElement
                 });
                 router.push("/extrait");
               }}

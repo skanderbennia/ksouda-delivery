@@ -60,9 +60,10 @@ export default function Add() {
       <form
         onSubmit={handleSubmit(async (data) => {
           setLoading(true);
+          console.log(user.user._id);
           await api.post("/bordereau", {
             ...data,
-            user: user.id,
+            user: user.user._id,
             contenu: selectedTags.join(" ")
           });
           reset();
