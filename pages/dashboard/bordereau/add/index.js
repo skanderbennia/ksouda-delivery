@@ -145,6 +145,16 @@ export default function Add() {
           )}
         </div>
         <div style={{ display: "block" }} className="input-container">
+          <label> Prix de livraison </label>
+          <input
+            type="text"
+            className="input-add-bordreau"
+            disabled
+            style={{ color: "grey" }}
+            value={"7dt"}
+          />
+        </div>
+        <div style={{ display: "block" }} className="input-container">
           <label> Description</label>
           <Select
             options={tags}

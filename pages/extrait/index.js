@@ -17,10 +17,10 @@ export default function Extrait() {
       let canvas = bwipjs.toCanvas("mycanvas", {
         bcid: "code128", // Barcode type
         text: extrait.codebar, // Text to encode
-        scale: 3, // 3x scaling factor
-        height: 6, // Bar height, in millimeters
-        width: 3,
-        textxalign: "center", // Always good to set this
+        height: 7,
+        // Bar height, in millimeters
+        includetext: true,
+        textxalign: "center" // Always good to set this
       });
       setImage(canvas.toDataURL("image/png"));
     } catch (e) {
@@ -28,7 +28,7 @@ export default function Extrait() {
     }
     buttonRef.current.click();
   }, [extrait]);
-
+  console.log(extrait.expediteur);
   return (
     <>
       <div
@@ -36,7 +36,7 @@ export default function Extrait() {
           height: "90vh",
           width: "95%",
           margin: "auto",
-          border: "1px solid black",
+          border: "1px solid black"
         }}
         ref={(el) => (extraitRef = el)}
       >
@@ -44,7 +44,22 @@ export default function Extrait() {
           <div className={style.codebar}>
             <canvas id="mycanvas" />
           </div>
-          <div className={style.nomExpediteur}>{extrait.nomClient}</div>
+          <div className={style.nomExpediteur}>
+            <table>
+              <tr>
+                <td>Nom d'expediteur</td>
+                <td>{extrait.expediteur.name}</td>
+              </tr>
+              <tr>
+                <td>Email d'expediteur</td>
+                <td>{extrait.expediteur.email}</td>
+              </tr>
+              <tr>
+                <td>Télephone de l'expediteur</td>
+                <td>{extrait.expediteur.tel}</td>
+              </tr>
+            </table>
+          </div>
         </div>
         <div className={style.zoneLegend}>
           <div className={style.legend}>Bon de livraison</div>

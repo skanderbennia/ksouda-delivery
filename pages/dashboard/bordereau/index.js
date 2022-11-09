@@ -33,7 +33,7 @@ const Bordreau = ({ bordereau }) => {
 
   useEffect(() => {
     async function fetchData() {
-      let ID = user.id;
+      let ID = user.user._id;
       const res = await api.post("/bordereau/expediteur/", { id: ID });
       setListBordereau(res.data);
       setAllBordereau(res.data);
@@ -124,6 +124,24 @@ const Bordreau = ({ bordereau }) => {
       key: "prix_unit"
     },
     {
+      title: "Prix de livraison",
+      key: "prix_livraison",
+      render: () => {
+        return <p style={{ textAlign: "center" }}>7dt </p>;
+      }
+    },
+    {
+      title: "Prix totale",
+      key: "prix_totale",
+      render: (item) => {
+        return (
+          <p style={{ textAlign: "center" }}>
+            {item.quantite * item.prix_unit} dt{" "}
+          </p>
+        );
+      }
+    },
+    {
       title: "Etat",
       // dataIndex: "etat",
       key: "etat",
@@ -176,7 +194,8 @@ const Bordreau = ({ bordereau }) => {
                   telClient: item.telClient,
                   prix_unit: item.prix_unit,
                   quantite: item.quantite,
-                  contenu: item.contenu
+                  contenu: item.contenu,
+                  expediteur: user.user
                 });
                 router.push("/extrait");
               }}
