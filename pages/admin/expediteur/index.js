@@ -262,6 +262,16 @@ const Expediteur = ({ expediteurs }) => {
   return (
     <Navbar>
       <div className="table-actions exp">
+        <div>
+          <label style={{ marginRight: 50 }}>Prix de livraison</label>
+          <Input
+            className="filter-input"
+            placeholder="Fixer le prix de livraison "
+            type="number"
+            defaultValue={7}
+          />
+        </div>
+
         <Input
           className="filter-input"
           placeholder="Chercher Expediteur"

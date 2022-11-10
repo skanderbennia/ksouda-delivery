@@ -43,7 +43,7 @@ export default function Modal(props) {
         password
       });
       if (res.status === 200) {
-        setUser({ id: res.data.id, role: res.data.role });
+        setUser({ user: res.data.user, role: res.data.role });
         localStorage.setItem("token", res.data.token);
         props.setShowModal(false);
         if (res.data.role === "expediteur") {

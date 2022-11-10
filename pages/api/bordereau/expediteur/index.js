@@ -7,7 +7,6 @@ export default async function handler(req, res) {
     try {
       await connectDB();
       auth(req, res);
-      console.log(req.user);
       const bordereau = await Bordereau.find({ user: req.body.id });
       console.log(bordereau);
       res.status(200).json(bordereau);

@@ -14,14 +14,19 @@
   padding: 10px;
 }
 .nomExpediteur {
-  border: 1px solid black;
   border-top: none;
   border-right: none;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
+  flex-direction: column;
 }
+.nomExpediteur table {
+  border: 1px solid black;
+  border-right: none;
+}
+.nomExpediteur table td {
+  border: 1px solid black;
+}
+
 .zoneLegend {
   display: flex;
   align-items: center;
