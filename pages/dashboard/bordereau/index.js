@@ -249,6 +249,62 @@ const Bordreau = ({ bordereau }) => {
         // }}
         dataSource={listBordereau}
       />
+      <div
+        style={{ display: "flex", justifyContent: "space-around" }}
+        className="list-tag-filter"
+      >
+        <Tag
+          color="blue"
+          onClick={() => {
+            setListBordereau([
+              ...allBordereau.filter((elem) => elem.etat === "En cours")
+            ]);
+          }}
+        >
+          En cours{" "}
+          {allBordereau.filter((elem) => elem.etat === "En cours").length}
+        </Tag>
+        <Tag
+          color="green"
+          onClick={() => {
+            setListBordereau([
+              ...allBordereau.filter((elem) => elem.etat === "Livre")
+            ]);
+          }}
+        >
+          Livré {allBordereau.filter((elem) => elem.etat === "Livre").length}
+        </Tag>
+        <Tag
+          color="orange"
+          onClick={() => {
+            setListBordereau([
+              ...allBordereau.filter((elem) => elem.etat === "Echange")
+            ]);
+          }}
+        >
+          {" "}
+          Echange{" "}
+          {allBordereau.filter((elem) => elem.etat === "Echange").length}
+        </Tag>
+        <Tag
+          color="red"
+          onClick={() => {
+            setListBordereau([
+              ...allBordereau.filter((elem) => elem.etat === "Annule")
+            ]);
+          }}
+        >
+          Annulé {allBordereau.filter((elem) => elem.etat === "Annule").length}
+        </Tag>
+        <Tag
+          color="purple"
+          onClick={() => {
+            setListBordereau([...allBordereau]);
+          }}
+        >
+          Totale{allBordereau.length}
+        </Tag>
+      </div>
     </Navbar>
   );
 };

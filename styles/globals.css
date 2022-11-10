@@ -83,7 +83,7 @@ body {
   user-select: none;
   animation: spin 0.5s ease-in-out;
 }
-.modal-c{
+.modal-c {
   height: 71vh;
 
   overflow: scroll;
@@ -92,7 +92,6 @@ body {
 .modal-c .select-bordereau {
   height: 35vh !important ;
 }
-
 
 .modal-body input {
   width: 100%;
@@ -122,6 +121,13 @@ body {
   -moz-appearance: none;
   appearance: none;
   margin-bottom: 30px;
+}
+
+.list-tag-filter * {
+  cursor: pointer;
+}
+.list-tag-filter *:hover {
+  border: 1px solid grey;
 }
 
 @keyframes spin {
