@@ -16,7 +16,8 @@ const Livreur = ({ livreurs }) => {
   const [bordereau, setBordereau] = useState([]);
   const [mission, setMission] = useState([]);
   const [missionBordereauList, SetMissionBordereauList] = useState([]);
-  /*const [selectedBordereau, setSelectedBordereau] = useState([]);*/
+
+  const [selectedBordereau, setSelectedBordereau] = useState([]);
 
   const [livreurID, setLivreurID] = useState([]);
   const [value, setValue] = useState("");
@@ -376,6 +377,126 @@ const Livreur = ({ livreurs }) => {
     }
   ];
 
+  const addcolumns = [
+    {
+      title: "CodeBar",
+      dataIndex: "codebar",
+      key: "codebar"
+    },
+    {
+      title: "Nom de client",
+      dataIndex: "nomClient",
+      key: "nomClient"
+    },
+    {
+      title: "Adresse",
+      dataIndex: "adresse",
+      key: "adresse"
+    },
+    {
+      title: "Telephone Client",
+      dataIndex: "telClient",
+      key: "telClient"
+    },
+    {
+      title: "Quantité",
+      dataIndex: "quantite",
+      key: "quantite"
+    },
+    {
+      title: "Prix",
+      dataIndex: "prix_unit",
+      key: "prix_unit"
+    },
+    {
+      title: "Add",
+      render: (row) => {
+        return (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row"
+            }}
+          >
+              <Button
+                type="primary"
+                style={{borderRadius:'50%',width:'30px',height:'30px',padding:0}}
+                onClick={async (e) => {
+                  e.preventDefault();
+                  if(selectedBordereau.indexOf(row) === -1) {
+                    setSelectedBordereau([...selectedBordereau,row])
+                  }
+                }}
+              >
+                +
+              </Button>
+          </div>
+        );
+      }
+    }
+    
+  ];
+
+  const selectcolumns = [
+    {
+      title: "CodeBar",
+      dataIndex: "codebar",
+      key: "codebar"
+    },
+    {
+      title: "Nom de client",
+      dataIndex: "nomClient",
+      key: "nomClient"
+    },
+    {
+      title: "Adresse",
+      dataIndex: "adresse",
+      key: "adresse"
+    },
+    {
+      title: "Telephone Client",
+      dataIndex: "telClient",
+      key: "telClient"
+    },
+    {
+      title: "Quantité",
+      dataIndex: "quantite",
+      key: "quantite"
+    },
+    {
+      title: "Prix",
+      dataIndex: "prix_unit",
+      key: "prix_unit"
+    },
+    {
+      title: "Add",
+      render: (row) => {
+        return (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row"
+            }}
+          >
+              <Button
+                danger
+                style={{borderRadius:'50%',width:'30px',height:'30px',padding:0}}
+                onClick={async (e) => {
+                  e.preventDefault();
+                  var bIndex = selectedBordereau.indexOf(row);
+                  selectedBordereau.splice(bIndex, 1);
+                  setSelectedBordereau([...selectedBordereau])
+                }}
+              >
+                -
+              </Button>
+          </div>
+        );
+      }
+    }
+    
+  ];
+
   return (
     <Navbar className="form-group">
       <div className="table-actions">
@@ -428,7 +549,6 @@ const Livreur = ({ livreurs }) => {
             <div className="modal-content-min modal-c" ref={modalRef}>
               <div
                 className="modal-header"
-                style={{ paddingLeft: "40px", paddingRight: "40px" }}
               >
                 <h5 className="modal-title">Liste des bordereaux</h5>
                 <button
@@ -436,6 +556,7 @@ const Livreur = ({ livreurs }) => {
                   className="close"
                   onClick={() => {
                     setShowModal();
+                    setSelectedBordereau([]);
                   }}
                 >
                   <span aria-hidden="true">&times;</span>
@@ -443,20 +564,22 @@ const Livreur = ({ livreurs }) => {
               </div>
               <div className="modal-body">
                 <form
-                  onSubmit={handleSubmit(async (data) => {
-                    let list = [];
-                    for (let i = 0; i < data.bordereauList.length; i++) {
-                      list.push(JSON.parse(data.bordereauList[i]));
+                  onSubmit={handleSubmit( () => {
+                    if(selectedBordereau.length>0){
+                    handleAddMission(livreurID, selectedBordereau);
+                    setSelectedBordereau([]);
+                    }else{
+                      setShowModal();
+                      setSelectedBordereau([]);
+                      toast.error('Bordreaux selectionees vide');
                     }
-                    handleAddMission(livreurID, list);
                   })}
                 >
                   <div className="form-group">
-                    <select
+                    {/*<select
                       className="form-control select-bordereau"
                       id="exampleInputEmail1"
                       aria-describedby="Selectionner les Bordereau"
-                      /*onChange={data => {setSelectedBordereau(data)}}*/
                       {...register("bordereauList", { required: true })}
                       multiple
                     >
@@ -472,11 +595,29 @@ const Livreur = ({ livreurs }) => {
                           </>
                         );
                       })}
-                    </select>
+                    </select>*/}
+                    <Table
+                      columns={addcolumns}
+                      dataSource={bordereau}
+                      size="small"
+                      bordered
+                      pagination={{ pageSize: 3 }}
+                      loading={bordereau === undefined}
+                    />
+                  <h5 className="modal-title">Bordereaux selectionné</h5>
+                  <hr/>
+                    <Table
+                      columns={selectcolumns}
+                      dataSource={selectedBordereau}
+                      size="small"
+                      bordered
+                      pagination={{ pageSize: 3 }}
+                      loading={selectedBordereau === undefined}
+                    />
                   </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button type="submit" className="save-login">
-                      Add Mission
+                      Ajouter Mission
                     </button>
                   </div>
                 </form>

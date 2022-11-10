@@ -54,6 +54,23 @@ const Expediteur = ({ expediteurs }) => {
         key: "prix_unit"
       },
       {
+        title: "Etat",
+        // dataIndex: "etat",
+        key: "etat",
+        render: (item) => {
+          switch (item.etat) {
+            case "En cours":
+              return <Tag color="orange">{item.etat}</Tag>;
+  
+            case "Annule":
+              return <Tag color="red">{item.etat}</Tag>;
+  
+            case "Livre":
+              return <Tag color="green">{item.etat}</Tag>;
+          }
+        }
+      },
+      {
         title: "Action",
         key: "operation",
         render: (item) => {

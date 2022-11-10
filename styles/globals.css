@@ -83,14 +83,16 @@ body {
   user-select: none;
   animation: spin 0.5s ease-in-out;
 }
+.modal-c{
+  height: 71vh;
 
-.modal-c {
-  height: 500px;
   overflow: scroll;
 }
+
 .modal-c .select-bordereau {
   height: 35vh !important ;
 }
+
 
 .modal-body input {
   width: 100%;
