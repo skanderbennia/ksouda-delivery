@@ -13,6 +13,7 @@ const Livreur = ({ livreurs }) => {
   const allLivreurs = livreurs;
 
   const [missions, setMissions] = useState([]);
+  const [loadingBordereau, setLoadingBordereau] = useState(false);
   const [bordereau, setBordereau] = useState([]);
   const [mission, setMission] = useState([]);
   const [missionBordereauList, SetMissionBordereauList] = useState([]);
@@ -231,14 +232,15 @@ const Livreur = ({ livreurs }) => {
   };
 
   const fetchBordereau = async (id) => {
+    setLoadingBordereau(true);
     const res1 = await api.get(`/bordereau/`);
     const bordereaux = await res1.data;
-
     setBordereau(
       bordereaux.filter((b) => {
         return !b.livreurID || !b.hasOwnProperty("livreurID");
       })
     );
+    setLoadingBordereau(false);
   };
 
   /*const fetchMission = async (id) => {
@@ -418,23 +420,33 @@ const Livreur = ({ livreurs }) => {
               flexDirection: "row"
             }}
           >
-              <Button
-                type="primary"
-                style={{borderRadius:'50%',width:'30px',height:'30px',padding:0}}
-                onClick={async (e) => {
-                  e.preventDefault();
-                  if(selectedBordereau.indexOf(row) === -1) {
-                    setSelectedBordereau([...selectedBordereau,row])
-                  }
-                }}
-              >
-                +
-              </Button>
+            <Button
+              type="primary"
+              style={{
+                borderRadius: "50%",
+                width: "30px",
+                height: "30px",
+                padding: 0
+              }}
+              onClick={async (e) => {
+                e.preventDefault();
+                if (selectedBordereau.indexOf(row) === -1) {
+                  const indexRow = bordereau.findIndex(
+                    (elem) => elem._id == row._id
+                  );
+                  bordereau.splice(indexRow, 1);
+
+                  setBordereau([...bordereau]);
+                  setSelectedBordereau([...selectedBordereau, row]);
+                }
+              }}
+            >
+              +
+            </Button>
           </div>
         );
       }
     }
-    
   ];
 
   const selectcolumns = [
@@ -478,23 +490,27 @@ const Livreur = ({ livreurs }) => {
               flexDirection: "row"
             }}
           >
-              <Button
-                danger
-                style={{borderRadius:'50%',width:'30px',height:'30px',padding:0}}
-                onClick={async (e) => {
-                  e.preventDefault();
-                  var bIndex = selectedBordereau.indexOf(row);
-                  selectedBordereau.splice(bIndex, 1);
-                  setSelectedBordereau([...selectedBordereau])
-                }}
-              >
-                -
-              </Button>
+            <Button
+              danger
+              style={{
+                borderRadius: "50%",
+                width: "30px",
+                height: "30px",
+                padding: 0
+              }}
+              onClick={async (e) => {
+                e.preventDefault();
+                var bIndex = selectedBordereau.indexOf(row);
+                selectedBordereau.splice(bIndex, 1);
+                setSelectedBordereau([...selectedBordereau]);
+              }}
+            >
+              -
+            </Button>
           </div>
         );
       }
     }
-    
   ];
 
   return (
@@ -547,9 +563,7 @@ const Livreur = ({ livreurs }) => {
         <div>
           <div className={`modal ${showModal && "show"}`}>
             <div className="modal-content-min modal-c" ref={modalRef}>
-              <div
-                className="modal-header"
-              >
+              <div className="modal-header">
                 <h5 className="modal-title">Liste des bordereaux</h5>
                 <button
                   type="button"
@@ -564,14 +578,14 @@ const Livreur = ({ livreurs }) => {
               </div>
               <div className="modal-body">
                 <form
-                  onSubmit={handleSubmit( () => {
-                    if(selectedBordereau.length>0){
-                    handleAddMission(livreurID, selectedBordereau);
-                    setSelectedBordereau([]);
-                    }else{
+                  onSubmit={handleSubmit(() => {
+                    if (selectedBordereau.length > 0) {
+                      handleAddMission(livreurID, selectedBordereau);
+                      setSelectedBordereau([]);
+                    } else {
                       setShowModal();
                       setSelectedBordereau([]);
-                      toast.error('Bordreaux selectionees vide');
+                      toast.error("Bordreaux selectionees vide");
                     }
                   })}
                 >
@@ -602,17 +616,17 @@ const Livreur = ({ livreurs }) => {
                       size="small"
                       bordered
                       pagination={{ pageSize: 3 }}
-                      loading={bordereau === undefined}
+                      loading={loadingBordereau}
                     />
-                  <h5 className="modal-title">Bordereaux selectionné</h5>
-                  <hr/>
+                    <h5 className="modal-title">Bordereaux selectionné</h5>
+                    <hr />
                     <Table
                       columns={selectcolumns}
                       dataSource={selectedBordereau}
                       size="small"
                       bordered
                       pagination={{ pageSize: 3 }}
-                      loading={selectedBordereau === undefined}
+                      loading={loadingBordereau}
                     />
                   </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
