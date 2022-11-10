@@ -445,6 +445,8 @@ const Livreur = ({ livreurs }) => {
                   setBordereau([...bordereau]);
                   setSelectedBordereau([...selectedBordereau, row]);
                 }
+                setValue('');
+                setAvailableBordereau(bordereau);
               }}
             >
               +
@@ -578,6 +580,7 @@ const Livreur = ({ livreurs }) => {
                     setShowModal();
                     setBordereau([]);
                     setValue('');
+                    setSelectedBordereau([]);
                   }}
                 >
                   <span aria-hidden="true">&times;</span>
