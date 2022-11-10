@@ -47,15 +47,15 @@ export default function Extrait() {
           <div className={style.nomExpediteur}>
             <table>
               <tr>
-                <td>Nom d'expediteur</td>
+                <td>Nom d&apos;expediteur</td>
                 <td>{extrait.expediteur.name}</td>
               </tr>
               <tr>
-                <td>Email d'expediteur</td>
+                <td>Email d&apos;expediteur</td>
                 <td>{extrait.expediteur.email}</td>
               </tr>
               <tr>
-                <td>Télephone de l'expediteur</td>
+                <td>Télephone de l&apos;expediteur</td>
                 <td>{extrait.expediteur.tel}</td>
               </tr>
             </table>
