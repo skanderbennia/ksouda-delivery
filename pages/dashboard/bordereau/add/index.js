@@ -60,9 +60,10 @@ export default function Add() {
       <form
         onSubmit={handleSubmit(async (data) => {
           setLoading(true);
+          console.log(user.user._id);
           await api.post("/bordereau", {
             ...data,
-            user: user.id,
+            user: user.user._id,
             contenu: selectedTags.join(" ")
           });
           reset();
@@ -143,6 +144,16 @@ export default function Add() {
           ) : (
             ""
           )}
+        </div>
+        <div style={{ display: "block" }} className="input-container">
+          <label> Prix de livraison </label>
+          <input
+            type="text"
+            className="input-add-bordreau"
+            disabled
+            style={{ color: "grey" }}
+            value={"7dt"}
+          />
         </div>
         <div style={{ display: "block" }} className="input-container">
           <label> Description</label>

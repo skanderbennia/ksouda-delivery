@@ -3,6 +3,9 @@ const BordereauSchema = new mongoose.Schema({
   codebar: {
     type: String
   },
+  indexElement: {
+    type: Number
+  },
   bonLivraison: {
     type: String
   },

@@ -15,7 +15,8 @@ export default async function handler(req, res) {
         return res.send("Bordereau is updated");
       }
       req.body.codebar = Math.floor(Math.random() * 1000000000);
-      const object = Bordereau({ ...req.body });
+      const list = await Bordereau.find({});
+      const object = Bordereau({ ...req.body, indexElement: list.length });
       await object.save();
       res.status(201).json(object);
     } else if (req.method === "PATCH") {
