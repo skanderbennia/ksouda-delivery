@@ -39,7 +39,7 @@ const Bordreau = ({ bordereau }) => {
       setAllBordereau(res.data);
     }
     fetchData();
-  }, [user]);
+  }, []);
 
   const [value, setValue] = useState("");
   console.log(listBordereau);
