@@ -99,13 +99,17 @@ export default function Extrait() {
               <div>Prix HT : {extrait.prix_unit * extrait.quantite} DT</div>
               <div>
                 TVA :{" "}
-                {((extrait.prix_unit * extrait.quantite) / 19).toPrecision(3)}{" "}
+                {(extrait.prix_unit * extrait.quantite * 0.19).toPrecision(3)}{" "}
                 DT (19%)
               </div>
               <div> Prix de livraison : 7 DT </div>
               <div>
                 Prix TTC :{" "}
-                {(extrait.prix_unit * extrait.quantite * 119) / 100 - 7} DT
+                {(
+                  (extrait.prix_unit * extrait.quantite * 119) / 100 -
+                  7
+                ).toPrecision(3)}{" "}
+                DT
               </div>
             </ul>
           </div>

@@ -9,6 +9,7 @@ import "../assets/css/font-awesome.css";
 import "../assets/css/templatemo-softy-pinko.css";
 import "../assets/js/popper.js";
 import "../styles/globals.css";
+import AuthGuard from "../components/AuthGuard/AuthGuard";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -42,7 +43,7 @@ function MyApp({ Component, pageProps }) {
             opacity: 0,
             viewportFactor: 0.33,
             reset: !1,
-            init: !0,
+            init: !0
           },
           init: function () {
             this.scrolled = !1;
@@ -246,7 +247,7 @@ function MyApp({ Component, pageProps }) {
               initial: f,
               target: p,
               reset: c,
-              totalDuration: 1e3 * (parseFloat(n) + parseFloat(s)),
+              totalDuration: 1e3 * (parseFloat(n) + parseFloat(s))
             };
           },
           getViewportH: function () {
@@ -280,7 +281,7 @@ function MyApp({ Component, pageProps }) {
           extend: function (t, e) {
             for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
             return t;
-          },
+          }
         }),
         e
       );
@@ -321,7 +322,7 @@ function MyApp({ Component, pageProps }) {
             }
             $("html,body").animate(
               {
-                scrollTop: target.offset().top - 130,
+                scrollTop: target.offset().top - 130
               },
               700
             );
@@ -350,7 +351,7 @@ function MyApp({ Component, pageProps }) {
             .stop()
             .animate(
               {
-                scrollTop: target.offset().top - 130,
+                scrollTop: target.offset().top - 130
               },
               500,
               "swing",
@@ -389,7 +390,7 @@ function MyApp({ Component, pageProps }) {
       if ($(".count-item").length) {
         $(".count-item strong").counterUp({
           delay: 10,
-          time: 1000,
+          time: 1000
         });
       }
 
@@ -398,13 +399,13 @@ function MyApp({ Component, pageProps }) {
         if ($(".cover").length) {
           $(".cover").parallax({
             imageSrc: $(".cover").data("image"),
-            zIndex: "1",
+            zIndex: "1"
           });
         }
 
         $("#preloader").animate(
           {
-            opacity: "0",
+            opacity: "0"
           },
           1,
           function () {
@@ -433,7 +434,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <RecoilRoot>
       <ToastContainer />
-      <Component {...pageProps} />
+      <AuthGuard>
+        <Component {...pageProps} />
+      </AuthGuard>
     </RecoilRoot>
   );
 }

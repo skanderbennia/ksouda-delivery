@@ -27,12 +27,12 @@ export default function Modal(props) {
     }
   }, [props.showModal]);
 
-  const handleCreateAccount = async (name, email, password, telClient) => {
+  const handleCreateAccount = async (name, email, password, tel) => {
     await api.post("/auth/register", {
       name,
       email,
       password,
-      telClient
+      tel
     });
   };
 
@@ -43,7 +43,11 @@ export default function Modal(props) {
         password
       });
       if (res.status === 200) {
-        setUser({ user: res.data.user, role: res.data.role });
+        console.log(res.data);
+        setUser({
+          user: res.data.user,
+          role: res.data.role
+        });
         localStorage.setItem("token", res.data.token);
         props.setShowModal(false);
         if (res.data.role === "expediteur") {

@@ -1,14 +1,14 @@
 import { Button, Layout, Menu } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "../../atoms/userAtom";
 import React from "react";
 import Logo from "../../assets/images/logo.png";
 
 const { Header, Content } = Layout;
 const Navbar = (props) => {
-  const user = useRecoilValue(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
   const expediteurRoute = [
     {
       key: "1",
@@ -16,8 +16,8 @@ const Navbar = (props) => {
       style: { fontWeight: "bold" },
       onClick: () => {
         router.push("/dashboard/bordreau");
-      },
-    },
+      }
+    }
   ];
   const adminRoute = [
     {
@@ -26,17 +26,17 @@ const Navbar = (props) => {
       style: { fontWeight: "bold" },
       onClick: () => {
         router.push("/admin");
-      },
+      }
     },
     {
       key: "2",
       label: "Bordereau",
       style: {
-        fontWeight: "bold",
+        fontWeight: "bold"
       },
       onClick: () => {
         router.push("/admin/expediteur");
-      },
+      }
     },
     {
       key: "3",
@@ -44,8 +44,8 @@ const Navbar = (props) => {
       style: { fontWeight: "bold" },
       onClick: () => {
         router.push("/admin/livreur");
-      },
-    },
+      }
+    }
   ];
   const router = useRouter();
   return (
@@ -56,7 +56,7 @@ const Navbar = (props) => {
           flexDirection: "row",
           alignItems: "center",
           background: "white",
-          border: "1px solid lightgrey",
+          border: "1px solid lightgrey"
         }}
       >
         <Image
@@ -70,14 +70,14 @@ const Navbar = (props) => {
           style={{ background: "white", width: "100%" }}
           mode="horizontal"
           defaultSelectedKeys={["0"]}
-
-          items={user.role === "admin" ? adminRoute : expediteurRoute}
-
+          items={user && user.role === "admin" ? adminRoute : expediteurRoute}
         />
         <Button
           type="default"
           onClick={() => {
             localStorage.removeItem("token");
+            setUser({});
+            location.href.replace(location.hostname);
             router.push("/");
           }}
         >
@@ -88,7 +88,7 @@ const Navbar = (props) => {
       <Content
         style={{
           padding: "0 50px",
-          background: "white",
+          background: "white"
         }}
       >
         <div className="site-layout-content">{props.children}</div>
