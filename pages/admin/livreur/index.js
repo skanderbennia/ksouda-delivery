@@ -15,6 +15,7 @@ const Livreur = ({ livreurs }) => {
   const [missions, setMissions] = useState([]);
   const [loadingBordereau, setLoadingBordereau] = useState(false);
   const [bordereau, setBordereau] = useState([]);
+  const [availableBordereau, setAvailableBordereau] = useState([]);
   const [mission, setMission] = useState([]);
   const [missionBordereauList, SetMissionBordereauList] = useState([]);
 
@@ -240,6 +241,11 @@ const Livreur = ({ livreurs }) => {
         return !b.livreurID || !b.hasOwnProperty("livreurID");
       })
     );
+    setAvailableBordereau(
+      bordereaux.filter((b) => {
+        return !b.livreurID || !b.hasOwnProperty("livreurID");
+      })
+    );
     setLoadingBordereau(false);
   };
 
@@ -439,6 +445,8 @@ const Livreur = ({ livreurs }) => {
                   setBordereau([...bordereau]);
                   setSelectedBordereau([...selectedBordereau, row]);
                 }
+                setValue('');
+                setAvailableBordereau(bordereau);
               }}
             >
               +
@@ -570,6 +578,8 @@ const Livreur = ({ livreurs }) => {
                   className="close"
                   onClick={() => {
                     setShowModal();
+                    setBordereau([]);
+                    setValue('');
                     setSelectedBordereau([]);
                   }}
                 >
@@ -587,6 +597,7 @@ const Livreur = ({ livreurs }) => {
                       setSelectedBordereau([]);
                       toast.error("Bordreaux selectionees vide");
                     }
+                    setValue(currValue);
                   })}
                 >
                   <div className="form-group">
@@ -610,9 +621,27 @@ const Livreur = ({ livreurs }) => {
                         );
                       })}
                     </select>*/}
+                     <Input
+                      placeholder="Chercher Codebar"
+                      value={value}
+                      onChange={(e) => {
+                        const currValue = e.target.value;
+                        setValue(currValue);
+                        const filteredData = bordereau.filter(
+                          (entry) =>
+                            entry.codebar
+                              ? entry.codebar.includes(currValue)
+                              : false
+                        );
+                        if (currValue.length > 0) {
+                          setAvailableBordereau(filteredData);
+                        } else {
+                          setAvailableBordereau(bordereau);
+                        }
+                      }}/>
                     <Table
                       columns={addcolumns}
-                      dataSource={bordereau}
+                      dataSource={availableBordereau}
                       size="small"
                       bordered
                       pagination={{ pageSize: 3 }}
@@ -654,6 +683,7 @@ const Livreur = ({ livreurs }) => {
                   className="close"
                   onClick={() => {
                     setShowListModal(false);
+                    SetMissionBordereauList([]);
                   }}
                 >
                   <span aria-hidden="true">&times;</span>
