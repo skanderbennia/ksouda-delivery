@@ -87,9 +87,8 @@ body {
   height: 71vh;
   overflow: auto;
 }
-.modal-c.modal-matfisc{
-  height: 30vh;
-
+.modal-c.modal-matfisc {
+  height: 40vh;
 }
 
 .modal-c .select-bordereau {

@@ -1,5 +1,5 @@
 import { Button, Table, Input, Tag } from "antd";
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -18,9 +18,13 @@ const Expediteur = ({ expediteurs }) => {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [selectedId, setSelectedId] = useState('');
+  const [selectedId, setSelectedId] = useState("");
 
-  const { register, handleSubmit, formState: { errors }, } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
 
   const modalRef = useRef();
 
@@ -69,10 +73,10 @@ const Expediteur = ({ expediteurs }) => {
           switch (item.etat) {
             case "En cours":
               return <Tag color="orange">{item.etat}</Tag>;
-  
+
             case "Annule":
               return <Tag color="red">{item.etat}</Tag>;
-  
+
             case "Livre":
               return <Tag color="green">{item.etat}</Tag>;
           }
@@ -174,19 +178,20 @@ const Expediteur = ({ expediteurs }) => {
               flexDirection: "row"
             }}
           >
-            {row.matriculeFiscal? (
-                <span>{row.matriculeFiscal}</span>
-            ):
+            {row.matriculeFiscal ? (
+              <span>{row.matriculeFiscal}</span>
+            ) : (
               <Button
-              type="primary"
-              onClick={async (e) => {
-                e.preventDefault();
-                setShowModal(true);
-                setSelectedId(row._id);
-              }}
+                type="primary"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  setShowModal(true);
+                  setSelectedId(row._id);
+                }}
               >
                 Ajouter Matricule Fiscal
-              </Button>}
+              </Button>
+            )}
           </div>
         );
       }
@@ -201,7 +206,7 @@ const Expediteur = ({ expediteurs }) => {
               flexDirection: "row"
             }}
           >
-            {!row.approved && row.matriculeFiscal &&(
+            {!row.approved && (
               <Button
                 type="primary"
                 onClick={async (e) => {
@@ -212,8 +217,7 @@ const Expediteur = ({ expediteurs }) => {
                 Approver
               </Button>
             )}
-            {row.approved &&(
-
+            {row.approved && (
               <Button
                 danger
                 onClick={async (e) => {
@@ -224,18 +228,6 @@ const Expediteur = ({ expediteurs }) => {
                 Bloquer
               </Button>
             )}
-            {!row.approved && !(row.matriculeFiscal) &&(
-              <Button
-                disabled
-                type="primary"
-                onClick={async (e) => {
-                  e.preventDefault();
-                  await approveUser(row._id);
-                }}
-              >
-                Approver
-              </Button>
-              )}
           </div>
         );
       }
@@ -363,7 +355,6 @@ const Expediteur = ({ expediteurs }) => {
       );
       toast.dismiss(idLoading);
     }, 1000);
-    
   };
 
   return (
@@ -403,7 +394,10 @@ const Expediteur = ({ expediteurs }) => {
       {showModal && (
         <div>
           <div className={`modal ${showModal && "show"}`}>
-            <div className="modal-content-min modal-c modal-matfisc" ref={modalRef}>
+            <div
+              className="modal-content-min modal-c modal-matfisc"
+              ref={modalRef}
+            >
               <div className="modal-header">
                 <h5 className="modal-title">Ajouter le matricule fiscal</h5>
                 <button
@@ -423,19 +417,21 @@ const Expediteur = ({ expediteurs }) => {
                     setShowModal(false);
                   })}
                 >
-                    <div style={{ display: "block" }} className="input-container">
-                      <label> Matricule Fiscale </label>
-                      <input
-                        className="input-add-bordreau"
-                        name="mat"
-                        {...register("mat", { required: true })}
-                      />
-                      {errors.mat && errors.mat.type === "required" ? (
-                        <span className="error">Veuillez remplir le champ matricule </span>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                  <div style={{ display: "block" }} className="input-container">
+                    <label> Matricule Fiscale </label>
+                    <input
+                      className="input-add-bordreau"
+                      name="mat"
+                      {...register("mat", { required: true })}
+                    />
+                    {errors.mat && errors.mat.type === "required" ? (
+                      <span className="error">
+                        Veuillez remplir le champ matricule{" "}
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button type="submit" className="save-login">
                       Ajouter Matricule
