@@ -511,6 +511,7 @@ const Livreur = ({ livreurs }) => {
                 var bIndex = selectedBordereau.indexOf(row);
                 selectedBordereau.splice(bIndex, 1);
                 setSelectedBordereau([...selectedBordereau]);
+                setBordereau([...selectedBordereau, row]);
               }}
             >
               -
