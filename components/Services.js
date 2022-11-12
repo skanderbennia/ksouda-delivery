@@ -19,7 +19,7 @@ export default function Service() {
                       <Image className="imageNext" src={Image1} alt="" />
                     </i>
                   </div>
-                  <h5 className="features-title">Modern Strategy</h5>
+                  <h5 className="features-title">Service Clients</h5>
                   <p>
                     Customize anything in this template to fit your website
                     needs
@@ -37,7 +37,7 @@ export default function Service() {
                       <img src="assets/images/featured-item-01.png" alt="" />
                     </i>
                   </div>
-                  <h5 className="features-title">Best Relationship</h5>
+                  <h5 className="features-title">Livraison Rapide</h5>
                   <p>Contact us immediately if you have a question in mind</p>
                 </div>
               </div>
@@ -52,7 +52,7 @@ export default function Service() {
                       <img src="assets/images/featured-item-01.png" alt="" />
                     </i>
                   </div>
-                  <h5 className="features-title">Ultimate Marketing</h5>
+                  <h5 className="features-title">Disponibilité 24h/7j</h5>
                   <p>
                     You just need to tell your friends about our free templates
                   </p>

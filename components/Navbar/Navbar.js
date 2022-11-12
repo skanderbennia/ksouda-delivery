@@ -15,7 +15,17 @@ const Navbar = (props) => {
       label: "Bordreau",
       style: { fontWeight: "bold" },
       onClick: () => {
-        router.push("/dashboard/bordreau");
+        router.push("/dashboard/bordereau");
+      }
+    },
+    {
+      key: "2",
+      label: "Détail",
+      style: {
+        fontWeight: "bold"
+      },
+      onClick: () => {
+        router.push("/dashboard/informations");
       }
     }
   ];
