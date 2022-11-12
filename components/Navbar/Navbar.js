@@ -55,6 +55,14 @@ const Navbar = (props) => {
       onClick: () => {
         router.push("/admin/livreur");
       }
+    },
+    {
+      key: "4",
+      label: "Colis",
+      style: { fontWeight: "bold" },
+      onClick: () => {
+        router.push("/admin/colis");
+      }
     }
   ];
   const router = useRouter();
