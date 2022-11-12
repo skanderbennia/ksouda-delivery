@@ -1,9 +1,10 @@
 import { Button, Table, Input, Tag } from "antd";
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { extraitAtom } from "../../../atoms/extraitAtom";
+import { useForm } from "react-hook-form";
 import api from "../../../api";
 import Navbar from "../../../components/Navbar/Navbar";
 
@@ -16,6 +17,13 @@ const Expediteur = ({ expediteurs }) => {
   const [extrait, setExtrait] = useRecoilState(extraitAtom);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState('');
+
+  const { register, handleSubmit, formState: { errors }, } = useForm();
+
+  const modalRef = useRef();
+
   const handleRowExpand = (record) => {
     // if a row is expanded, collapses it, otherwise expands it
 
@@ -155,6 +163,35 @@ const Expediteur = ({ expediteurs }) => {
       }
     },
     {
+      title: "Matricule Fiscal",
+      key: "matriculeFiscal",
+      render: (row) => {
+        console.log(row);
+        return (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row"
+            }}
+          >
+            {row.matriculeFiscal? (
+                <span>{row.matriculeFiscal}</span>
+            ):
+              <Button
+              type="primary"
+              onClick={async (e) => {
+                e.preventDefault();
+                setShowModal(true);
+                setSelectedId(row._id);
+              }}
+              >
+                Ajouter Matricule Fiscal
+              </Button>}
+          </div>
+        );
+      }
+    },
+    {
       title: "Action",
       render: (row) => {
         return (
@@ -164,7 +201,7 @@ const Expediteur = ({ expediteurs }) => {
               flexDirection: "row"
             }}
           >
-            {!row.approved && (
+            {!row.approved && row.matriculeFiscal &&(
               <Button
                 type="primary"
                 onClick={async (e) => {
@@ -175,7 +212,8 @@ const Expediteur = ({ expediteurs }) => {
                 Approver
               </Button>
             )}
-            {row.approved && (
+            {row.approved &&(
+
               <Button
                 danger
                 onClick={async (e) => {
@@ -186,6 +224,18 @@ const Expediteur = ({ expediteurs }) => {
                 Bloquer
               </Button>
             )}
+            {!row.approved && !(row.matriculeFiscal) &&(
+              <Button
+                disabled
+                type="primary"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await approveUser(row._id);
+                }}
+              >
+                Approver
+              </Button>
+              )}
           </div>
         );
       }
@@ -276,6 +326,46 @@ const Expediteur = ({ expediteurs }) => {
     }, 1000);
   };
 
+  const handleAddMatricule = async (id, matricule) => {
+    const idLoading = toast.loading("Chargement de la transaction ....", {
+      isLoading: true
+    });
+
+    await api.post("/users/addMatFisc", {
+      id,
+      matricule
+    });
+    setTimeout(() => {
+      toast.update(idLoading, {
+        render: "pending...",
+        type: "loading",
+        isLoading: true
+      });
+    }, 1000);
+
+    setTimeout(async () => {
+      toast.update(idLoading, {
+        render: "Matricule a été ajouté",
+        type: "success",
+        isLoading: false
+      });
+      const res = await api.get("/users");
+      toast.update(idLoading, {
+        render: "Matricule a été ajouté",
+        type: "success",
+        isLoading: false
+      });
+      const list = await res.data;
+      setListExpediteur(
+        list.map((elem) => {
+          return { ...elem, key: elem._id };
+        })
+      );
+      toast.dismiss(idLoading);
+    }, 1000);
+    
+  };
+
   return (
     <Navbar>
       <div className="table-actions exp">
@@ -310,6 +400,53 @@ const Expediteur = ({ expediteurs }) => {
           }}
         />
       </div>
+      {showModal && (
+        <div>
+          <div className={`modal ${showModal && "show"}`}>
+            <div className="modal-content-min modal-c modal-matfisc" ref={modalRef}>
+              <div className="modal-header">
+                <h5 className="modal-title">Ajouter le matricule fiscal</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form
+                  onSubmit={handleSubmit(async (data) => {
+                    await handleAddMatricule(selectedId, data.mat);
+                    setShowModal(false);
+                  })}
+                >
+                    <div style={{ display: "block" }} className="input-container">
+                      <label> Matricule Fiscale </label>
+                      <input
+                        className="input-add-bordreau"
+                        name="mat"
+                        {...register("mat", { required: true })}
+                      />
+                      {errors.mat && errors.mat.type === "required" ? (
+                        <span className="error">Veuillez remplir le champ matricule </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <button type="submit" className="save-login">
+                      Ajouter Matricule
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <Table
         columns={columns}
         dataSource={listExpediteur}
