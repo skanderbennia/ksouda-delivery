@@ -6,7 +6,7 @@ export default async function handler(req, res) {
       connectMongo();
       const expediteurs = await User.find({
         role: "expediteur",
-      }).select("name email approved");
+      }).select("name email approved matriculeFiscal");
       res.status(200).json(expediteurs);
     }
   } catch (err) {

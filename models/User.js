@@ -26,6 +26,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  matriculeFiscal: {
+    type: String,
+    default: null,
+  },
 });
 
 // if Model exist then return it
