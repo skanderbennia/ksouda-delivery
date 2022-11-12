@@ -118,8 +118,15 @@ const Livreur = ({ livreurs }) => {
       },
       {
         title: "Etat",
-        dataIndex: "etat",
-        key: "etat"
+        key: "etat",
+        render: (row) => {
+          switch (row.etat) {
+            case "En cours":
+              return <Tag color="orange">{row.etat}</Tag>;
+            case "Termine":
+              return <Tag color="green">{row.etat}</Tag>;
+          }
+        }
       },
       {
         title: "Excel",
@@ -466,7 +473,7 @@ const Livreur = ({ livreurs }) => {
                   setBordereau([...bordereau]);
                   setSelectedBordereau([...selectedBordereau, row]);
                 }
-                setValue('');
+                setValue("");
                 setAvailableBordereau(bordereau);
               }}
             >
@@ -601,7 +608,7 @@ const Livreur = ({ livreurs }) => {
                   onClick={() => {
                     setShowModal();
                     setBordereau([]);
-                    setValue('');
+                    setValue("");
                     setSelectedBordereau([]);
                   }}
                 >
@@ -643,24 +650,24 @@ const Livreur = ({ livreurs }) => {
                         );
                       })}
                     </select>*/}
-                     <Input
+                    <Input
                       placeholder="Chercher Codebar"
                       value={value}
                       onChange={(e) => {
                         const currValue = e.target.value;
                         setValue(currValue);
-                        const filteredData = bordereau.filter(
-                          (entry) =>
-                            entry.codebar
-                              ? entry.codebar.includes(currValue)
-                              : false
+                        const filteredData = bordereau.filter((entry) =>
+                          entry.codebar
+                            ? entry.codebar.includes(currValue)
+                            : false
                         );
                         if (currValue.length > 0) {
                           setAvailableBordereau(filteredData);
                         } else {
                           setAvailableBordereau(bordereau);
                         }
-                      }}/>
+                      }}
+                    />
                     <Table
                       columns={addcolumns}
                       dataSource={availableBordereau}
