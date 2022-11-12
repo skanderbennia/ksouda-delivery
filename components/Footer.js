@@ -37,7 +37,7 @@ export default function Footer() {
         </div>
         <div className="row">
           <div className="col-lg-12">
-            <p className="copyright">Copyright &copy; Sonic Delivery</p>
+            <p className="copyright">Copyright &copy; Ksouda Delivery</p>
           </div>
         </div>
       </div>

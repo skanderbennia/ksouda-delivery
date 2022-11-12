@@ -6,7 +6,7 @@ var url = "";
 if (env == "development") {
   url = "http://localhost:3000/api/";
 } else if (env == "production") {
-  url = "https://sonic-delivery.vercel.app/api/";
+  url = "https://ksouda-delivery.vercel.app/api/";
 }
 
 const api = axios.create({

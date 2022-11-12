@@ -1,4 +1,4 @@
-Sitemap: https://sonic-delivery.vercel.app/api/sitemap
+Sitemap: https://ksouda-delivery.vercel.app/api/sitemap
 
 User-agent: *
 Allow: /*
