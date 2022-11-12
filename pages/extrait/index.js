@@ -6,6 +6,7 @@ import ReactToPrint from "react-to-print";
 import { useRecoilState } from "recoil";
 import { extraitAtom } from "../../atoms/extraitAtom";
 import style from "../../styles/Extrait.module.css";
+
 export default function Extrait() {
   const [extrait, setExtrait] = useRecoilState(extraitAtom);
   const [image, setImage] = useState(null);

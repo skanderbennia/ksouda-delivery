@@ -6,9 +6,13 @@ import api from "../../../api";
 import { useForm } from "react-hook-form";
 import Navbar from "../../../components/Navbar/Navbar";
 import Link from "next/link";
-import { handleClientScriptLoad } from "next/script";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { missionAtom } from "../../../atoms/missionAtom";
 
 const Livreur = ({ livreurs }) => {
+  const [missionRecoil, setMissionRecoil] = useRecoilState(missionAtom);
+  const router = useRouter();
   const [listLivreur, setListLivreur] = useState(livreurs);
   const allLivreurs = livreurs;
 
@@ -118,6 +122,23 @@ const Livreur = ({ livreurs }) => {
         title: "Etat",
         dataIndex: "etat",
         key: "etat"
+      },
+
+      {
+        title: "Print",
+        render: (row) => {
+          return (
+            <Button
+              type="primary"
+              onClick={() => {
+                setMissionRecoil(row);
+                router.push("/admin/livreur/runsheet");
+              }}
+            >
+              Print !
+            </Button>
+          );
+        }
       }
     ];
 
