@@ -3,3 +3,4 @@
 /out/
 .env
 .vercel
+settings.json

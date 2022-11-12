@@ -129,6 +129,53 @@ body {
 .list-tag-filter *:hover {
   border: 1px solid grey;
 }
+.ks-container {
+  width: 100%;
+  height: 500px;
+  padding: 0 15px;
+  /* border: 3px dotted grey; */
+}
+.ks-container .stat-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.ks-container h1 {
+  padding-top: 8%;
+}
+.ks-container h3 {
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+  font-weight: 500;
+}
+.ks-container .stat-container {
+  padding-top: 25px;
+  width: 20%;
+  padding-bottom: 20%;
+  text-align: center;
+}
+.ks-container .stat-container div {
+  /* background-color: lightgreen; */
+  width: 80%;
+  border-radius: 50%;
+  padding-bottom: 35%;
+  padding-top: 35%;
+  margin: auto;
+}
+
+.ks-container .stat-container h4 {
+  padding: 20px;
+}
+.bg-green {
+  border: 5px solid lightgreen;
+}
+.bg-red {
+  border: 5px solid orangered;
+}
+.bg-purple {
+  border: 5px solid purple;
+  color: white;
+}
 
 @keyframes spin {
   100% {
