@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import Navbar from "../../../components/Navbar/Navbar";
 import Link from "next/link";
 import { handleClientScriptLoad } from "next/script";
+import ExcelExport from "../../../components/ExcelExport";
 
 const Livreur = ({ livreurs }) => {
   const [listLivreur, setListLivreur] = useState(livreurs);
@@ -118,6 +119,26 @@ const Livreur = ({ livreurs }) => {
         title: "Etat",
         dataIndex: "etat",
         key: "etat"
+      },
+      {
+        title: "Excel",
+        render: (row) => {
+          return (
+            <ExcelExport
+              fileName={"mission" + row._id}
+              excelData={row.bordereauList.map((elem) => {
+                return {
+                  "Code à barre": elem.codebar,
+                  "Nom de client": elem.nomClient,
+                  Adresse: elem.adresse,
+                  Telephone: elem.telClient,
+                  Quantité: elem.quantite,
+                  Prix: elem.prix_unit
+                };
+              })}
+            />
+          );
+        }
       }
     ];
 
