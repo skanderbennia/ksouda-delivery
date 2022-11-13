@@ -302,7 +302,7 @@ const Bordreau = ({ bordereau }) => {
             setListBordereau([...allBordereau]);
           }}
         >
-          Totale{allBordereau.length}
+          Totale {allBordereau.length}
         </Tag>
       </div>
     </Navbar>

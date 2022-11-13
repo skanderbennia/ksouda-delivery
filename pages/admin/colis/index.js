@@ -32,15 +32,13 @@ const Bordreau = ({ bordereau }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await api.post("/bordereau/expediteur");
+      const res = await api.get("/bordereau");
       setListBordereau(res.data);
       setAllBordereau(res.data);
     }
     fetchData();
   }, []);
-
   const [value, setValue] = useState("");
-  console.log(listBordereau);
   const expandedRowRender = () => {
     const columns = [
       {
@@ -94,6 +92,14 @@ const Bordreau = ({ bordereau }) => {
     return (
       <Table columns={columns} dataSource={bordereau} pagination={false} />
     );
+  };
+  const handleChangeStateBordereau = async (id, etat) => {
+    if (["Livre", "Echange", "Annule"].includes(etat)) {
+      await api.post("/bordereau", { id, etat });
+      const copyBordereaux = await api.get("/bordereau");
+      setListBordereau(copyBordereaux.data);
+      setAllBordereau(copyBordereaux.data);
+    }
   };
   const columns = [
     {
@@ -164,20 +170,57 @@ const Bordreau = ({ bordereau }) => {
       render: (item) => {
         return (
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <Button style={{ backgroundColor: "green", color: "white" }}>
+            <Button
+              style={
+                item.etat == "Livre"
+                  ? {
+                      backgroundColor: "green",
+                      color: "white",
+                      border: "2px solid black"
+                    }
+                  : { backgroundColor: "green", color: "white" }
+              }
+              onClick={async () => {
+                await handleChangeStateBordereau(item._id, "Livre");
+              }}
+            >
               Livré
             </Button>
             <Button
-              style={{
-                backgroundColor: "orange",
-                color: "white",
-                marginLeft: 10
+              style={
+                item.etat == "Echange"
+                  ? {
+                      backgroundColor: "orange",
+                      color: "white",
+                      border: "2px solid black",
+                      marginLeft: 20
+                    }
+                  : {
+                      backgroundColor: "orange",
+                      color: "white",
+                      marginLeft: 20
+                    }
+              }
+              onClick={async () => {
+                await handleChangeStateBordereau(item._id, "Echange");
               }}
             >
               Echange
             </Button>
             <Button
-              style={{ backgroundColor: "red", color: "white", marginLeft: 10 }}
+              style={
+                item.etat == "Annule"
+                  ? {
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "2px solid black",
+                      marginLeft: 20
+                    }
+                  : { backgroundColor: "red", color: "white", marginLeft: 20 }
+              }
+              onClick={async () => {
+                await handleChangeStateBordereau(item._id, "Annule");
+              }}
             >
               Annulé
             </Button>
@@ -276,7 +319,7 @@ const Bordreau = ({ bordereau }) => {
             setListBordereau([...allBordereau]);
           }}
         >
-          Totale{allBordereau.length}
+          Totale {allBordereau.length}
         </Tag>
       </div>
     </Navbar>
