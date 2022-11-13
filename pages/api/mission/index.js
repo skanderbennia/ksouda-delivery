@@ -1,25 +1,47 @@
 import Mission from "../../../models/Mission";
 import connectDB from "../../../utils/connectMongoDb";
-import Bordreau from "../../../models/Bordereau";
+import Bordereau from "../../../models/Bordereau";
+import mongoose from "mongoose";
 
 export default async function handler(req, res) {
   try {
     connectDB();
     if (req.method === "GET") {
       const list = await Mission.find({});
-
-      res.status(200).json(list);
+      const bordereaus = await Bordereau.find({});
+      let listMission = [];
+      list.forEach((elem1) => {
+        let listBordereau = [];
+        let ms = { ...elem1._doc, bordereauList: [] };
+        bordereaus.forEach((elem2) => {
+          if (elem2._doc.missionId.toString() == ms._id.toString()) {
+            listBordereau.push(elem2);
+          }
+        });
+        ms["bordereauList"] = listBordereau;
+        listMission.push(ms);
+      });
+      console.log(
+        "🚀 ~ file: index.js ~ line 25 ~ handler ~ listMission",
+        listMission
+      );
+      res.status(200).json(listMission);
     } else if (req.method === "POST") {
       const { livreurId, bordereauList } = req.body;
-      const mission = await Mission({ livreurId, bordereauList });
-      for (const el of bordereauList) {
-        const bordereau = await Bordreau.findOneAndUpdate(
-          { _id: el._id },
-          { $set: { livreurID: livreurId } }
-        );
-      }
-      await mission.save();
-      res.send(mission);
+      let bordereauListObjectId = bordereauList.map((elem) =>
+        mongoose.Types.ObjectId(elem)
+      );
+      const mission = await Mission.create({ livreurId });
+      await Bordereau.updateMany(
+        {
+          _id: {
+            $in: [...bordereauListObjectId]
+          }
+        },
+        { livreurID: livreurId, missionId: mission._id }
+      );
+
+      res.send("send");
     } else if (req.method === "PATCH") {
       const mission = await Mission.find({ _id: req.body.id });
       res.status(200).json(mission);

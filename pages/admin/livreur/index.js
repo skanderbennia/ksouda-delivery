@@ -47,7 +47,7 @@ const Livreur = ({ livreurs }) => {
       document.body.style.overflow = "auto";
     }
   }, [showModal, showListModal]);
-
+  console.log(missions);
   const expandedRowRender = () => {
     const columns = [
       {
@@ -621,14 +621,18 @@ const Livreur = ({ livreurs }) => {
                 <form
                   onSubmit={handleSubmit(() => {
                     if (selectedBordereau.length > 0) {
-                      handleAddMission(livreurID, selectedBordereau);
+                      handleAddMission(
+                        livreurID,
+                        selectedBordereau.map((elem) => elem._id)
+                      );
                       setSelectedBordereau([]);
                     } else {
                       setShowModal();
                       setSelectedBordereau([]);
                       toast.error("Bordreaux selectionees vide");
                     }
-                    setModalValue(currValue);
+                    setModalValue("");
+
                   })}
                 >
                   <div className="form-group">
