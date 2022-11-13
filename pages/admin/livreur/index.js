@@ -24,6 +24,7 @@ const Livreur = ({ livreurs }) => {
 
   const [livreurID, setLivreurID] = useState([]);
   const [value, setValue] = useState("");
+  const [modalValue, setModalValue] = useState("");
 
   const [expandedRows, setExpandedRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -85,7 +86,7 @@ const Livreur = ({ livreurs }) => {
                     })[0]
                   );
                   setShowListModal(true);
-                  setValue("");
+                  setModalValue("");
                 }}
               >
                 Afficher
@@ -445,7 +446,7 @@ const Livreur = ({ livreurs }) => {
       key: "prix_unit"
     },
     {
-      title: "Add",
+      title: "Sélectionner",
       render: (row) => {
         return (
           <div
@@ -473,7 +474,7 @@ const Livreur = ({ livreurs }) => {
                   setBordereau([...bordereau]);
                   setSelectedBordereau([...selectedBordereau, row]);
                 }
-                setValue("");
+                setModalValue("");
                 setAvailableBordereau(bordereau);
               }}
             >
@@ -517,7 +518,7 @@ const Livreur = ({ livreurs }) => {
       key: "prix_unit"
     },
     {
-      title: "Add",
+      title: "Désélectionner",
       render: (row) => {
         return (
           <div
@@ -609,7 +610,7 @@ const Livreur = ({ livreurs }) => {
                   onClick={() => {
                     setShowModal();
                     setBordereau([]);
-                    setValue("");
+                    setModalValue("");
                     setSelectedBordereau([]);
                   }}
                 >
@@ -630,7 +631,8 @@ const Livreur = ({ livreurs }) => {
                       setSelectedBordereau([]);
                       toast.error("Bordreaux selectionees vide");
                     }
-                    setValue("");
+                    setModalValue("");
+
                   })}
                 >
                   <div className="form-group">
@@ -656,10 +658,10 @@ const Livreur = ({ livreurs }) => {
                     </select>*/}
                     <Input
                       placeholder="Chercher Codebar"
-                      value={value}
+                      value={modalValue}
                       onChange={(e) => {
                         const currValue = e.target.value;
-                        setValue(currValue);
+                        setModalValue(currValue);
                         const filteredData = bordereau.filter((entry) =>
                           entry.codebar
                             ? entry.codebar.includes(currValue)
@@ -727,10 +729,10 @@ const Livreur = ({ livreurs }) => {
                   <div className="form-group">
                     <Input
                       placeholder="Chercher Codebar"
-                      value={value}
+                      value={modalValue}
                       onChange={(e) => {
                         const currValue = e.target.value;
-                        setValue(currValue);
+                        setModalValue(currValue);
                         const filteredData = mission.bordereauList.filter(
                           (entry) =>
                             entry.codebar

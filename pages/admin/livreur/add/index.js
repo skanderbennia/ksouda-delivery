@@ -17,6 +17,12 @@ export default function Add() {
   const router = useRouter();
   return (
     <Navbar>
+      <div style={{display:'flex',width:'100%', justifyContent:"flex-end"}}>
+        <a 
+        style={{fontSize:'26px',color:'white',backgroundColor:'#1890ff',padding:'5px 10px',borderRadius:'12px'}}
+        onClick={()=>{router.push("/admin/livreur");}}
+        > <span >&#8617;</span> </a>
+      </div>
       <form
         onSubmit={handleSubmit(async (data) => {
           setLoading(true);
