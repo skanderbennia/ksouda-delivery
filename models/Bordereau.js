@@ -43,6 +43,11 @@ const BordereauSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     default: null
+  },
+  missionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Mission",
+    default: null
   }
 });
 
