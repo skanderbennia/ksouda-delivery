@@ -4,3 +4,4 @@
 .env
 .vercel
 settings.json
+package-lock.json
