@@ -266,12 +266,12 @@ const Livreur = ({ livreurs }) => {
     const bordereaux = await res1.data;
     setBordereau(
       bordereaux.filter((b) => {
-        return !b.livreurID || !b.hasOwnProperty("livreurID");
+        return !b.livreurID && b.etat == "En cours";
       })
     );
     setAvailableBordereau(
       bordereaux.filter((b) => {
-        return !b.livreurID || !b.hasOwnProperty("livreurID");
+        return !b.livreurID && b.etat == "En cours";
       })
     );
     setLoadingBordereau(false);
@@ -539,7 +539,8 @@ const Livreur = ({ livreurs }) => {
                 var bIndex = selectedBordereau.indexOf(row);
                 selectedBordereau.splice(bIndex, 1);
                 setSelectedBordereau([...selectedBordereau]);
-                setBordereau([...selectedBordereau, row]);
+                setBordereau([...bordereau, row]);
+                setAvailableBordereau([...availableBordereau, row]);
               }}
             >
               -
