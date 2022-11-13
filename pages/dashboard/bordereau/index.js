@@ -166,18 +166,31 @@ const Bordreau = ({ bordereau }) => {
       render: (item) => {
         return (
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <button
-              style={{ background: "red", color: "white", border: "none" }}
-              onClick={async () => {
-                let ID = item._id;
-                await api.patch("/bordereau/", { id: ID });
-                setListBordereau(
-                  listBordereau.filter((elem) => elem._id != item._id)
-                );
-              }}
-            >
-              Annuler
-            </button>
+            {item.etat == "Livre" ? (
+              <button
+                disabled={true}
+                style={{
+                  background: "grey",
+                  color: "white",
+                  border: "none"
+                }}
+              >
+                Annuler
+              </button>
+            ) : (
+              <button
+                style={{ background: "red", color: "white", border: "none" }}
+                onClick={async () => {
+                  let ID = item._id;
+                  await api.patch("/bordereau/", { id: ID });
+                  setListBordereau(
+                    listBordereau.filter((elem) => elem._id != item._id)
+                  );
+                }}
+              >
+                Annuler
+              </button>
+            )}
             <button
               style={{
                 background: "black",
