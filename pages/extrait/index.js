@@ -58,6 +58,10 @@ export default function Extrait() {
                 <td>Télephone de l&apos;expediteur</td>
                 <td>{extrait.expediteur.tel}</td>
               </tr>
+              <tr>
+                <td>Matricule fiscale de l&apos;expediteur</td>
+                <td>{extrait.expediteur.matriculeFiscal}</td>
+              </tr>
             </table>
           </div>
         </div>
@@ -105,10 +109,9 @@ export default function Extrait() {
               <div> Prix de livraison : 7 DT </div>
               <div>
                 Prix TTC :{" "}
-                {(
-                  (extrait.prix_unit * extrait.quantite * 119) / 100 -
-                  7
-                ).toPrecision(3)}{" "}
+                {((extrait.prix_unit * extrait.quantite) / 100 + 7).toPrecision(
+                  3
+                )}{" "}
                 DT
               </div>
             </ul>

@@ -209,7 +209,8 @@ const Bordreau = ({ bordereau }) => {
                   quantite: item.quantite,
                   contenu: item.contenu,
                   expediteur: user.user,
-                  bordereauNumber: item.indexElement
+                  bordereauNumber: item.indexElement,
+                  matriculeFiscale: item.user.matriculeFiscal
                 });
                 router.push("/extrait");
               }}
