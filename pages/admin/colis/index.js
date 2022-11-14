@@ -103,6 +103,11 @@ const Bordreau = ({ bordereau }) => {
   };
   const columns = [
     {
+      title: "Code a barre",
+      dataIndex: "codebar",
+      key: "codebar"
+    },
+    {
       title: "Nom de client",
       dataIndex: "nomClient",
       key: "nomClient"
@@ -242,9 +247,10 @@ const Bordreau = ({ bordereau }) => {
           let filteredData = [];
           if (allBordereau) {
             filteredData = allBordereau.filter((entry) =>
-              entry.nomClient || entry.adresse
+              entry.nomClient || entry.adresse || entry.codebar
                 ? entry.nomClient.includes(currValue) ||
-                  entry.adresse.includes(currValue)
+                  entry.adresse.includes(currValue) ||
+                  entry.codebar.includes(currValue)
                 : false
             );
           }

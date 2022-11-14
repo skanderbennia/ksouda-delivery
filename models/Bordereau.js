@@ -30,6 +30,10 @@ const BordereauSchema = new mongoose.Schema({
   montantTTC: {
     type: Number
   },
+  payout: {
+    type: Boolean,
+    default: false
+  },
   etat: {
     type: String,
     enum: ["En cours", "Annule", "Livre", "Echange"],

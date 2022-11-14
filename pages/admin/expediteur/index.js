@@ -28,6 +28,38 @@ const Expediteur = ({ expediteurs }) => {
 
   const modalRef = useRef();
 
+  const payoutHandler = async (id) => {
+    try {
+      setLoading(true);
+      await api.put("/bordereau/expediteur/payout", { idExpediteur: id });
+      let res = await api.get("/users");
+      let newListExpediteur = res.data;
+      newListExpediteur = newListExpediteur.map((elem) => {
+        return {
+          ...elem,
+          key: elem._id
+        };
+      });
+      const newListBordereau = await api.post(`/bordereau/expediteur/`, { id });
+
+      console.log(
+        "🚀 ~ file: index.js ~ line 48 ~ payoutHandler ~ newListBordereau.data",
+        newListBordereau.data
+      );
+      console.log(
+        "🚀 ~ file: index.js ~ line 46 ~ payoutHandler ~ newListExpediteur",
+        newListExpediteur
+      );
+      setListExpediteur(newListExpediteur);
+      setBordereau(newListBordereau.data);
+
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
   const handleRowExpand = (record) => {
     // if a row is expanded, collapses it, otherwise expands it
 
@@ -159,10 +191,24 @@ const Expediteur = ({ expediteurs }) => {
       title: "Status",
       key: "state",
       render: (row) => {
-        return row.approved ? (
-          <Tag color="green">Approuvé</Tag>
-        ) : (
-          <Tag color="yellow">En Attente</Tag>
+        console.log(
+          "🚀 ~ file: index.js ~ line 206 ~ Expediteur ~ payout",
+          row
+        );
+
+        return (
+          <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
+            {row.approved ? (
+              <Tag color="green">Approuvé</Tag>
+            ) : (
+              <Tag color="yellow">En Attente</Tag>
+            )}
+            {row.payout ? (
+              <Tag color="purple"> Payé</Tag>
+            ) : (
+              <Tag color="grey">No payé</Tag>
+            )}
+          </div>
         );
       }
     },
@@ -203,9 +249,18 @@ const Expediteur = ({ expediteurs }) => {
           <div
             style={{
               display: "flex",
-              flexDirection: "row"
+              flexDirection: "row",
+              gap: 10
             }}
           >
+            <Button
+              type="default"
+              onClick={async () => {
+                await payoutHandler(row._id);
+              }}
+            >
+              Payout
+            </Button>
             {!row.approved && (
               <Button
                 type="primary"
