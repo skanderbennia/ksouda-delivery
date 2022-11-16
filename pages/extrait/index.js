@@ -29,6 +29,7 @@ export default function Extrait() {
     buttonRef.current.click();
   }, [extrait]);
   console.log(extrait.expediteur);
+  console.log('this is the extrait: ',extrait);
   return (
     <>
       <div
@@ -117,8 +118,7 @@ export default function Extrait() {
             </ul>
           </div>
           <div className={style.remarque}>
-            Req : Le payement se fait à travers bla bla et le client doit payer
-            le montant total de la commande dans un temps determiné
+            Req : {extrait.remarque}
           </div>
         </div>
       </div>
