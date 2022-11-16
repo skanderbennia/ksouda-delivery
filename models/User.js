@@ -3,33 +3,37 @@ import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
-    required: true,
+    required: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   tel: {
-    type: String,
+    type: String
     // required: true,
   },
   role: {
     type: String,
     default: "expediteur",
-    enum: ["expediteur", "livreur", "admin"],
+    enum: ["expediteur", "livreur", "admin"]
+  },
+  payout: {
+    type: Boolean,
+    default: false
   },
   approved: {
     type: Boolean,
-    default: false,
+    default: false
   },
   matriculeFiscal: {
     type: String,
-    default: null,
-  },
+    default: null
+  }
 });
 
 // if Model exist then return it
