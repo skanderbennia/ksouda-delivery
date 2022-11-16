@@ -16,7 +16,7 @@ export default function Informations() {
   }, []);
   function montantTotal(arr) {
     return arr
-      .filter((elem) => elem.etat === "Livre")
+      .filter((elem) => elem.etat === "Livre" && !elem.payout)
       .map((elem) => elem.quantite * elem.prix_unit)
       .reduce((accumulator, currentValue) => {
         accumulator = accumulator + currentValue;
@@ -25,7 +25,7 @@ export default function Informations() {
   }
   function montantFrais(arr) {
     return arr
-      .filter((elem) => elem.etat === "Livre")
+      .filter((elem) => elem.etat === "Livre" && !elem.payout)
       .reduce((accumulator) => {
         accumulator = accumulator + 7;
         return accumulator;

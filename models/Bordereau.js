@@ -33,6 +33,10 @@ const BordereauSchema = new mongoose.Schema({
   remarque: {
     type: String
   },
+  payout: {
+    type: Boolean,
+    default: false
+  },
   etat: {
     type: String,
     enum: ["En cours", "Annule", "Livre", "Echange"],
