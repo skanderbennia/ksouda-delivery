@@ -29,7 +29,7 @@ export default function Extrait() {
     buttonRef.current.click();
   }, [extrait]);
   console.log(extrait.expediteur);
-  console.log('this is the extrait: ',extrait);
+  console.log("this is the extrait: ", extrait);
   return (
     <>
       <div
@@ -103,23 +103,18 @@ export default function Extrait() {
             <ul>
               <div>Prix HT : {extrait.prix_unit * extrait.quantite} DT</div>
               <div>
-                TVA :{" "}
-                {(extrait.prix_unit * extrait.quantite * 0.19).toPrecision(3)}{" "}
+                TVA : {(extrait.prix_unit * extrait.quantite * 0.19).toFixed(2)}{" "}
                 DT (19%)
               </div>
               <div> Prix de livraison : 7 DT </div>
               <div>
                 Prix TTC :{" "}
-                {((extrait.prix_unit * extrait.quantite) / 100 + 7).toPrecision(
-                  3
-                )}{" "}
+                {((extrait.prix_unit * extrait.quantite) / 100 + 7).toFixed(2)}{" "}
                 DT
               </div>
             </ul>
           </div>
-          <div className={style.remarque}>
-            Req : {extrait.remarque}
-          </div>
+          <div className={style.remarque}>Req : {extrait.remarque}</div>
         </div>
       </div>
       <ReactToPrint
