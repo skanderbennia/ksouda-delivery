@@ -29,6 +29,9 @@ const BordereauSchema = new mongoose.Schema({
   },
   montantTTC: {
     type: Number
+  }, 
+  remarque: {
+    type: String
   },
   etat: {
     type: String,

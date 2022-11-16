@@ -169,7 +169,13 @@ export default function Add() {
             isMulti
           />
         </div>
-
+        <div style={{ display: "block" }} className="input-container">
+          <label>Remarque</label>
+          <textarea 
+          className="input-add-bordreau"             
+          {...register("remarque", { required: true })}>
+          </textarea>
+        </div>
         {loading ? (
           <div className="button-submit-bordreau">
             <ClipLoader loading={loading} size={30} color={"white"} />
