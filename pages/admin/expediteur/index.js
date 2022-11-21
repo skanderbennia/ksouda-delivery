@@ -115,6 +115,20 @@ const Expediteur = ({ expediteurs }) => {
         }
       },
       {
+        title: "Payé",
+        // dataIndex: "etat",
+        key: "payout",
+        render: (item) => {
+          switch (item.payout) {
+            case true:
+              return <Tag color="green"> <span>&#10004;</span> </Tag>;
+  
+            case false:
+              return <Tag color="red"> <span>&#10008;</span> </Tag>;
+          }
+        }
+      },
+      {
         title: "Action",
         key: "operation",
         render: (item) => {
@@ -207,6 +221,7 @@ const Expediteur = ({ expediteurs }) => {
               <Tag color="purple"> Payé</Tag>
             ) : (
               <Tag color="grey">No payé</Tag>
+
             )}
           </div>
         );
