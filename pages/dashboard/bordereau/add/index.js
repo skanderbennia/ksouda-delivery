@@ -173,7 +173,7 @@ export default function Add() {
           <label>Remarque</label>
           <textarea 
           className="input-add-bordreau"             
-          {...register("remarque", { required: true })}>
+          {...register("remarque", { required: false })}>
           </textarea>
         </div>
         {loading ? (

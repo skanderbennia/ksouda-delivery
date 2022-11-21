@@ -114,7 +114,7 @@ export default function Extrait() {
               </div>
             </ul>
           </div>
-          <div className={style.remarque}>Req : {extrait.remarque}</div>
+          {extrait.remarque && <div className={style.remarque}>Req : {extrait.remarque}</div>}
         </div>
       </div>
       <ReactToPrint
