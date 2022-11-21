@@ -8,8 +8,8 @@ export default async function handler(req, res) {
     try {
       await connectDB();
       // auth(req, res);
-      const list = await Mission.find({ livreurId: req.body.id });
-      const bordereaus = await Bordereau.find({ livreurID: req.body.id });
+      const list = await Mission.find({ livreurId: req.body.id }).sort({ _id: -1 });
+      const bordereaus = await Bordereau.find({ livreurID: req.body.id }).sort({ _id: -1 });
       let listMission = [];
       list.forEach((elem1) => {
         let listBordereau = [];
