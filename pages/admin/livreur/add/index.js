@@ -69,7 +69,7 @@ export default function Add() {
             name="tel"
             type="tel"
             defaultValue={"+216"}
-            {...register("tel", { required: true, minLength: 12 })}
+            {...register("tel", { required: true, pattern: /^([\+][0-9]{3,7})?[0-9]{8}$/gm })}
           />
           {errors.tel && errors.tel.type === "minLength" ? (
             <span className="error">

@@ -7,8 +7,8 @@ export default async function handler(req, res) {
   try {
     connectDB();
     if (req.method === "GET") {
-      const list = await Mission.find({});
-      const bordereaus = await Bordereau.find({});
+      const list = await Mission.find({}).sort({ _id: -1 });
+      const bordereaus = await Bordereau.find({}).sort({ _id: -1 });
       let listMission = [];
       list.forEach((elem1) => {
         let listBordereau = [];
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
       res.send("send");
     } else if (req.method === "PATCH") {
-      const mission = await Mission.find({ _id: req.body.id });
+      const mission = await Mission.find({ _id: req.body.id }).sort({ _id: -1 });
       res.status(200).json(mission);
     } else if (req.method === "PUT") {
       const mission = await Mission.findByIdAndUpdate(req.body.id, {

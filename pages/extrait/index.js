@@ -103,18 +103,18 @@ export default function Extrait() {
             <ul>
               <div>Prix HT : {extrait.prix_unit * extrait.quantite} DT</div>
               <div>
-                TVA : {(extrait.prix_unit * extrait.quantite * 0.19).toFixed(2)}{" "}
+                TVA : {((extrait.prix_unit * extrait.quantite) * 0.19).toFixed(2)}{" "}
                 DT (19%)
               </div>
               <div> Prix de livraison : 7 DT </div>
               <div>
                 Prix TTC :{" "}
-                {((extrait.prix_unit * extrait.quantite) / 100 + 7).toFixed(2)}{" "}
+                {((extrait.prix_unit * extrait.quantite) +((extrait.prix_unit * extrait.quantite) * 0.19) + 7).toFixed(2)}{" "}
                 DT
               </div>
             </ul>
           </div>
-          <div className={style.remarque}>Req : {extrait.remarque}</div>
+          {extrait.remarque && <div className={style.remarque}>Req : {extrait.remarque}</div>}
         </div>
       </div>
       <ReactToPrint

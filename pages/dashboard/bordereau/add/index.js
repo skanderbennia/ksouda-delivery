@@ -113,7 +113,7 @@ export default function Add() {
             name="telClient"
             type="tel"
             defaultValue={"+216"}
-            {...register("telClient", { required: true, minLength: 12 })}
+            {...register("telClient", { required: true, pattern: /^([\+][0-9]{3,7})?[0-9]{8}$/gm })}
           />
           {errors.telClient && errors.telClient.type === "minLength" ? (
             <span className="error">
@@ -173,7 +173,7 @@ export default function Add() {
           <label>Remarque</label>
           <textarea 
           className="input-add-bordreau"             
-          {...register("remarque", { required: true })}>
+          {...register("remarque", { required: false })}>
           </textarea>
         </div>
         {loading ? (

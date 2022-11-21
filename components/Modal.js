@@ -178,6 +178,7 @@ export default function Modal(props) {
                     className="form-control"
                     aria-describedby="emailHelp"
                     placeholder="Telephone"
+                    {...register("telClient", { required: true , pattern: /^([\+][0-9]{3,7})?[0-9]{8}$/gm})}
                   />
                   <input
                     name="email"
