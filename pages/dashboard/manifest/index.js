@@ -4,9 +4,11 @@ import React, { useState, useEffect } from "react";
 import api from "../../../api";
 import Navbar from "../../../components/Navbar/Navbar";
 import { userAtom } from "../../../atoms/userAtom";
-import { useRecoilValue } from "recoil";
+import { manifestAtom } from "../../../atoms/manifestAtom";
+import { useRecoilValue, useRecoilState } from "recoil";
 function Manifest() {
   const user = useRecoilValue(userAtom);
+  const [manifest, setManifest] = useRecoilState(manifestAtom);
   const router = useRouter();
   const [listManifest, setListManifest] = useState([]);
   useEffect(() => {
@@ -30,7 +32,7 @@ function Manifest() {
     },
     {
       title: "Sélectionner",
-      render: () => {
+      render: (row) => {
         return (
           <div
             style={{
@@ -38,7 +40,22 @@ function Manifest() {
               flexDirection: "row"
             }}
           >
-            <Button type="primary">Imprimer</Button>
+            <Button
+              type="primary"
+              onClick={async () => {
+                try {
+                  const bordereaus = await api.post("/bordereau/manifest/", {
+                    manifestId: row._id
+                  });
+                  setManifest({ bordereaus: bordereaus.data });
+                  router.push("/manifeste");
+                } catch (err) {
+                  // error
+                }
+              }}
+            >
+              Imprimer
+            </Button>
           </div>
         );
       }
