@@ -29,7 +29,7 @@ const BordereauSchema = new mongoose.Schema({
   },
   montantTTC: {
     type: Number
-  }, 
+  },
   remarque: {
     type: String
   },
@@ -54,6 +54,11 @@ const BordereauSchema = new mongoose.Schema({
   missionId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Mission",
+    default: null
+  },
+  manifestId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Manifest",
     default: null
   }
 });

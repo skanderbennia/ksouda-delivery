@@ -27,6 +27,16 @@ const Navbar = (props) => {
       onClick: () => {
         router.push("/dashboard/informations");
       }
+    },
+    {
+      key: "3",
+      label: "Manifest",
+      style: {
+        fontWeight: "bold"
+      },
+      onClick: () => {
+        router.push("/dashboard/manifest");
+      }
     }
   ];
   const adminRoute = [
