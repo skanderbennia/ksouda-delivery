@@ -39,12 +39,16 @@ const BordereauSchema = new mongoose.Schema({
   },
   etat: {
     type: String,
-    enum: ["En cours", "Annule", "Livre", "Echange"],
+    enum: ["En cours", "Annule", "Livre", "Echange", "RD"],
     default: "En cours"
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
+  },
+  retour_depot: {
+    type: Number,
+    default: 0
   },
   livreurID: {
     type: mongoose.Schema.Types.ObjectId,

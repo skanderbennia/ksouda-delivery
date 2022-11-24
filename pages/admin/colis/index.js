@@ -100,6 +100,12 @@ const Bordreau = ({ bordereau }) => {
       setListBordereau(copyBordereaux.data);
       setAllBordereau(copyBordereaux.data);
     }
+    if (etat == "RD") {
+      await api.post("/bordereau", { id, etat });
+      const copyBordereaux = await api.get("/bordereau");
+      setListBordereau(copyBordereaux.data);
+      setAllBordereau(copyBordereaux.data);
+    }
   };
   const columns = [
     {
@@ -166,6 +172,12 @@ const Bordreau = ({ bordereau }) => {
             return <Tag color="green">{item.etat}</Tag>;
           case "Echange":
             return <Tag color="orange">{item.etat}</Tag>;
+          case "RD":
+            return (
+              <Tag color="purple">
+                {item.etat} {item.retour_depot}
+              </Tag>
+            );
         }
       }
     },
@@ -228,6 +240,27 @@ const Bordreau = ({ bordereau }) => {
               }}
             >
               Annulé
+            </Button>
+            <Button
+              style={
+                item.etat == "RD"
+                  ? {
+                      backgroundColor: "purple",
+                      color: "white",
+                      border: "2px solid black",
+                      marginLeft: 20
+                    }
+                  : {
+                      backgroundColor: "purple",
+                      color: "white",
+                      marginLeft: 20
+                    }
+              }
+              onClick={async () => {
+                await handleChangeStateBordereau(item._id, "RD");
+              }}
+            >
+              Depot
             </Button>
           </div>
         );
