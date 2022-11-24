@@ -54,7 +54,7 @@ function Manifest() {
           </tr>
           {manifest.bordereaus.map((bordereau) => {
             return (
-              <tr>
+              <tr key={bordereau._id}>
                 <td>{bordereau.codebar}</td>
                 <td>{bordereau.nomClient}</td>
                 <td>{bordereau.adresse}</td>
