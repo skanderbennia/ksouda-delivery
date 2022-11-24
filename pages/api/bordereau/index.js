@@ -10,9 +10,25 @@ export default async function handler(req, res) {
       res.status(200).json(list);
     } else if (req.method === "POST") {
       if (req.body.id && req.body.etat) {
-        const item = await Bordereau.findByIdAndUpdate(req.body.id, {
-          etat: req.body.etat
-        });
+        if (req.body.etat == "RD") {
+          const findItem = await Bordereau.findById(req.body.id);
+
+          if (findItem.retour_depot >= 2) {
+            await Bordereau.findByIdAndUpdate(req.body.id, {
+              etat: "Annule"
+            });
+          } else {
+            const item = await Bordereau.findByIdAndUpdate(req.body.id, {
+              etat: req.body.etat,
+              $inc: { retour_depot: 1 }
+            });
+          }
+        } else {
+          const item = await Bordereau.findByIdAndUpdate(req.body.id, {
+            etat: req.body.etat
+          });
+        }
+
         return res.send("Bordereau is updated");
       }
       let min = 10000000;
