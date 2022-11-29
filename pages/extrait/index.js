@@ -94,7 +94,7 @@ export default function Extrait() {
               <td>{extrait.contenu}</td>
               <td>{extrait.quantite}</td>
               <td>{extrait.prix_unit} DT</td>
-              <td>{extrait.prix_unit * extrait.quantite} DT</td>
+              <td>{extrait.prix_unit * extrait.quantite + 7} DT</td>
             </tr>
           </tbody>
         </table>
@@ -109,7 +109,7 @@ export default function Extrait() {
               <div> Prix de livraison : 7 DT </div>
               <div>
                 Prix TTC :{" "}
-                {((extrait.prix_unit * extrait.quantite) +((extrait.prix_unit * extrait.quantite) * 0.19) + 7).toFixed(2)}{" "}
+                {((extrait.prix_unit * extrait.quantite)  + 7).toFixed(2)}{" "}
                 DT
               </div>
             </ul>

@@ -13,7 +13,7 @@ function Manifest() {
   const manifest = useRecoilValue(manifestAtom);
   const totalPrixColis = () => {
     return manifest.bordereaus.reduce((acc, currentValue) => {
-      acc = acc + currentValue.quantite * currentValue.prix_unit;
+      acc = acc + currentValue.quantite * currentValue.prix_unit + 7;
       return acc;
     }, 0);
   };

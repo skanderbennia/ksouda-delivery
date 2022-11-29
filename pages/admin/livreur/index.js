@@ -110,7 +110,7 @@ const Livreur = ({ livreurs }) => {
           return (
             <span>
               {row.bordereauList.reduce(
-                (total, item) => item.quantite * item.prix_unit + total,
+                (total, item) => item.quantite * item.prix_unit + total + 7,
                 0
               )}
             </span>

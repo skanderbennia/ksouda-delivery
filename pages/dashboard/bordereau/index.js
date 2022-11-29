@@ -136,7 +136,7 @@ const Bordreau = ({ bordereau }) => {
       render: (item) => {
         return (
           <p style={{ textAlign: "center" }}>
-            {item.quantite * item.prix_unit} dt{" "}
+            {item.quantite * item.prix_unit +7} dt{" "}
           </p>
         );
       }
