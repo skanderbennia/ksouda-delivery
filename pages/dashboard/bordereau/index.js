@@ -136,7 +136,7 @@ const Bordreau = ({ bordereau }) => {
       render: (item) => {
         return (
           <p style={{ textAlign: "center" }}>
-            {item.quantite * item.prix_unit +7} dt{" "}
+            {item.quantite * item.prix_unit + 7} dt{" "}
           </p>
         );
       }
@@ -157,6 +157,12 @@ const Bordreau = ({ bordereau }) => {
             return <Tag color="green">{item.etat}</Tag>;
           case "Echange":
             return <Tag color="orange">{item.etat}</Tag>;
+          case "RD":
+            return (
+              <Tag color="purple">
+                {item.etat} {item.retour_depot}
+              </Tag>
+            );
         }
       }
     },
@@ -167,10 +173,20 @@ const Bordreau = ({ bordereau }) => {
       render: (item) => {
         switch (item.payout) {
           case true:
-            return <Tag color="green"> <span>&#10004;</span> </Tag>;
+            return (
+              <Tag color="green">
+                {" "}
+                <span>&#10004;</span>{" "}
+              </Tag>
+            );
 
           case false:
-            return <Tag color="red"> <span>&#10008;</span> </Tag>;
+            return (
+              <Tag color="red">
+                {" "}
+                <span>&#10008;</span>{" "}
+              </Tag>
+            );
         }
       }
     },

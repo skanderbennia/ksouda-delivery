@@ -36,14 +36,25 @@ export default async function handler(req, res) {
         {
           _id: {
             $in: [...bordereauListObjectId]
-          }
+          },
+          etat: "En cours"
         },
         { livreurID: livreurId, missionId: mission._id }
       );
-
+      await Bordereau.updateMany(
+        {
+          _id: {
+            $in: [...bordereauListObjectId]
+          },
+          etat: "RD"
+        },
+        { livreurID: livreurId, missionId: mission._id, etat: "En cours" }
+      );
       res.send("send");
     } else if (req.method === "PATCH") {
-      const mission = await Mission.find({ _id: req.body.id }).sort({ _id: -1 });
+      const mission = await Mission.find({ _id: req.body.id }).sort({
+        _id: -1
+      });
       res.status(200).json(mission);
     } else if (req.method === "PUT") {
       const mission = await Mission.findByIdAndUpdate(req.body.id, {

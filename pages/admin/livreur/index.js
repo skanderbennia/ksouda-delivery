@@ -267,12 +267,12 @@ const Livreur = ({ livreurs }) => {
     const bordereaux = await res1.data;
     setBordereau(
       bordereaux.filter((b) => {
-        return !b.livreurID && b.etat == "En cours";
+        return (!b.livreurID && b.etat == "En cours") || b.etat == "RD";
       })
     );
     setAvailableBordereau(
       bordereaux.filter((b) => {
-        return !b.livreurID && b.etat == "En cours";
+        return (!b.livreurID && b.etat == "En cours") || b.etat == "RD";
       })
     );
     setLoadingBordereau(false);
@@ -632,7 +632,6 @@ const Livreur = ({ livreurs }) => {
                       toast.error("Bordreaux selectionees vide");
                     }
                     setModalValue("");
-
                   })}
                 >
                   <div className="form-group">
