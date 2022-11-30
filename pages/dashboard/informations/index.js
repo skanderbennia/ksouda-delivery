@@ -19,7 +19,7 @@ export default function Informations() {
       .filter((elem) => elem.etat === "Livre" && !elem.payout)
       .map((elem) => elem.quantite * elem.prix_unit)
       .reduce((accumulator, currentValue) => {
-        accumulator = accumulator + currentValue;
+        accumulator = accumulator + currentValue + 7;
         return accumulator;
       }, 0);
   }
@@ -28,6 +28,15 @@ export default function Informations() {
       .filter((elem) => elem.etat === "Livre" && !elem.payout)
       .reduce((accumulator) => {
         accumulator = accumulator + 7;
+        return accumulator;
+      }, 0);
+  }
+  function montantTotalSansFrais(arr) {
+    return arr
+      .filter((elem) => elem.etat === "Livre" && !elem.payout)
+      .map((elem) => elem.quantite * elem.prix_unit)
+      .reduce((accumulator, currentValue) => {
+        accumulator = accumulator + currentValue;
         return accumulator;
       }, 0);
   }
@@ -53,9 +62,7 @@ export default function Informations() {
           <h1> = </h1>
           <div className="stat-container ">
             <div className="bg-purple">
-              <h2>
-                {montantTotal(listBordereau) - montantFrais(listBordereau)} DT
-              </h2>
+              <h2>{montantTotalSansFrais(listBordereau)} DT</h2>
             </div>
             <h4>Les bénéfices</h4>
           </div>
