@@ -60,7 +60,7 @@ function Manifest() {
                 <td>{bordereau.adresse}</td>
                 <td>{bordereau.quantite}</td>
                 <td>{bordereau.prix_unit} dt</td>
-                <td>{bordereau.quantite * bordereau.prix_unit} dt</td>
+                <td>{bordereau.quantite * bordereau.prix_unit +7} dt</td>
               </tr>
             );
           })}
