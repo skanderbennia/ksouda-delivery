@@ -8,7 +8,7 @@ export default async function handler(req, res) {
       const list = await Bordereau.find({
         etat: "En cours",
         manifestId: null,
-        userId
+        user:userId
       });
 
       res.status(200).json(list);
